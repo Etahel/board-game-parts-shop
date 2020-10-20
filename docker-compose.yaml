@@ -1,0 +1,9 @@
+version: "3"
+services:
+  config-service:
+    build: ./discovery-service
+    container_name: discovery-service
+    ports:
+      - 8761:8761
+    environment:
+      - DIPLOMA_PASSWORD
