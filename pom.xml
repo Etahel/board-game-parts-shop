@@ -30,6 +30,7 @@
     <modules>
 
         <module>discovery-service</module>
+        <module>database</module>
     </modules>
 
     <dependencies>

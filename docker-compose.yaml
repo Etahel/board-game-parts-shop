@@ -1,9 +1,27 @@
 version: "3"
 services:
-  config-service:
-    build: ./discovery-service
+  discovery-service:
+    build:
+      context: ./
+      dockerfile: ./discovery-service/dockerfile
     container_name: discovery-service
     ports:
       - 8761:8761
     environment:
       - DIPLOMA_PASSWORD
+  db:
+    build:
+      context: ./
+      dockerfile: ./database/dockerfile
+    ports:
+      - 5433:5432
+    container_name: db
+    environment:
+      - POSTGRES_PASSWORD
+      - POSTGRES_USER=admin
+      - POSTGRES_DB=BOARDGAMES_SHOP
+    volumes:
+    - boardgames_db:/var/lib/postgresql/data
+volumes:
+  boardgames_db:
+    name: boardgames_db
