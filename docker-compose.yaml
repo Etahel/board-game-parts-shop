@@ -7,14 +7,36 @@ services:
     container_name: discovery-service
     ports:
       - 8761:8761
+    hostname: discovery-service
+    networks:
+      - bg-network
     environment:
       - DIPLOMA_PASSWORD
+  account-service:
+    build:
+      context: ./
+      dockerfile: ./account-service/dockerfile
+    container_name: account-service
+    ports:
+      - 9001:9001
+      - 9901:9901
+    hostname: account-service
+    networks:
+      - bg-network
+    environment:
+      - DIPLOMA_PASSWORD
+    depends_on:
+      - db
+      - discovery-service
   db:
     build:
       context: ./
       dockerfile: ./database/dockerfile
     ports:
       - 5433:5432
+    hostname: db
+    networks:
+      - bg-network
     container_name: db
     environment:
       - POSTGRES_PASSWORD
@@ -22,6 +44,31 @@ services:
       - POSTGRES_DB=BOARDGAMES_SHOP
     volumes:
     - boardgames_db:/var/lib/postgresql/data
+  keycloak:
+    image: jboss/keycloak
+    environment:
+      DB_VENDOR: postgres
+      DB_ADDR: db
+      DB_PORT: 5432
+      DB_DATABASE: BOARDGAMES_SHOP
+      DB_USER: admin
+      DB_SCHEMA: auth
+      DB_PASSWORD: ${POSTGRES_PASSWORD}
+      KEYCLOAK_USER: admin
+      KEYCLOAK_PASSWORD: Pa55w0rd
+      KEYCLOAK_FRONTEND_URL: http://localhost:9990
+    container_name: keycloak
+    ports:
+      - 9990:8080
+      - 9991:8443
+    hostname: keycloak
+    networks:
+      - bg-network
+    depends_on:
+      - db
 volumes:
   boardgames_db:
     name: boardgames_db
+networks:
+  bg-network:
+    name: network

@@ -1,4 +1,4 @@
-FROM openjdk:8-jre-alpine
+FROM openjdk:11
 MAINTAINER Jakub Fornalski
 WORKDIR /app
 COPY ./discovery-service/target/discovery-service.jar /app/
