@@ -32,6 +32,7 @@ zuul:
       serviceId: account-service
       stripPrefix: true
     authorization-server:
+      sensitiveHeaders:
       path: /auth/**
       url: http://keycloak:8080
       stripPrefix: false
