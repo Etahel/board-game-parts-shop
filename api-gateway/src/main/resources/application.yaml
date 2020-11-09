@@ -1,0 +1,40 @@
+spring:
+  application:
+    name: api-gateway
+
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://discovery-service:8761/eureka/
+    register-with-eureka: true
+    fetch-registry: true
+  instance:
+    hostname: api-gateway
+    nonSecurePortEnabled: false
+    securePortEnabled: true
+    securePort: ${server.port}
+
+server:
+  port: 8443
+  ssl:
+    key-password: ${DIPLOMA_PASSWORD}
+    key-store-password: ${DIPLOMA_PASSWORD}
+    key-store: ./keystore.jks
+
+
+
+zuul:
+  sensitiveHeaders: Cookie,Set-Cookie
+  routes:
+    account-service:
+      path: /account/**
+      serviceId: account-service
+      stripPrefix: true
+    authorization-server:
+      path: /auth/**
+      url: http://keycloak:8080
+      stripPrefix: false
+logging:
+  level:
+    root: DEBUG

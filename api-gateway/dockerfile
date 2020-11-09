@@ -1,0 +1,6 @@
+FROM openjdk:11
+MAINTAINER Jakub Fornalski
+WORKDIR /app
+COPY ./api-gateway/target/api-gateway.jar /app/
+COPY ./keystore.jks /app/
+ENTRYPOINT ["java", "-jar", "api-gateway.jar"]

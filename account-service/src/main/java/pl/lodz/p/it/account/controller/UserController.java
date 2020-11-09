@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 import java.security.Principal;
 
@@ -20,6 +21,7 @@ public class UserController {
     }
 
     @GetMapping(path = "/register")
+    @PermitAll
     @ResponseStatus(value = HttpStatus.OK)
     public void register()
     {

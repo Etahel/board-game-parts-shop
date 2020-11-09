@@ -1,5 +1,17 @@
 version: "3"
 services:
+  api-gateway:
+    build:
+      context: ./
+      dockerfile: ./api-gateway/dockerfile
+    container_name: api-gateway
+    hostname: api-gateway
+    ports:
+      - 8443:8443
+    environment:
+      - DIPLOMA_PASSWORD
+    networks:
+      - bg-network
   discovery-service:
     build:
       context: ./
@@ -56,7 +68,7 @@ services:
       DB_PASSWORD: ${POSTGRES_PASSWORD}
       KEYCLOAK_USER: admin
       KEYCLOAK_PASSWORD: Pa55w0rd
-      KEYCLOAK_FRONTEND_URL: http://localhost:9990
+      KEYCLOAK_FRONTEND_URL: https://localhost:8443/auth
     container_name: keycloak
     ports:
       - 9990:8080
