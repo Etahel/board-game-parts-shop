@@ -37,6 +37,10 @@ keycloak-admin:
   resource: admin-cli
   secret: ddc96c35-be1f-430c-97ef-07aa20d3e37c
 
+roles:
+  user: user
+  employee: employee
+  admin: admin
 #server.ssl.key-password=${DIPLOMA_PASSWORD}
 #server.ssl.key-store-password=${DIPLOMA_PASSWORD}
 #server.ssl.key-store=./keystore.jks

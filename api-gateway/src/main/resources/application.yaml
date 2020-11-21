@@ -21,6 +21,8 @@ server:
     key-password: ${DIPLOMA_PASSWORD}
     key-store-password: ${DIPLOMA_PASSWORD}
     key-store: ./keystore.jks
+    enabled-protocols: TLSv1.2
+
 
 
 zuul:
@@ -51,3 +53,4 @@ hystrix:
 ribbon:
   ConnectTimeout: 600000
   ReadTimeout: 600000
+
