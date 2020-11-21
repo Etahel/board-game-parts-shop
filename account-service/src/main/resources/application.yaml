@@ -31,6 +31,12 @@ keycloak:
   bearer-only: true
   principal-attribute: preferred_username
 
+keycloak-admin:
+  server-url: http://keycloak:8080/auth
+  realm: board-game-parts-shop
+  resource: admin-cli
+  secret: ddc96c35-be1f-430c-97ef-07aa20d3e37c
+
 #server.ssl.key-password=${DIPLOMA_PASSWORD}
 #server.ssl.key-store-password=${DIPLOMA_PASSWORD}
 #server.ssl.key-store=./keystore.jks

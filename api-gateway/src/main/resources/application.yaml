@@ -23,8 +23,10 @@ server:
     key-store: ./keystore.jks
 
 
-
 zuul:
+  ribbon:
+    eager-load:
+      enabled: true
   sensitiveHeaders: Cookie,Set-Cookie
   routes:
     account-service:
@@ -36,6 +38,16 @@ zuul:
       path: /auth/**
       url: http://keycloak:8080
       stripPrefix: false
-logging:
-  level:
-    root: DEBUG
+
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 600000
+          strategy: THREAD
+
+ribbon:
+  ConnectTimeout: 600000
+  ReadTimeout: 600000
