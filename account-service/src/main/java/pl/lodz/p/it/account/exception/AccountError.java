@@ -12,7 +12,7 @@ public enum AccountError {
     private final String code;
 
     AccountError(final String code) {
-        this.code = "error:account." + code;
+        this.code = "account." + code;
     }
 
     @Override

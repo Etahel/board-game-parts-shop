@@ -35,7 +35,7 @@ keycloak-admin:
   server-url: http://keycloak:8080/auth
   realm: board-game-parts-shop
   resource: admin-cli
-  secret: ddc96c35-be1f-430c-97ef-07aa20d3e37c
+  secret: 5a732af4-78be-40e3-b518-13d10f8079e7
 
 roles:
   user: user

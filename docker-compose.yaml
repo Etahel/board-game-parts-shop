@@ -70,6 +70,7 @@ services:
       KEYCLOAK_USER: admin
       KEYCLOAK_PASSWORD: Pa55w0rd
       KEYCLOAK_FRONTEND_URL: https://localhost:8443/auth
+      KEYCLOAK_IMPORT: /tmp/realm-export.json
     container_name: keycloak
     ports:
       - 9990:8080
@@ -77,8 +78,14 @@ services:
     hostname: keycloak
     networks:
       - bg-network
+    volumes:
+      - type: bind
+        source: ./account-service/src/main/resources/realm-export.json
+        target: /tmp/realm-export.json
     depends_on:
       - db
+    command: -Dkeycloak.profile.feature.upload_scripts=enabled
+
 volumes:
   boardgames_db:
     name: boardgames_db

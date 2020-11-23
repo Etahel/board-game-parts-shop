@@ -29,6 +29,7 @@ public class UserService {
     public void registerUser(UserDto userDto) throws AccountException {
         UserRepresentation user = new UserRepresentation();
         userDto.putProperties(user);
+        user.setEnabled(true);
         user.setRealmRoles(new ArrayList<String>());
         user.getRealmRoles().add(rolesProperties.getUser());
         UsersResource usersResource = keycloakService.getUserResource();
