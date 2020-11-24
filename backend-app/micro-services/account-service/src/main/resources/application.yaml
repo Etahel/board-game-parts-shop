@@ -1,0 +1,46 @@
+eureka:
+  client:
+    service-url:
+      defaultZone: http://discovery-server:8761/eureka/
+    register-with-eureka: true
+    fetch-registry: true
+  instance:
+    hostname: account-service
+
+spring:
+  application:
+    name: account-service
+server:
+  port: 9001
+
+management:
+  server:
+    port: 9901
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    metrics:
+      enabled: true
+
+keycloak:
+  auth-server-url: http://keycloak:8080/auth
+  realm: board-game-parts-shop
+  resource: account-service
+  bearer-only: true
+  principal-attribute: preferred_username
+
+keycloak-admin:
+  server-url: http://keycloak:8080/auth
+  realm: board-game-parts-shop
+  resource: admin-cli
+  secret: 5a732af4-78be-40e3-b518-13d10f8079e7
+
+roles:
+  user: user
+  employee: employee
+  admin: admin
+#server.ssl.key-password=${DIPLOMA_PASSWORD}
+#server.ssl.key-store-password=${DIPLOMA_PASSWORD}
+#server.ssl.key-store=./keystore.jks

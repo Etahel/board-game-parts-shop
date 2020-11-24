@@ -1,0 +1,7 @@
+FROM openjdk:11
+MAINTAINER Jakub Fornalski
+WORKDIR /app
+COPY ./backend-app/discovery-server/target/discovery-server.jar /app/
+COPY ./keystore.jks /app/
+ENTRYPOINT ["java", "-jar", "discovery-server.jar"]
+

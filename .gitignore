@@ -99,3 +99,5 @@ node_modules
 
 #Project
 /*/target/
+/backend-app/*/target/
+/backend-app/*/*/target/

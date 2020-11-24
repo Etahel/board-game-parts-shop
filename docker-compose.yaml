@@ -3,7 +3,7 @@ services:
   api-gateway:
     build:
       context: ./
-      dockerfile: ./api-gateway/dockerfile
+      dockerfile: ./backend-app/api-gateway/dockerfile
     container_name: api-gateway
     hostname: api-gateway
     ports:
@@ -12,14 +12,14 @@ services:
       - DIPLOMA_PASSWORD
     networks:
       - bg-network
-  discovery-service:
+  discovery-server:
     build:
       context: ./
-      dockerfile: ./discovery-service/dockerfile
-    container_name: discovery-service
+      dockerfile: ./backend-app/discovery-server/dockerfile
+    container_name: discovery-server
     ports:
       - 8761:8761
-    hostname: discovery-service
+    hostname: discovery-server
     networks:
       - bg-network
     environment:
@@ -27,7 +27,7 @@ services:
   account-service:
     build:
       context: ./
-      dockerfile: ./account-service/dockerfile
+      dockerfile: ./backend-app/micro-services/account-service/dockerfile
     container_name: account-service
     ports:
       - 9001:9001
@@ -40,7 +40,7 @@ services:
       - DIPLOMA_PASSWORD
     depends_on:
       - db
-      - discovery-service
+      - discovery-server
   db:
     build:
       context: ./
@@ -80,7 +80,7 @@ services:
       - bg-network
     volumes:
       - type: bind
-        source: ./account-service/src/main/resources/realm-export.json
+        source: ./keycloak/src/main/resources/realm-export.json
         target: /tmp/realm-export.json
     depends_on:
       - db

@@ -1,0 +1,6 @@
+FROM openjdk:11
+MAINTAINER Jakub Fornalski
+WORKDIR /app
+COPY ./backend-app/micro-services/account-service/target/account-service.jar /app/
+COPY ./keystore.jks /app/
+ENTRYPOINT ["java","-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5051", "-jar", "account-service.jar"]
