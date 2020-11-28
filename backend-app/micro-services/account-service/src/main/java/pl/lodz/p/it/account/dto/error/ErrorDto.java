@@ -1,7 +1,8 @@
-package pl.lodz.p.it.account.dto;
+package pl.lodz.p.it.account.dto.error;
 
 import lombok.Getter;
 import lombok.Setter;
+import pl.lodz.p.it.account.dto.AbstractDto;
 import pl.lodz.p.it.account.exception.AccountException;
 
 @Getter

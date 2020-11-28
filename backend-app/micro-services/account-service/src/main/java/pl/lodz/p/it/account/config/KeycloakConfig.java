@@ -17,6 +17,22 @@ import pl.lodz.p.it.account.properties.KeycloakAdminProperties;
 @EnableConfigurationProperties(KeycloakAdminProperties.class)
 public class KeycloakConfig {
 
+    public enum EmailAction {
+        UPDATE_PASSWORD("UPDATE_PASSWORD"),
+        VERIFY_EMAIL("VERIFY_EMAIL");
+
+        private final String action;
+
+        EmailAction(final String action) {
+            this.action = action;
+        }
+
+        @Override
+        public String toString() {
+            return action;
+        }
+    }
+
     @Autowired
     private KeycloakAdminProperties properties;
 

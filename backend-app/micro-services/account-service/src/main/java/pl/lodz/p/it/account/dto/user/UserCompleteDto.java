@@ -1,43 +1,30 @@
-package pl.lodz.p.it.account.dto;
+package pl.lodz.p.it.account.dto.user;
 
 import lombok.Getter;
 import lombok.Setter;
 import org.keycloak.representations.idm.CredentialRepresentation;
 import org.keycloak.representations.idm.UserRepresentation;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotEmpty;
 import java.util.ArrayList;
 
 @Getter
 @Setter
-public class UserDto extends AbstractDto<UserRepresentation> {
+public class UserCompleteDto extends UserDetailsDto {
 
-    @NotEmpty
-    private String username;
-    private String firstName;
-    private String lastName;
-    @NotEmpty
-    @Email
-    private String email;
-    @NotEmpty
+
     private String password;
 
-    public UserDto() {
+    public UserCompleteDto() {
     }
 
-    ;
 
-    public UserDto(UserRepresentation entity) {
+    public UserCompleteDto(UserRepresentation entity) {
         super(entity);
     }
 
     @Override
     public void putProperties(UserRepresentation entity) {
-        entity.setUsername(getUsername());
-        entity.setEmail(getEmail());
-        entity.setFirstName(getFirstName());
-        entity.setLastName(getLastName());
+        super.putProperties(entity);
 
         CredentialRepresentation passwordCred = new CredentialRepresentation();
         passwordCred.setTemporary(false);
@@ -50,9 +37,6 @@ public class UserDto extends AbstractDto<UserRepresentation> {
 
     @Override
     public void fillProperties(UserRepresentation entity) {
-        setUsername(entity.getUsername());
-        setEmail(entity.getEmail());
-        setFirstName(entity.getFirstName());
-        setLastName(entity.getLastName());
+        super.fillProperties(entity);
     }
 }

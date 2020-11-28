@@ -15,6 +15,10 @@ public abstract class AbstractDto<T> {
 
     }
 
+    public void patchProperties(T entity) {
+
+    }
+
     public void fillProperties(T entity) {
 
     }

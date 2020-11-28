@@ -1,21 +1,31 @@
-package pl.lodz.p.it.account.controller.error;
+package pl.lodz.p.it.account.exception;
 
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
-import pl.lodz.p.it.account.dto.ErrorDto;
-import pl.lodz.p.it.account.exception.AccountException;
+import pl.lodz.p.it.account.dto.error.ErrorDto;
+import pl.lodz.p.it.account.dto.error.ValidationErrorDto;
 import pl.lodz.p.it.account.exception.keycloak.KeycloakConnectionException;
+import pl.lodz.p.it.account.exception.keycloak.VerificationEmailException;
 import pl.lodz.p.it.account.exception.user.EmailTakenException;
 import pl.lodz.p.it.account.exception.user.RegistrationDataException;
 import pl.lodz.p.it.account.exception.user.UserNotFoundException;
 import pl.lodz.p.it.account.exception.user.UsernameTakenException;
+import pl.lodz.p.it.account.exception.validation.RequestInvalidException;
+
+import java.util.List;
 
 @ControllerAdvice
-public class AccountResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
+public class AccountExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(value = {
             UsernameTakenException.class,
@@ -28,7 +38,7 @@ public class AccountResponseEntityExceptionHandler extends ResponseEntityExcepti
     }
 
     @ExceptionHandler(value
-            = {KeycloakConnectionException.class})
+            = {KeycloakConnectionException.class, VerificationEmailException.class})
     @ResponseBody
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     protected ErrorDto handleInternalError(AccountException ex) {
@@ -50,4 +60,22 @@ public class AccountResponseEntityExceptionHandler extends ResponseEntityExcepti
     protected ErrorDto handleNotFound(AccountException ex) {
         return new ErrorDto(ex);
     }
+
+
+    // Default spring validation exception
+    @Override
+    protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
+        BindingResult result = ex.getBindingResult();
+        List<org.springframework.validation.FieldError> fieldErrors = result.getFieldErrors();
+        return new ResponseEntity(processFieldErrors(new RequestInvalidException(), fieldErrors), headers, status);
+    }
+
+    private ValidationErrorDto processFieldErrors(AccountException ex, List<FieldError> fieldErrors) {
+        ValidationErrorDto error = new ValidationErrorDto(ex);
+        for (org.springframework.validation.FieldError fieldError : fieldErrors) {
+            error.addFieldError(fieldError.getObjectName(), fieldError.getField(), fieldError.getDefaultMessage());
+        }
+        return error;
+    }
+
 }
