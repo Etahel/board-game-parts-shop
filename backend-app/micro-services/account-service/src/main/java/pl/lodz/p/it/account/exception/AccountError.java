@@ -8,6 +8,7 @@ public enum AccountError {
     //USER ERRORS
     USERNAME_TAKEN("user.username_taken"),
     EMAIL_TAKEN("user.email_taken"),
+    EMAIL_ALREADY_VERIFIED("user.email_already_verified"),
     REGISTRATION_INVALID_DATA("user.registration.invalid_data"),
     USER_NOT_FOUND("user.not_found"),
     //VALIDATION

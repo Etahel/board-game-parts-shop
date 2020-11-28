@@ -11,38 +11,25 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.servlet.HandlerInterceptor;
-import org.springframework.web.servlet.ModelAndView;
 import pl.lodz.p.it.account.exception.AccountException;
 import pl.lodz.p.it.account.exception.user.EmailTakenException;
 import pl.lodz.p.it.account.exception.user.RegistrationDataException;
 import pl.lodz.p.it.account.exception.user.UsernameTakenException;
 import pl.lodz.p.it.account.properties.KeycloakAdminProperties;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.Response;
 import java.util.HashMap;
 
 @Service
 @EnableConfigurationProperties(KeycloakAdminProperties.class)
-public class KeycloakService implements HandlerInterceptor {
+public class KeycloakService {
 
     Logger logger = LoggerFactory.getLogger(KeycloakService.class);
 
 
     private Keycloak keycloak;
     private KeycloakAdminProperties adminProperties;
-
-    @Override
-    public void postHandle(
-            HttpServletRequest request,
-            HttpServletResponse response,
-            Object handler,
-            ModelAndView modelAndView) {
-        keycloak.close();
-    }
 
     @Autowired
     public KeycloakService(Keycloak keycloak, KeycloakAdminProperties adminProperties) {
@@ -64,6 +51,10 @@ public class KeycloakService implements HandlerInterceptor {
 
     public RolesResource getRolesResource() {
         return keycloak.realm(adminProperties.getRealm()).roles();
+    }
+
+    public void closeConnection() {
+        keycloak.close();
     }
 
     public void processRegisterResponse(Response response) throws AccountException {

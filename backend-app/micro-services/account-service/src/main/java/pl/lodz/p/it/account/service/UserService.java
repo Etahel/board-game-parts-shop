@@ -12,11 +12,13 @@ import pl.lodz.p.it.account.dto.user.UserCompleteDto;
 import pl.lodz.p.it.account.exception.AccountException;
 import pl.lodz.p.it.account.exception.keycloak.KeycloakConnectionException;
 import pl.lodz.p.it.account.exception.keycloak.VerificationEmailException;
+import pl.lodz.p.it.account.exception.user.EmailAlreadyVerifiedException;
 import pl.lodz.p.it.account.exception.user.UserNotFoundException;
 import pl.lodz.p.it.account.properties.RolesProperties;
 
 import javax.ws.rs.core.Response;
 import java.util.Arrays;
+import java.util.List;
 
 @Service
 @EnableConfigurationProperties(RolesProperties.class)
@@ -54,16 +56,20 @@ public class UserService {
         }
     }
 
-    public void sendResetPasswordEmail(String username) throws UserNotFoundException, KeycloakConnectionException {
-        sendEmailAction(username, KeycloakConfig.EmailAction.UPDATE_PASSWORD);
-    }
-
-    public void sendVerifyEmail(String username) throws UserNotFoundException, KeycloakConnectionException {
-        sendEmailAction(username, KeycloakConfig.EmailAction.VERIFY_EMAIL);
-    }
-
-    private void sendEmailAction(String username, KeycloakConfig.EmailAction action) throws UserNotFoundException, KeycloakConnectionException {
+    public void sendResetPasswordEmail(String username) throws AccountException {
         UserRepresentation user = getUser(username);
+        sendEmailAction(user, KeycloakConfig.EmailAction.UPDATE_PASSWORD);
+    }
+
+    public void sendVerifyEmail(String username) throws AccountException {
+        UserRepresentation user = getUser(username);
+        if (user.isEmailVerified()) {
+            throw new EmailAlreadyVerifiedException();
+        }
+        sendEmailAction(user, KeycloakConfig.EmailAction.VERIFY_EMAIL);
+    }
+
+    private void sendEmailAction(UserRepresentation user, KeycloakConfig.EmailAction action) throws AccountException {
         UserResource resource = keycloakService.getUserResource(user.getId());
         try {
             resource.executeActionsEmail(Arrays.asList(action.toString()));
@@ -72,17 +78,21 @@ public class UserService {
         }
     }
 
-    public UserRepresentation getUser(String username) throws UserNotFoundException {
+    public UserRepresentation getUser(String username) throws AccountException {
         UsersResource usersResource = keycloakService.getUsersResource();
+        List<UserRepresentation> users;
         try {
-            return usersResource.search(username, true).get(0);
+            users = usersResource.search(username, true);
         } catch (Exception e) {
+            throw new KeycloakConnectionException();
+        }
+        if (users.isEmpty() || users.get(0) == null) {
             throw new UserNotFoundException();
         }
-
+        return users.get(0);
     }
 
-    public void patchUser(String username, UserBaseDto userDetails) throws UserNotFoundException, KeycloakConnectionException {
+    public void patchUser(String username, UserBaseDto userDetails) throws AccountException {
         UserRepresentation user = getUser(username);
         UserResource resource = keycloakService.getUserResource(user.getId());
         userDetails.patchProperties(user);

@@ -16,10 +16,7 @@ import pl.lodz.p.it.account.dto.error.ErrorDto;
 import pl.lodz.p.it.account.dto.error.ValidationErrorDto;
 import pl.lodz.p.it.account.exception.keycloak.KeycloakConnectionException;
 import pl.lodz.p.it.account.exception.keycloak.VerificationEmailException;
-import pl.lodz.p.it.account.exception.user.EmailTakenException;
-import pl.lodz.p.it.account.exception.user.RegistrationDataException;
-import pl.lodz.p.it.account.exception.user.UserNotFoundException;
-import pl.lodz.p.it.account.exception.user.UsernameTakenException;
+import pl.lodz.p.it.account.exception.user.*;
 import pl.lodz.p.it.account.exception.validation.RequestInvalidException;
 
 import java.util.List;
@@ -29,7 +26,8 @@ public class AccountExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(value = {
             UsernameTakenException.class,
-            EmailTakenException.class
+            EmailTakenException.class,
+            EmailAlreadyVerifiedException.class
     })
     @ResponseBody
     @ResponseStatus(HttpStatus.CONFLICT)

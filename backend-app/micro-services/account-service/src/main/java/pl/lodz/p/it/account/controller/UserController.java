@@ -69,7 +69,7 @@ public class UserController {
     @PostMapping(path = "/resend-verify-email")
     @PermitAll
     @ResponseStatus(value = HttpStatus.OK)
-    public void resendVerifyEmail(@QueryParam("username") String username, @RequestBody @Valid UserCompleteDto userCompleteDto) throws AccountException {
+    public void resendVerifyEmail(@QueryParam("username") String username) throws AccountException {
         userService.sendVerifyEmail(username);
     }
 
