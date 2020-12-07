@@ -1,0 +1,48 @@
+eureka:
+  client:
+    service-url:
+      defaultZone: http://discovery-server:8761/eureka/
+    register-with-eureka: true
+    fetch-registry: true
+  instance:
+    hostname: inventory-service
+
+
+spring:
+  application:
+    name: inventory-service
+  jpa:
+    database: POSTGRESQL
+    show-sql: true
+    hibernate:
+      ddl-auto: create-drop
+    properties:
+      hibernate:
+        default_schema: business
+  datasource:
+    platform: postgres
+    url: jdbc:postgresql://db:5432/BOARDGAMES_SHOP
+    username: admin
+    password: postgres266415
+    driverClassName: org.postgresql.Driver
+
+server:
+  port: 9003
+
+management:
+  server:
+    port: 9903
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    metrics:
+      enabled: true
+
+keycloak:
+  auth-server-url: http://keycloak:8080/auth
+  realm: board-game-parts-shop
+  resource: inventory-service
+  bearer-only: true
+  principal-attribute: preferred_username

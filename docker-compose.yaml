@@ -41,6 +41,24 @@ services:
     depends_on:
       - db
       - discovery-server
+  shop-service:
+    build:
+      context: ./
+      dockerfile: ./backend-app/micro-services/shop-service/dockerfile
+    container_name: shop-service
+    ports:
+      - 9002:9002
+      - 9902:9902
+      - 5052:5052
+    hostname: account-service
+    networks:
+      - bg-network
+    environment:
+      - DIPLOMA_PASSWORD
+      - CRYPTO_SEED=123123
+    depends_on:
+      - db
+      - discovery-server
   db:
     build:
       context: ./

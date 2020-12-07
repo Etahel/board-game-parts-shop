@@ -3,6 +3,7 @@ package pl.lodz.p.it.account.exception;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.lang.NonNull;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -62,7 +63,8 @@ public class AccountExceptionHandler extends ResponseEntityExceptionHandler {
 
     // Default spring validation exception
     @Override
-    protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
+    @NonNull
+    protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, @NonNull HttpHeaders headers, @NonNull HttpStatus status, @NonNull WebRequest request) {
         BindingResult result = ex.getBindingResult();
         List<org.springframework.validation.FieldError> fieldErrors = result.getFieldErrors();
         return new ResponseEntity(processFieldErrors(new RequestInvalidException(), fieldErrors), headers, status);

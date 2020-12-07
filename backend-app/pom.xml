@@ -17,9 +17,11 @@
         <spring.version>2.3.4.RELEASE</spring.version>
         <keycloak.version>11.0.3</keycloak.version>
         <spring-cloud.version>Hoxton.SR8</spring-cloud.version>
+        <postgres.version>42.2.18</postgres.version>
     </properties>
 
     <modules>
+        <module>core-def</module>
         <module>micro-services</module>
         <module>api-gateway</module>
         <module>discovery-server</module>

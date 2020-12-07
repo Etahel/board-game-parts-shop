@@ -1,13 +1,13 @@
 package pl.lodz.p.it.account.dto;
 
-public abstract class AbstractDto<T> {
+public abstract class AccountDto<T> {
 
-    public AbstractDto() {
+    public AccountDto() {
     }
 
     ;
 
-    public AbstractDto(T entity) {
+    public AccountDto(T entity) {
         fillProperties(entity);
     }
 

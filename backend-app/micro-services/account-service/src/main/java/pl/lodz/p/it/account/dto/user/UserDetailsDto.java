@@ -3,13 +3,14 @@ package pl.lodz.p.it.account.dto.user;
 import lombok.Getter;
 import lombok.Setter;
 import org.keycloak.representations.idm.UserRepresentation;
+import pl.lodz.p.it.account.dto.AccountDto;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 
 @Getter
 @Setter
-public class UserDetailsDto extends UserBaseDto {
+public class UserDetailsDto extends AccountDto<UserRepresentation> {
 
     public UserDetailsDto(UserRepresentation entity) {
         super(entity);

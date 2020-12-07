@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.stereotype.Service;
 import pl.lodz.p.it.account.config.KeycloakConfig;
-import pl.lodz.p.it.account.dto.user.UserBaseDto;
 import pl.lodz.p.it.account.dto.user.UserCompleteDto;
 import pl.lodz.p.it.account.exception.AccountException;
 import pl.lodz.p.it.account.exception.keycloak.KeycloakConnectionException;
@@ -92,17 +91,29 @@ public class UserService {
         return users.get(0);
     }
 
-    public void patchUser(String username, UserBaseDto userDetails) throws AccountException {
+    public void changeEmail(String username, String email) throws AccountException {
         UserRepresentation user = getUser(username);
+        user.setEmail(email);
+        user.setEmailVerified(true);
         UserResource resource = keycloakService.getUserResource(user.getId());
-        userDetails.patchProperties(user);
         try {
             resource.update(user);
         } catch (Exception e) {
             throw new KeycloakConnectionException();
         }
-
     }
+
+//    public void patchUser(String username, UserBaseDto userDetails) throws AccountException {
+//        UserRepresentation user = getUser(username);
+//        UserResource resource = keycloakService.getUserResource(user.getId());
+//        userDetails.patchProperties(user);
+//        try {
+//            resource.update(user);
+//        } catch (Exception e) {
+//            throw new KeycloakConnectionException();
+//        }
+//
+//    }
 
 
 }

@@ -1,0 +1,49 @@
+eureka:
+  client:
+    service-url:
+      defaultZone: http://discovery-server:8761/eureka/
+    register-with-eureka: true
+    fetch-registry: true
+  instance:
+    hostname: shop-service
+
+
+spring:
+  application:
+    name: shop-service
+  jpa:
+    database: POSTGRESQL
+    show-sql: true
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        default_schema: business
+    generate-ddl: true
+  datasource:
+    platform: postgres
+    url: jdbc:postgresql://db:5432/BOARDGAMES_SHOP
+    username: admin
+    password: postgres266415
+    driverClassName: org.postgresql.Driver
+
+server:
+  port: 9002
+
+management:
+  server:
+    port: 9902
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    metrics:
+      enabled: true
+
+keycloak:
+  auth-server-url: http://keycloak:8080/auth
+  realm: board-game-parts-shop
+  resource: shop-service
+  bearer-only: true
+  principal-attribute: preferred_username

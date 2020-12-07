@@ -1,0 +1,6 @@
+FROM openjdk:11
+MAINTAINER Jakub Fornalski
+WORKDIR /app
+COPY ./backend-app/micro-services/shop-service/target/shop-service.jar /app/
+COPY ./keystore.jks /app/
+ENTRYPOINT ["java","-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5052", "-jar", "shop-service.jar"]
