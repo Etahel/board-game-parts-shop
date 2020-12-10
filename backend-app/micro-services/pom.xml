@@ -55,6 +55,11 @@
             <artifactId>spring-boot-starter-security</artifactId>
             <version>${spring.version}</version>
         </dependency>
+        <dependency>
+            <groupId>pl.lodz.p.it</groupId>
+            <artifactId>core-def</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
     </dependencies>
 
     <dependencyManagement>

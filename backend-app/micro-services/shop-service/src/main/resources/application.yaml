@@ -47,3 +47,6 @@ keycloak:
   resource: shop-service
   bearer-only: true
   principal-attribute: preferred_username
+
+crypto:
+  seed: 123123

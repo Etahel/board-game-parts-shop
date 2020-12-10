@@ -5,6 +5,7 @@
     <artifactId>core-def</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>core definitions</name>
+    <packaging>jar</packaging>
 
     <parent>
         <groupId>pl.lodz.p.it</groupId>
