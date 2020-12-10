@@ -50,7 +50,25 @@ services:
       - 9002:9002
       - 9902:9902
       - 5052:5052
-    hostname: account-service
+    hostname: shop-service
+    networks:
+      - bg-network
+    environment:
+      - DIPLOMA_PASSWORD
+      - CRYPTO_SEED=123123
+    depends_on:
+      - db
+      - discovery-server
+  inventory-service:
+    build:
+      context: ./
+      dockerfile: ./backend-app/micro-services/inventory-service/dockerfile
+    container_name: inventory-service
+    ports:
+      - 9003:9003
+      - 9903:9903
+      - 5053:5053
+    hostname: inventory-service
     networks:
       - bg-network
     environment:

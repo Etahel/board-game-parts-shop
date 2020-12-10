@@ -1,10 +1,11 @@
 package pl.lodz.p.it.bges.account.controller;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import pl.lodz.p.it.bges.account.dto.user.UserCompleteDto;
-import pl.lodz.p.it.bges.account.dto.user.UserDetailsDto;
+import pl.lodz.p.it.bges.account.dto.user.UserDto;
+import pl.lodz.p.it.bges.account.dto.user.UserView;
 import pl.lodz.p.it.bges.account.exception.AccountException;
 import pl.lodz.p.it.bges.account.service.UserService;
 import pl.lodz.p.it.bges.core.roles.Roles;
@@ -37,14 +38,15 @@ public class UserController {
     @PostMapping(path = "/register")
     @PermitAll
     @ResponseStatus(value = HttpStatus.CREATED)
-    public void register(@RequestBody @Valid UserCompleteDto userCompleteDto) throws AccountException {
+    public void register(@JsonView(value = UserView.Complete.class) @RequestBody @Valid UserDto userCompleteDto) throws AccountException {
         userService.registerUser(userCompleteDto);
     }
 
     @GetMapping(path = "/me")
     @RolesAllowed(Roles.USER)
-    public UserDetailsDto getMe(Principal principal) throws AccountException {
-        return new UserDetailsDto(userService.getUser(principal.getName()));
+    @JsonView(value = UserView.Details.class)
+    public UserDto getMe(Principal principal) throws AccountException {
+        return new UserDto(userService.getUser(principal.getName()));
     }
 
     @PostMapping(path = "/reset-password")

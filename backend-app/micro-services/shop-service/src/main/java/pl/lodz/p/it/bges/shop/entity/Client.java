@@ -7,34 +7,30 @@ import lombok.Setter;
 import javax.persistence.*;
 
 
-@Entity
-@Table(name = "CLIENTS")
 @Setter
 @Getter
+@Entity
+@Table(name = "clients")
 public class Client extends ShopEntity {
 
     public Client() {
-        super();
     }
 
-    ;
-
     public Client(String username) {
-        super();
         setUsername(username);
     }
 
-    @Column(name = "USERNAME", updatable = false, nullable = false, unique = true)
+    @Column(name = "username", updatable = false, nullable = false, unique = true)
     @Setter(AccessLevel.PROTECTED)
     private String username;
 
-    @Column(name = "FIRST_NAME", length = 30)
+    @Column(name = "first_name", length = 30)
     private String firstName;
 
-    @Column(name = "LAST_NAME", length = 30)
+    @Column(name = "last_name", length = 30)
     private String lastName;
 
-    @JoinColumn(name = "ADDRESS_ID")
+    @JoinColumn(name = "address_id", foreignKey = @ForeignKey(name = "fk_clients_addresses"))
     @OneToOne(cascade = {CascadeType.ALL})
     private Address defaultAddress = new Address();
 

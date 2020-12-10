@@ -17,12 +17,18 @@ public abstract class ShopDto<T extends ShopEntity> implements Dto<T> {
 
 
     public ShopDto() {
+        init();
     }
 
     ;
 
     public ShopDto(T entity) {
+        init();
         fillProperties(entity);
+    }
+
+    public void init() {
+
     }
 
 

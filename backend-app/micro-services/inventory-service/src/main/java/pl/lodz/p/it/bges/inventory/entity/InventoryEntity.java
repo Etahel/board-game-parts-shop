@@ -1,4 +1,4 @@
-package pl.lodz.p.it.bges.shop.entity;
+package pl.lodz.p.it.bges.inventory.entity;
 
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -10,7 +10,7 @@ import javax.persistence.*;
 @Setter
 @Getter
 @MappedSuperclass
-public abstract class ShopEntity implements Entity {
+public abstract class InventoryEntity implements Entity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

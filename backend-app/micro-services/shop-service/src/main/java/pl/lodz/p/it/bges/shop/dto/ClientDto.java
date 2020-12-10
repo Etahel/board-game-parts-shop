@@ -22,11 +22,10 @@ public class ClientDto extends ShopDto<Client> {
         super(client);
     }
 
-    public AddressDto getAddress() {
-        if (address == null) {
-            address = new AddressDto();
-        }
-        return address;
+
+    @Override
+    public void init() {
+        this.address = new AddressDto();
     }
 
     @Override

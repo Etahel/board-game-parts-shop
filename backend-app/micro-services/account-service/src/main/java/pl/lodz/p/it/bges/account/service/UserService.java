@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.stereotype.Service;
 import pl.lodz.p.it.bges.account.config.KeycloakConfig;
-import pl.lodz.p.it.bges.account.dto.user.UserCompleteDto;
+import pl.lodz.p.it.bges.account.dto.user.UserDto;
 import pl.lodz.p.it.bges.account.exception.AccountException;
 import pl.lodz.p.it.bges.account.exception.keycloak.KeycloakConnectionException;
 import pl.lodz.p.it.bges.account.exception.keycloak.VerificationEmailException;
@@ -32,7 +32,7 @@ public class UserService {
         this.rolesProperties = rolesProperties;
     }
 
-    public void registerUser(UserCompleteDto userCompleteDto) throws AccountException {
+    public void registerUser(UserDto userCompleteDto) throws AccountException {
         UserRepresentation user = new UserRepresentation();
         userCompleteDto.putProperties(user);
         user.setEnabled(true);

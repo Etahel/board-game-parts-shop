@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import pl.lodz.p.it.bges.shop.common.Roles;
+import pl.lodz.p.it.bges.core.roles.Roles;
 import pl.lodz.p.it.bges.shop.dto.ClientDto;
 import pl.lodz.p.it.bges.shop.service.ClientService;
 
@@ -24,8 +24,9 @@ public class ClientController {
 
     @GetMapping(path = "/test")
     @RolesAllowed(Roles.USER)
-    public String test(Principal principal) {
-        return principal.getName();
+    public String test() {
+        return "hello";
+
     }
 
     @GetMapping(path = "/me")

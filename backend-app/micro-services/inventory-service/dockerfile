@@ -1,6 +1,6 @@
 FROM openjdk:11
 MAINTAINER Jakub Fornalski
 WORKDIR /app
-COPY ./backend-app/micro-services/inventory-server/target/inventory-server.jar /app/
+COPY ./backend-app/micro-services/inventory-service/target/inventory-service.jar /app/
 COPY ./keystore.jks /app/
-ENTRYPOINT ["java","-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5053", "-jar", "inventory-server.jar"]
+ENTRYPOINT ["java","-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5053", "-jar", "inventory-service.jar"]

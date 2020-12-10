@@ -39,6 +39,10 @@ zuul:
       path: /shop/**
       serviceId: shop-service
       stripPrefix: true
+    inventory-service:
+      path: /inventory/**
+      serviceId: inventory-service
+      stripPrefix: true
     authorization-server:
       sensitiveHeaders:
       path: /auth/**
