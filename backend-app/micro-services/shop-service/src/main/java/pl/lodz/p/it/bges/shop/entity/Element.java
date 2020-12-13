@@ -5,7 +5,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import javax.validation.constraints.PositiveOrZero;
 
 @Getter
 @Setter(AccessLevel.PROTECTED)
@@ -14,11 +13,10 @@ import javax.validation.constraints.PositiveOrZero;
 public class Element extends ShopEntity {
 
     @Column(name = "price", nullable = false)
-    @PositiveOrZero
     private Double price;
 
-    @JoinColumn(name = "default_stock_id", foreignKey = @ForeignKey(name = "fk_elements_stock"), nullable = false, unique = true)
-    @OneToOne
+    @JoinColumn(name = "stock_id", foreignKey = @ForeignKey(name = "fk_elements_stock"), nullable = false, unique = true)
+    @OneToOne(cascade = CascadeType.PERSIST)
     private Stock stock;
 
 }

@@ -2,6 +2,7 @@ package pl.lodz.p.it.bges.shop.entity;
 
 import lombok.Getter;
 import lombok.Setter;
+import pl.lodz.p.it.bges.core.definitions.OrderStatus;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -31,9 +32,13 @@ public class Order extends ShopEntity {
     @JoinColumn(name = "address_id", foreignKey = @ForeignKey(name = "fk_orders_addresses"), nullable = false)
     private Address address;
 
-    @OneToMany(cascade = {CascadeType.ALL})
+    @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
     @JoinColumn(name = "order_id", foreignKey = @ForeignKey(name = "fk_order_items_orders"))
     private List<OrderItem> orderItems;
+
+    @Column(name = "status", nullable = false)
+    @Enumerated(EnumType.STRING)
+    private OrderStatus status;
 
     @Column(name = "value")
     private Double value;

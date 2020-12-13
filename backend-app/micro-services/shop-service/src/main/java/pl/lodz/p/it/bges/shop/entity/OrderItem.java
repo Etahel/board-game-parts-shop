@@ -15,5 +15,11 @@ public class OrderItem extends ShopEntity {
     @OneToOne
     private Element element;
 
+    @Column(name = "element_id", updatable = false, insertable = false)
+    private Long elementId;
+
+    @Column(name = "elements_count")
+    private Integer elementsCount;
+
 
 }

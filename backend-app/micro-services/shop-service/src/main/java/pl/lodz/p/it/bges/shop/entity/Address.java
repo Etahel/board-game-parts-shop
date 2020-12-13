@@ -6,7 +6,6 @@ import lombok.Setter;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
-import javax.validation.constraints.Pattern;
 
 
 @Setter
@@ -28,7 +27,6 @@ public class Address extends ShopEntity {
     private String flatNo;
 
     @Column(name = "postal_code", length = 6, nullable = false)
-    @Pattern(regexp = "^\\d{2}[- ]\\d{3}$")
     private String postalCode;
 
 

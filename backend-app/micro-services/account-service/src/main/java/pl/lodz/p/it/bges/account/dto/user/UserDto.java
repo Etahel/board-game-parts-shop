@@ -6,6 +6,7 @@ import lombok.Setter;
 import org.keycloak.representations.idm.CredentialRepresentation;
 import org.keycloak.representations.idm.UserRepresentation;
 import pl.lodz.p.it.bges.account.dto.AccountDto;
+import pl.lodz.p.it.bges.account.dto.Views;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
@@ -23,14 +24,14 @@ public class UserDto extends AccountDto<UserRepresentation> {
     }
 
     @NotEmpty
-    @JsonView(value = {UserView.Details.class})
+    @JsonView(value = {Views.User.class})
     private String username;
     @NotEmpty
     @Email
-    @JsonView(value = {UserView.Details.class})
+    @JsonView(value = {Views.User.class})
     private String email;
 
-    @JsonView(value = {UserView.Complete.class})
+    @JsonView(value = {Views.UserSecret.class})
     private String password;
 
     @Override

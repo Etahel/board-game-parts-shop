@@ -32,6 +32,6 @@ public class Client extends ShopEntity {
 
     @JoinColumn(name = "address_id", foreignKey = @ForeignKey(name = "fk_clients_addresses"))
     @OneToOne(cascade = {CascadeType.ALL})
-    private Address defaultAddress = new Address();
+    private Address defaultAddress;
 
 }

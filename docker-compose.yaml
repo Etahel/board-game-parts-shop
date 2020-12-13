@@ -38,9 +38,6 @@ services:
       - bg-network
     environment:
       - DIPLOMA_PASSWORD
-    depends_on:
-      - db
-      - discovery-server
   shop-service:
     build:
       context: ./
@@ -56,9 +53,6 @@ services:
     environment:
       - DIPLOMA_PASSWORD
       - CRYPTO_SEED=123123
-    depends_on:
-      - db
-      - discovery-server
   inventory-service:
     build:
       context: ./
@@ -74,9 +68,6 @@ services:
     environment:
       - DIPLOMA_PASSWORD
       - CRYPTO_SEED=123123
-    depends_on:
-      - db
-      - discovery-server
   db:
     build:
       context: ./

@@ -1,10 +1,12 @@
 package pl.lodz.p.it.bges.shop.dto;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import lombok.Getter;
 import lombok.Setter;
 import pl.lodz.p.it.bges.shop.entity.Address;
 
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 @Getter
@@ -13,19 +15,24 @@ public class AddressDto extends ShopDto<Address> {
 
     @NotEmpty
     @Size(max = 50)
+    @JsonView(Views.Address.class)
     private String city;
+    @JsonView(Views.Address.class)
     private String street;
+    @JsonView(Views.Address.class)
     private String houseNo;
+    @JsonView(Views.Address.class)
     private String flatNo;
 
     @NotEmpty
     @Size(max = 6)
+    @Pattern(regexp = "^\\d{2}[- ]\\d{3}$")
+    @JsonView(Views.Address.class)
     private String postalCode;
 
     public AddressDto() {
     }
 
-    ;
 
     public AddressDto(Address address) {
         super(address);

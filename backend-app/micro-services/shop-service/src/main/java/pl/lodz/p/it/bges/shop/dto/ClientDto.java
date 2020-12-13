@@ -1,5 +1,6 @@
 package pl.lodz.p.it.bges.shop.dto;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import lombok.Getter;
 import lombok.Setter;
 import pl.lodz.p.it.bges.shop.entity.Client;
@@ -8,9 +9,14 @@ import pl.lodz.p.it.bges.shop.entity.Client;
 @Setter
 public class ClientDto extends ShopDto<Client> {
 
+    @JsonView(Views.Internal.class)
     private String username;
+
+    @JsonView(Views.Client.class)
     private String firstName;
+    @JsonView(Views.Client.class)
     private String lastName;
+    @JsonView(Views.ClientWithAddress.class)
     private AddressDto address;
 
     public ClientDto() {
@@ -34,7 +40,9 @@ public class ClientDto extends ShopDto<Client> {
         setUsername(entity.getUsername());
         setFirstName(entity.getFirstName());
         setLastName(entity.getLastName());
-        getAddress().fillProperties(entity.getDefaultAddress());
+        if (entity.getDefaultAddress() != null) {
+            getAddress().fillProperties(entity.getDefaultAddress());
+        }
     }
 
     @Override
@@ -54,6 +62,8 @@ public class ClientDto extends ShopDto<Client> {
         if (getLastName() != null && !getLastName().isBlank()) {
             entity.setLastName(getLastName());
         }
-        getAddress().patchProperties(entity.getDefaultAddress());
+        if (entity.getDefaultAddress() != null) {
+            getAddress().patchProperties(entity.getDefaultAddress());
+        }
     }
 }

@@ -3,8 +3,9 @@ package pl.lodz.p.it.bges.inventory.entity;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.*;
-import javax.validation.constraints.PositiveOrZero;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 
 @Setter
 @Getter
@@ -12,11 +13,9 @@ import javax.validation.constraints.PositiveOrZero;
 @Table(name = "stock")
 public class Stock extends InventoryEntity {
 
-    @ManyToOne
-    @JoinColumn(name = "element_id", foreignKey = @ForeignKey(name = "fk_stock_elements"), nullable = false)
-    private Element element;
-
     @Column(name = "stock_size")
-    @PositiveOrZero
     private Integer stockSize;
+
+    @Column(name = "available")
+    public Boolean available;
 }

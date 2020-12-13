@@ -1,5 +1,6 @@
 package pl.lodz.p.it.bges.shop.dto;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import lombok.Getter;
 import lombok.Setter;
 import pl.lodz.p.it.bges.core.definitions.Dto;
@@ -12,7 +13,10 @@ import java.math.BigInteger;
 @Getter
 public abstract class ShopDto<T extends ShopEntity> implements Dto<T> {
 
+    @JsonView(Views.Id.class)
     private Long id;
+
+    @JsonView(Views.Base.class)
     private BigInteger version;
 
 
@@ -40,12 +44,16 @@ public abstract class ShopDto<T extends ShopEntity> implements Dto<T> {
 
     @Override
     public void putProperties(T entity) {
+
         entity.setVersion(decodeVersion(getVersion()));
     }
 
     @Override
     public void patchProperties(T entity) {
-        entity.setVersion(decodeVersion(getVersion()));
+        if (!entity.getVersion().equals(decodeVersion(getVersion()))) {
+            //todo
+            throw new RuntimeException("BAD VERSION");
+        }
     }
 
     private BigInteger encodeVersion(Long version) {
@@ -53,6 +61,11 @@ public abstract class ShopDto<T extends ShopEntity> implements Dto<T> {
     }
 
     private Long decodeVersion(BigInteger version) {
-        return CryptoUtil.getInstance().decrypt(version).longValue();
+        if (version != null) {
+            return CryptoUtil.getInstance().decrypt(version).longValue();
+        } else {
+            return 0L;
+        }
     }
+
 }
