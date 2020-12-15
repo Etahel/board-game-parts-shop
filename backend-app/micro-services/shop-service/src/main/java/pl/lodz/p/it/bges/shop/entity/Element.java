@@ -15,7 +15,7 @@ public class Element extends ShopEntity {
     @Column(name = "price", nullable = false)
     private Double price;
 
-    @JoinColumn(name = "stock_id", foreignKey = @ForeignKey(name = "fk_elements_stock"), nullable = false, unique = true)
+    @JoinColumn(name = "stock_id", nullable = false, unique = true)
     @OneToOne(cascade = CascadeType.PERSIST)
     private Stock stock;
 

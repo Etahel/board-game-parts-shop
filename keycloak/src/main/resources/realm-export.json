@@ -53,7 +53,32 @@
       {
         "id": "a219107d-6163-42c1-b187-e03968c2c00f",
         "name": "admin",
-        "composite": false,
+        "composite": true,
+        "composites": {
+          "client": {
+            "realm-management": [
+              "manage-authorization",
+              "manage-users",
+              "view-clients",
+              "view-users",
+              "view-authorization",
+              "manage-events",
+              "manage-identity-providers",
+              "query-realms",
+              "manage-realm",
+              "query-groups",
+              "realm-admin",
+              "query-clients",
+              "view-realm",
+              "view-events",
+              "create-client",
+              "manage-clients",
+              "view-identity-providers",
+              "query-users",
+              "impersonation"
+            ]
+          }
+        },
         "clientRole": false,
         "containerId": "board-game-parts-shop",
         "attributes": {}

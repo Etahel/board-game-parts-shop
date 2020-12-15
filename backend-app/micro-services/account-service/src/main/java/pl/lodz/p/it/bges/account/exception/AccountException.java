@@ -1,6 +1,9 @@
 package pl.lodz.p.it.bges.account.exception;
 
-public class AccountException extends Exception {
+
+import pl.lodz.p.it.bges.core.exception.AppException;
+
+public class AccountException extends AppException {
 
     AccountException(String message, Throwable cause) {
         super(message, cause);

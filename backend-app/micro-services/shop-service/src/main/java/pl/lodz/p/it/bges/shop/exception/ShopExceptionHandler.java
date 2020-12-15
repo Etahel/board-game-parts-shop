@@ -1,5 +1,7 @@
-package pl.lodz.p.it.bges.account.exception;
+package pl.lodz.p.it.bges.shop.exception;
 
+import org.springframework.dao.DataAccessException;
+import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,51 +15,49 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
-import pl.lodz.p.it.bges.account.exception.keycloak.KeycloakConnectionException;
-import pl.lodz.p.it.bges.account.exception.keycloak.VerificationEmailException;
-import pl.lodz.p.it.bges.account.exception.user.*;
 import pl.lodz.p.it.bges.core.dto.error.ErrorDto;
 import pl.lodz.p.it.bges.core.dto.error.ValidationErrorDto;
+import pl.lodz.p.it.bges.core.exception.AppError;
 import pl.lodz.p.it.bges.core.exception.AppException;
 import pl.lodz.p.it.bges.core.exception.RequestInvalidException;
+import pl.lodz.p.it.bges.shop.exception.order.ElementChangedException;
+import pl.lodz.p.it.bges.shop.exception.order.ElementNotFoundException;
 
 import java.util.List;
 
 @ControllerAdvice
-public class AccountExceptionHandler extends ResponseEntityExceptionHandler {
+public class ShopExceptionHandler extends ResponseEntityExceptionHandler {
 
-    @ExceptionHandler(value = {
-            UsernameTakenException.class,
-            EmailTakenException.class,
-            EmailAlreadyVerifiedException.class
+    @ExceptionHandler(value = {ElementChangedException.class
     })
     @ResponseBody
     @ResponseStatus(HttpStatus.CONFLICT)
-    protected ErrorDto handleConflict(AccountException ex) {
+    protected ErrorDto handleConflict(ShopException ex) {
         return new ErrorDto(ex);
     }
 
+    //
+//    @ExceptionHandler(value
+//            = {})
+//    @ResponseBody
+//    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+//    protected ErrorDto handleInternalError(ShopException ex) {
+//        return new ErrorDto(ex);
+//    }
+//
+//    @ExceptionHandler(value
+//            = {})
+//    @ResponseBody
+//    @ResponseStatus(HttpStatus.BAD_REQUEST)
+//    protected ErrorDto handleBadRequest(ShopException ex) {
+//        return new ErrorDto(ex);
+//    }
+//
     @ExceptionHandler(value
-            = {KeycloakConnectionException.class, VerificationEmailException.class})
-    @ResponseBody
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    protected ErrorDto handleInternalError(AccountException ex) {
-        return new ErrorDto(ex);
-    }
-
-    @ExceptionHandler(value
-            = {RegistrationDataException.class})
-    @ResponseBody
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    protected ErrorDto handleBadRequest(AccountException ex) {
-        return new ErrorDto(ex);
-    }
-
-    @ExceptionHandler(value
-            = {UserNotFoundException.class})
+            = {ElementNotFoundException.class})
     @ResponseBody
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    protected ErrorDto handleNotFound(AccountException ex) {
+    protected ErrorDto handleNotFound(ShopException ex) {
         return new ErrorDto(ex);
     }
 
@@ -67,7 +67,7 @@ public class AccountExceptionHandler extends ResponseEntityExceptionHandler {
     @NonNull
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, @NonNull HttpHeaders headers, @NonNull HttpStatus status, @NonNull WebRequest request) {
         BindingResult result = ex.getBindingResult();
-        List<org.springframework.validation.FieldError> fieldErrors = result.getFieldErrors();
+        List<FieldError> fieldErrors = result.getFieldErrors();
         return new ResponseEntity(processFieldErrors(new RequestInvalidException(), fieldErrors), headers, status);
     }
 
@@ -79,4 +79,18 @@ public class AccountExceptionHandler extends ResponseEntityExceptionHandler {
         return error;
     }
 
+    @ExceptionHandler(value = {OptimisticLockingFailureException.class})
+    @ResponseBody
+    @ResponseStatus(HttpStatus.CONFLICT)
+    protected ErrorDto handleOptimisticLockException() {
+        return new ErrorDto(AppError.VERSION_MISMATCH.toString());
+    }
+
+    @ExceptionHandler(value = {DataAccessException.class})
+    @ResponseBody
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    protected ErrorDto handleDatabaseException() {
+        return new ErrorDto(AppError.DATABASE_ERROR.toString());
+    }
 }
+

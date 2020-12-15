@@ -62,4 +62,9 @@ public class Views {
 
     public interface patchClient extends ClientWithAddress {
     }
+
+    public interface postOrder extends OrderWithAddress, OrderWithItems {
+
+    }
+
 }

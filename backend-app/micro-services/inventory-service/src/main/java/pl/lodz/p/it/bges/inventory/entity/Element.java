@@ -20,11 +20,11 @@ public class Element extends InventoryEntity {
     @Column(name = "price", nullable = false)
     private Double price;
 
-    @JoinColumn(name = "stock_id", foreignKey = @ForeignKey(name = "fk_elements_stock"), nullable = false, unique = true)
+    @JoinColumn(name = "stock_id", nullable = false, unique = true)
     @OneToOne(cascade = CascadeType.PERSIST)
     private Stock stock;
 
     @ManyToOne
-    @JoinColumn(name = "category_id", foreignKey = @ForeignKey(name = "fk_elements_element_categories"))
+    @JoinColumn(name = "category_id", nullable = false)
     private ElementCategory elementCategory;
 }

@@ -7,20 +7,15 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
-
 @Setter
 @Getter
 @Entity
-@Table(name = "element_categories")
-public class ElementCategory extends InventoryEntity {
+@Table(name = "tags")
+public class Tag extends InventoryEntity {
 
-    @Column(name = "name", nullable = false, length = 30)
+    @Column(name = "name", nullable = false, length = 10)
     private String name;
 
     @Column(name = "description", length = 255)
     private String description;
-
-    @Column(name = "code", length = 3)
-    private String code;
-
 }

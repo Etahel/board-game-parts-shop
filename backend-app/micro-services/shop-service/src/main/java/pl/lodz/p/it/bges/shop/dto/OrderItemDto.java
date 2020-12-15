@@ -1,21 +1,30 @@
 package pl.lodz.p.it.bges.shop.dto;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import lombok.Getter;
 import lombok.Setter;
 import pl.lodz.p.it.bges.shop.entity.OrderItem;
 
-import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 import java.math.BigInteger;
 
 @Setter
 @Getter
 public class OrderItemDto extends ShopDto<OrderItem> {
 
-    @NotEmpty
+    @NotNull
+    @JsonView(Views.OrderItem.class)
     private Long elementId;
 
+    @NotNull
+    @JsonView(Views.OrderItem.class)
+    @Min(1)
+    @Max(1000)
     private Integer elementsCount;
 
+    @JsonView(Views.OrderItem.class)
     private BigInteger elementVersion;
 
     OrderItemDto() {
@@ -44,6 +53,7 @@ public class OrderItemDto extends ShopDto<OrderItem> {
         super.putProperties(entity);
         entity.setElementId(getElementId());
         entity.setElementsCount(getElementsCount());
+        entity.setElementVersion(decodeVersion(getElementVersion()));
     }
 
     @Override

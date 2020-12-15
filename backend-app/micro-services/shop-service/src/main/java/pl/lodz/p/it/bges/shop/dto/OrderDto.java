@@ -32,13 +32,6 @@ public class OrderDto extends ShopDto<Order> {
     @JsonView(Views.OrderExtended.class)
     private Double value;
 
-    @Override
-    public void init() {
-        super.init();
-        orderItems = new ArrayList<>();
-        address = new AddressDto();
-        client = new ClientDto();
-    }
 
     @Override
     public void fillProperties(Order entity) {
@@ -49,13 +42,16 @@ public class OrderDto extends ShopDto<Order> {
         setStatus(entity.getStatus());
         setValue(entity.getValue());
         if (entity.getClient() != null) {
-            getClient().fillProperties(entity.getClient());
+            setClient(new ClientDto(entity.getClient()));
         }
         if (entity.getAddress() != null) {
-            getAddress().fillProperties(entity.getAddress());
+            setAddress(new AddressDto(entity.getAddress()));
         }
-        for (OrderItem orderItem : entity.getOrderItems()) {
-            getOrderItems().add(new OrderItemDto(orderItem));
+        if (entity.getOrderItems() != null) {
+            orderItems = new ArrayList<>();
+            for (OrderItem orderItem : entity.getOrderItems()) {
+                getOrderItems().add(new OrderItemDto(orderItem));
+            }
         }
 
     }
@@ -68,14 +64,13 @@ public class OrderDto extends ShopDto<Order> {
         if (getAddress() != null) {
             getAddress().putProperties(entity.getAddress());
         }
-        if (getClient() != null) {
-            getClient().putProperties(entity.getClient());
-        }
-        entity.setOrderItems(new ArrayList<>());
-        for (OrderItemDto orderItemDto : getOrderItems()) {
-            OrderItem orderItem = new OrderItem();
-            orderItemDto.putProperties(orderItem);
-            entity.getOrderItems().add(orderItem);
+        if (getOrderItems() != null) {
+            entity.setOrderItems(new ArrayList<>());
+            for (OrderItemDto orderItemDto : getOrderItems()) {
+                OrderItem orderItem = new OrderItem();
+                orderItemDto.putProperties(orderItem);
+                entity.getOrderItems().add(orderItem);
+            }
         }
     }
 

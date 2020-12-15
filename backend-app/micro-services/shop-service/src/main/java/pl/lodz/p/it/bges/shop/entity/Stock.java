@@ -13,10 +13,10 @@ import javax.persistence.Table;
 @Table(name = "stock")
 public class Stock extends ShopEntity {
 
-    @Column(name = "stock_size")
+    @Column(name = "stock_size", nullable = false)
     private Integer stockSize;
 
-    @Column(name = "available")
+    @Column(name = "available", nullable = false)
     public Boolean available;
 
 

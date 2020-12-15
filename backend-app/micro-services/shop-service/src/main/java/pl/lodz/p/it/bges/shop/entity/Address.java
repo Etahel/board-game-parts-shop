@@ -14,7 +14,7 @@ import javax.persistence.Table;
 @Table(name = "addresses")
 public class Address extends ShopEntity {
 
-    @Column(name = "city", length = 50, nullable = false)
+    @Column(name = "city", length = 50)
     private String city;
 
     @Column(name = "street", length = 50)
@@ -26,7 +26,7 @@ public class Address extends ShopEntity {
     @Column(name = "flat_no", length = 10)
     private String flatNo;
 
-    @Column(name = "postal_code", length = 6, nullable = false)
+    @Column(name = "postal_code", length = 6)
     private String postalCode;
 
 

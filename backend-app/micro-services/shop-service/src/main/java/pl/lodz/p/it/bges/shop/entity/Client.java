@@ -30,8 +30,8 @@ public class Client extends ShopEntity {
     @Column(name = "last_name", length = 30)
     private String lastName;
 
-    @JoinColumn(name = "address_id", foreignKey = @ForeignKey(name = "fk_clients_addresses"))
+    @JoinColumn(name = "address_id", nullable = false)
     @OneToOne(cascade = {CascadeType.ALL})
-    private Address defaultAddress;
+    private Address defaultAddress = new Address();
 
 }

@@ -38,6 +38,8 @@ services:
       - bg-network
     environment:
       - DIPLOMA_PASSWORD
+    depends_on:
+      - db
   shop-service:
     build:
       context: ./
@@ -53,6 +55,8 @@ services:
     environment:
       - DIPLOMA_PASSWORD
       - CRYPTO_SEED=123123
+    depends_on:
+      - db
   inventory-service:
     build:
       context: ./
@@ -68,6 +72,8 @@ services:
     environment:
       - DIPLOMA_PASSWORD
       - CRYPTO_SEED=123123
+    depends_on:
+      - db
   db:
     build:
       context: ./
@@ -85,7 +91,7 @@ services:
     volumes:
     - boardgames_db:/var/lib/postgresql/data
   keycloak:
-    image: jboss/keycloak
+    image: jboss/keycloak:11.0.2
     environment:
       DB_VENDOR: postgres
       DB_ADDR: db

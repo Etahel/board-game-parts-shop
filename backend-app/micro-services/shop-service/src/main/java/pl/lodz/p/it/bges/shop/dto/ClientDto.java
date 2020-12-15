@@ -30,19 +30,15 @@ public class ClientDto extends ShopDto<Client> {
 
 
     @Override
-    public void init() {
-        this.address = new AddressDto();
-    }
-
-    @Override
     public void fillProperties(Client entity) {
         super.fillProperties(entity);
         setUsername(entity.getUsername());
         setFirstName(entity.getFirstName());
         setLastName(entity.getLastName());
         if (entity.getDefaultAddress() != null) {
-            getAddress().fillProperties(entity.getDefaultAddress());
+            setAddress(new AddressDto(entity.getDefaultAddress()));
         }
+
     }
 
     @Override
@@ -50,7 +46,9 @@ public class ClientDto extends ShopDto<Client> {
         super.putProperties(entity);
         entity.setFirstName(getFirstName());
         entity.setLastName(getLastName());
-        getAddress().putProperties(entity.getDefaultAddress());
+        if (getAddress() != null) {
+            getAddress().putProperties(entity.getDefaultAddress());
+        }
     }
 
     @Override

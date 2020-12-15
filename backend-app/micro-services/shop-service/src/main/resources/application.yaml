@@ -15,11 +15,11 @@ spring:
     database: POSTGRESQL
     show-sql: true
     hibernate:
-      ddl-auto: update
+      ddl-auto: none
     properties:
       hibernate:
         default_schema: business
-    generate-ddl: true
+    generate-ddl: false
   datasource:
     platform: postgres
     url: jdbc:postgresql://db:5432/BOARDGAMES_SHOP

@@ -56,7 +56,6 @@ hystrix:
         isolation:
           thread:
             timeoutInMilliseconds: 2400000
-          strategy: THREAD
 
 ribbon:
   ConnectTimeout: 600000
