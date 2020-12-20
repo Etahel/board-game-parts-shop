@@ -7,6 +7,7 @@ public enum ShopError {
     ORDER_NOT_FOUND("order.not_found"),
     ORDER_ELEMENT_NOT_FOUND("order.element_not_found"),
     ORDER_ELEMENT_CHANGED("order.element_changed"),
+    ORDER_CANCELLED("order.cancelled"),
     ORDER_FINALIZED("order.finalized"),
     ORDER_STOCK_UNAVAILABLE("order.stock_unavailable"),
     ORDER_STOCK_INSUFFICIENT("order.stock_insufficient");

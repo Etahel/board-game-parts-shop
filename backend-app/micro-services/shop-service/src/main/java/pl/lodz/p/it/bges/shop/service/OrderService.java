@@ -5,25 +5,26 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import pl.lodz.p.it.bges.core.definitions.OrderStatus;
+import pl.lodz.p.it.bges.shop.criteria.OrderCriteria;
 import pl.lodz.p.it.bges.shop.dto.OrderDto;
 import pl.lodz.p.it.bges.shop.entity.Element;
 import pl.lodz.p.it.bges.shop.entity.Order;
 import pl.lodz.p.it.bges.shop.entity.OrderItem;
 import pl.lodz.p.it.bges.shop.entity.Stock;
 import pl.lodz.p.it.bges.shop.exception.ShopException;
-import pl.lodz.p.it.bges.shop.exception.order.ElementChangedException;
-import pl.lodz.p.it.bges.shop.exception.order.ElementNotFoundException;
-import pl.lodz.p.it.bges.shop.exception.order.OrderFinalizedException;
-import pl.lodz.p.it.bges.shop.exception.order.OrderNotFoundException;
+import pl.lodz.p.it.bges.shop.exception.order.*;
 import pl.lodz.p.it.bges.shop.exception.stock.StockInsufficientException;
 import pl.lodz.p.it.bges.shop.exception.stock.StockUnavailableException;
 import pl.lodz.p.it.bges.shop.repository.ElementRepository;
 import pl.lodz.p.it.bges.shop.repository.OrderRepository;
 import pl.lodz.p.it.bges.shop.repository.StockRepository;
+import pl.lodz.p.it.bges.shop.repository.specification.OrderSpecification;
 
 import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.Optional;
+
+import static org.springframework.data.jpa.domain.Specification.where;
 
 @Service
 @Transactional(rollbackOn = {RuntimeException.class, ShopException.class})
@@ -53,12 +54,22 @@ public class OrderService {
         orderRepository.save(order);
     }
 
-    public Page<Order> getClientOrders(String username, Pageable pageable) {
-        return orderRepository.findByClientUsername(username, pageable);
+    public Page<Order> getClientOrders(String username, Pageable pageable, OrderCriteria orderCriteria) {
+        return orderRepository.findAll(where(OrderSpecification.getOwnerSpecification(username))
+                .and(OrderSpecification.getCriteriaSpecification(orderCriteria)), pageable);
     }
 
     public Order getClientOder(String username, Long id) throws ShopException {
         Optional<Order> optOrder = orderRepository.findByIdAndClientUsername(id, username);
+        if (optOrder.isPresent()) {
+            return optOrder.get();
+        } else {
+            throw new OrderNotFoundException();
+        }
+    }
+
+    public Order getOrder(Long id) throws ShopException {
+        Optional<Order> optOrder = orderRepository.findById(id);
         if (optOrder.isPresent()) {
             return optOrder.get();
         } else {
@@ -74,21 +85,31 @@ public class OrderService {
             order.setStatus(OrderStatus.CANCELLED);
         }
         for (OrderItem orderItem : order.getOrderItems()) {
-            Optional<Element> elementOpt = elementRepository.findElementById(orderItem.getElementId());
+            Optional<Element> elementOpt = elementRepository.findById(orderItem.getElementId());
             if (elementOpt.isPresent()) {
                 Element element = elementOpt.get();
                 element.getStock().setStockSize(element.getStock().getStockSize() + orderItem.getElementsCount());
             } else {
-                throw new IllegalStateException();
+                throw new IllegalStateException("Unable to retrieve element associated with order");
             }
         }
+    }
+
+    public void finalizeOrder(Long id) throws ShopException {
+        Order order = getOrder(id);
+        if (order.getStatus().equals(OrderStatus.FINALIZED)) {
+            throw new OrderCancelledException();
+        } else {
+            order.setStatus(OrderStatus.FINALIZED);
+        }
+
     }
 
 
     private void populateOrderElementsAndExecuteTransaction(Order order) throws ShopException {
         double value = 0;
         for (OrderItem orderItem : order.getOrderItems()) {
-            Optional<Element> elementOpt = elementRepository.findElementById(orderItem.getElementId());
+            Optional<Element> elementOpt = elementRepository.findById(orderItem.getElementId());
             if (elementOpt.isPresent()) {
                 Element element = elementOpt.get();
                 checkElementVersion(orderItem, element);
