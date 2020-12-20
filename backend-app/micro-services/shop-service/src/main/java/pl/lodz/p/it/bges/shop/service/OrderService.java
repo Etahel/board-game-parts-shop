@@ -1,6 +1,8 @@
 package pl.lodz.p.it.bges.shop.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import pl.lodz.p.it.bges.core.definitions.OrderStatus;
 import pl.lodz.p.it.bges.shop.dto.OrderDto;
@@ -11,6 +13,8 @@ import pl.lodz.p.it.bges.shop.entity.Stock;
 import pl.lodz.p.it.bges.shop.exception.ShopException;
 import pl.lodz.p.it.bges.shop.exception.order.ElementChangedException;
 import pl.lodz.p.it.bges.shop.exception.order.ElementNotFoundException;
+import pl.lodz.p.it.bges.shop.exception.order.OrderFinalizedException;
+import pl.lodz.p.it.bges.shop.exception.order.OrderNotFoundException;
 import pl.lodz.p.it.bges.shop.exception.stock.StockInsufficientException;
 import pl.lodz.p.it.bges.shop.exception.stock.StockUnavailableException;
 import pl.lodz.p.it.bges.shop.repository.ElementRepository;
@@ -23,7 +27,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-@Transactional(rollbackOn = {RuntimeException.class})
+@Transactional(rollbackOn = {RuntimeException.class, ShopException.class})
 public class OrderService {
 
     private ClientService clientService;
@@ -48,6 +52,28 @@ public class OrderService {
         order.setStatus(OrderStatus.OPEN);
         populateOrderElementsAndExecuteTransaction(order);
         orderRepository.save(order);
+    }
+
+    public Page<Order> getClientOrders(String username, Pageable pageable) {
+        return orderRepository.findByClientUsername(username, pageable);
+    }
+
+    public Order getClientOder(String username, Long id) throws ShopException {
+        Optional<Order> optOrder = orderRepository.findByIdAndClientUsername(id, username);
+        if (optOrder.isPresent()) {
+            return optOrder.get();
+        } else {
+            throw new OrderNotFoundException();
+        }
+    }
+
+    public void cancelClientOrder(String username, Long id) throws ShopException {
+        Order order = getClientOder(username, id);
+        if (order.getStatus().equals(OrderStatus.FINALIZED)) {
+            throw new OrderFinalizedException();
+        } else {
+            order.setStatus(OrderStatus.CANCELLED);
+        }
     }
 
     private int calculateOrderValue(List<OrderItem> orderItems) {

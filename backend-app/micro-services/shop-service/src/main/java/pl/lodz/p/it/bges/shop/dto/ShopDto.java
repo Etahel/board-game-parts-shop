@@ -17,7 +17,7 @@ public abstract class ShopDto<T extends ShopEntity> implements Dto<T> {
     @JsonView(Views.Id.class)
     private Long id;
 
-    @JsonView(Views.Base.class)
+    @JsonView(Views.Version.class)
     private BigInteger version;
 
 

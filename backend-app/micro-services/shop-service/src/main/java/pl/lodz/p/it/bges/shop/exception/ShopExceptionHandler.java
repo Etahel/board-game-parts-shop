@@ -22,13 +22,15 @@ import pl.lodz.p.it.bges.core.exception.AppException;
 import pl.lodz.p.it.bges.core.exception.RequestInvalidException;
 import pl.lodz.p.it.bges.shop.exception.order.ElementChangedException;
 import pl.lodz.p.it.bges.shop.exception.order.ElementNotFoundException;
+import pl.lodz.p.it.bges.shop.exception.order.OrderFinalizedException;
+import pl.lodz.p.it.bges.shop.exception.order.OrderNotFoundException;
 
 import java.util.List;
 
 @ControllerAdvice
 public class ShopExceptionHandler extends ResponseEntityExceptionHandler {
 
-    @ExceptionHandler(value = {ElementChangedException.class
+    @ExceptionHandler(value = {ElementChangedException.class, OrderFinalizedException.class
     })
     @ResponseBody
     @ResponseStatus(HttpStatus.CONFLICT)
@@ -54,7 +56,7 @@ public class ShopExceptionHandler extends ResponseEntityExceptionHandler {
 //    }
 //
     @ExceptionHandler(value
-            = {ElementNotFoundException.class})
+            = {ElementNotFoundException.class, OrderNotFoundException.class})
     @ResponseBody
     @ResponseStatus(HttpStatus.NOT_FOUND)
     protected ErrorDto handleNotFound(ShopException ex) {

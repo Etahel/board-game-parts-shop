@@ -2,7 +2,7 @@ package pl.lodz.p.it.bges.shop.dto;
 
 public class Views {
 
-    public interface Base {
+    public interface Version {
     }
 
     public interface Id {
@@ -12,17 +12,17 @@ public class Views {
     }
 
 
-    public interface Address extends Base {
+    public interface Address {
 
     }
 
 
-    public interface Client extends Base {
+    public interface Client {
 
     }
 
 
-    public interface OrderPublic extends Base {
+    public interface OrderPublic {
 
     }
 
@@ -34,7 +34,7 @@ public class Views {
 
     }
 
-    public interface OrderItemPublic extends Base {
+    public interface OrderItemPublic {
 
     }
 
@@ -57,14 +57,21 @@ public class Views {
     }
 
 
-    public interface getClient extends ClientWithAddress, Id {
+    public interface getClient extends ClientWithAddress, Id, Version {
     }
 
-    public interface patchClient extends ClientWithAddress {
+    public interface patchClient extends ClientWithAddress, Version {
     }
 
     public interface postOrder extends OrderWithAddress, OrderWithItems {
 
+    }
+
+    public interface getOrder extends OrderExtended, OrderWithAddress, OrderWithItems, Id, Version {
+
+    }
+
+    public interface getOrders extends Order, OrderExtended, Id {
     }
 
 }

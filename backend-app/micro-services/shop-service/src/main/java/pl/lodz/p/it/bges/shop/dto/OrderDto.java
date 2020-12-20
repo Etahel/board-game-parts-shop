@@ -33,6 +33,10 @@ public class OrderDto extends ShopDto<Order> {
     private Double value;
 
 
+    public OrderDto(Order order) {
+        super(order);
+    }
+
     @Override
     public void fillProperties(Order entity) {
         super.fillProperties(entity);
