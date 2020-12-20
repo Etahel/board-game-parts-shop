@@ -69,6 +69,7 @@ public class ClientController {
 
     @GetMapping("/me/orders/{id}")
     @RolesAllowed(Roles.USER)
+    @JsonView(Views.Details.class)
     public OrderDto getMyOrder(Principal principal, @PathVariable("id") Long id) throws ShopException {
         return new OrderDto(orderService.getClientOder(principal.getName(), id));
     }
@@ -77,7 +78,7 @@ public class ClientController {
     @RolesAllowed(Roles.USER)
     @ResponseStatus(HttpStatus.OK)
     public void cancelOrder(Principal principal, @PathVariable("id") Long id) throws ShopException {
-
+        orderService.cancelClientOrder(principal.getName(), id);
     }
 
 

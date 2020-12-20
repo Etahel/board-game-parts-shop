@@ -21,7 +21,7 @@ public class Views {
 
     }
 
-    public interface Internal extends Extended {
+    public interface Internal {
 
     }
 

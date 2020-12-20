@@ -94,5 +94,12 @@ public class ShopExceptionHandler extends ResponseEntityExceptionHandler {
     protected ErrorDto handleDatabaseException() {
         return new ErrorDto(AppError.DATABASE_ERROR.toString());
     }
+
+    @ExceptionHandler(value = {Exception.class})
+    @ResponseBody
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    protected ErrorDto handleAnyException() {
+        return new ErrorDto(AppError.SERVER_ERROR.toString());
+    }
 }
 

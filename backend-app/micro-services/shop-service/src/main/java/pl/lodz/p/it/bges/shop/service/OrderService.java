@@ -23,7 +23,6 @@ import pl.lodz.p.it.bges.shop.repository.StockRepository;
 
 import javax.transaction.Transactional;
 import java.time.LocalDate;
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -74,11 +73,17 @@ public class OrderService {
         } else {
             order.setStatus(OrderStatus.CANCELLED);
         }
+        for (OrderItem orderItem : order.getOrderItems()) {
+            Optional<Element> elementOpt = elementRepository.findElementById(orderItem.getElementId());
+            if (elementOpt.isPresent()) {
+                Element element = elementOpt.get();
+                element.getStock().setStockSize(element.getStock().getStockSize() + orderItem.getElementsCount());
+            } else {
+                throw new IllegalStateException();
+            }
+        }
     }
 
-    private int calculateOrderValue(List<OrderItem> orderItems) {
-        return 500;
-    }
 
     private void populateOrderElementsAndExecuteTransaction(Order order) throws ShopException {
         double value = 0;
