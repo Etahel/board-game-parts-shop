@@ -40,30 +40,29 @@ public class ClientController {
 
     @GetMapping(path = "/me")
     @RolesAllowed(Roles.USER)
-    @JsonView(Views.getClient.class)
+    @JsonView(Views.Details.class)
     public ClientDto getMe(Principal principal) {
         return new ClientDto(clientService.getClient(principal.getName()));
     }
 
     @PatchMapping(path = "/me")
     @RolesAllowed(Roles.USER)
-    @JsonView(Views.patchClient.class)
     @ResponseStatus(HttpStatus.OK)
-    public void patchMe(@RequestBody @Valid @JsonView(Views.patchClient.class) ClientDto clientDto, Principal principal) {
+    public void patchMe(@RequestBody @Valid @JsonView(Views.Modify.class) ClientDto clientDto, Principal principal) {
         clientService.updateClient(clientDto, principal.getName());
     }
 
     @PostMapping("/me/orders")
     @RolesAllowed(Roles.USER)
     @ResponseStatus(HttpStatus.OK)
-    public void createOrder(@JsonView(Views.postOrder.class) @Valid @RequestBody OrderDto orderDto,
+    public void createOrder(@JsonView(Views.Modify.class) @Valid @RequestBody OrderDto orderDto,
                             Principal principal) throws ShopException {
         orderService.createOrder(orderDto, principal.getName());
     }
 
     @GetMapping("/me/orders")
     @RolesAllowed(Roles.USER)
-    @JsonView(Views.getOrder.class)
+    @JsonView(Views.List.class)
     public Page<OrderDto> getMyOrders(Pageable pageable, Principal principal) {
         return orderService.getClientOrders(principal.getName(), pageable).map(OrderDto::new);
     }

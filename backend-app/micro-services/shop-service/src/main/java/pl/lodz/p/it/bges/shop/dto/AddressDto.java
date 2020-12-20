@@ -15,19 +15,19 @@ public class AddressDto extends ShopDto<Address> {
 
     @NotEmpty
     @Size(max = 50)
-    @JsonView(Views.Address.class)
+    @JsonView(Views.Basic.class)
     private String city;
-    @JsonView(Views.Address.class)
+    @JsonView(Views.Basic.class)
     private String street;
-    @JsonView(Views.Address.class)
+    @JsonView(Views.Basic.class)
     private String houseNo;
-    @JsonView(Views.Address.class)
+    @JsonView(Views.Basic.class)
     private String flatNo;
 
     @NotEmpty
     @Size(max = 6)
     @Pattern(regexp = "^\\d{2}[- ]\\d{3}$")
-    @JsonView(Views.Address.class)
+    @JsonView(Views.Basic.class)
     private String postalCode;
 
     public AddressDto() {

@@ -1,5 +1,6 @@
 package pl.lodz.p.it.bges.shop.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
 import lombok.Getter;
 import lombok.Setter;
@@ -15,6 +16,7 @@ import java.math.BigInteger;
 public abstract class ShopDto<T extends ShopEntity> implements Dto<T> {
 
     @JsonView(Views.Id.class)
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Long id;
 
     @JsonView(Views.Version.class)

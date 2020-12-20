@@ -1,5 +1,6 @@
 package pl.lodz.p.it.bges.shop.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
 import lombok.Getter;
 import lombok.Setter;
@@ -10,13 +11,14 @@ import pl.lodz.p.it.bges.shop.entity.Client;
 public class ClientDto extends ShopDto<Client> {
 
     @JsonView(Views.Internal.class)
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private String username;
 
-    @JsonView(Views.Client.class)
+    @JsonView(Views.Basic.class)
     private String firstName;
-    @JsonView(Views.Client.class)
+    @JsonView(Views.Basic.class)
     private String lastName;
-    @JsonView(Views.ClientWithAddress.class)
+    @JsonView(Views.Normal.class)
     private AddressDto address;
 
     public ClientDto() {

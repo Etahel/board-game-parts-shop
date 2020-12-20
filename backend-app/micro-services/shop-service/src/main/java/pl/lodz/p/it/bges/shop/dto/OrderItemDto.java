@@ -15,16 +15,16 @@ import java.math.BigInteger;
 public class OrderItemDto extends ShopDto<OrderItem> {
 
     @NotNull
-    @JsonView(Views.OrderItem.class)
+    @JsonView(Views.Basic.class)
     private Long elementId;
 
     @NotNull
-    @JsonView(Views.OrderItem.class)
+    @JsonView(Views.Basic.class)
     @Min(1)
     @Max(1000)
     private Integer elementsCount;
 
-    @JsonView(Views.OrderItem.class)
+    @JsonView(Views.Basic.class)
     private BigInteger elementVersion;
 
     OrderItemDto() {

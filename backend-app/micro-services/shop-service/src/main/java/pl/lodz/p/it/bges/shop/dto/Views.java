@@ -8,70 +8,34 @@ public class Views {
     public interface Id {
     }
 
-    public interface Internal {
-    }
 
-
-    public interface Address {
+    public interface Basic {
 
     }
 
-
-    public interface Client {
-
-    }
-
-
-    public interface OrderPublic {
+    public interface Normal extends Basic {
 
     }
 
-    public interface Order extends OrderPublic {
+    public interface Extended extends Normal {
 
     }
 
-    public interface OrderExtended extends Order {
-
-    }
-
-    public interface OrderItemPublic {
-
-    }
-
-    public interface OrderItem extends OrderItemPublic {
+    public interface Internal extends Extended {
 
     }
 
 
-    public interface ClientWithAddress extends Address, Client {
+    public interface Details extends Id, Version, Normal {
 
     }
 
-    public interface OrderWithClient extends Order, Client {
-    }
-
-    public interface OrderWithAddress extends Order, Address {
-    }
-
-    public interface OrderWithItems extends Order, OrderItem {
-    }
-
-
-    public interface getClient extends ClientWithAddress, Id, Version {
-    }
-
-    public interface patchClient extends ClientWithAddress, Version {
-    }
-
-    public interface postOrder extends OrderWithAddress, OrderWithItems {
+    public interface Modify extends Version, Normal {
 
     }
 
-    public interface getOrder extends OrderExtended, OrderWithAddress, OrderWithItems, Id, Version {
+    public interface List extends Id, Basic {
 
-    }
-
-    public interface getOrders extends Order, OrderExtended, Id {
     }
 
 }

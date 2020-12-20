@@ -1,5 +1,6 @@
 package pl.lodz.p.it.bges.shop.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
 import lombok.Getter;
 import lombok.Setter;
@@ -15,26 +16,34 @@ import java.util.List;
 @Setter
 public class OrderDto extends ShopDto<Order> {
 
-    @JsonView(Views.OrderExtended.class)
+    @JsonView(Views.Basic.class)
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private LocalDate date;
-    @JsonView(Views.OrderWithClient.class)
+    @JsonView(Views.Internal.class)
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private ClientDto client;
-    @JsonView(Views.Order.class)
+    @JsonView(Views.Basic.class)
     private String orderFirstName;
-    @JsonView(Views.Order.class)
+    @JsonView(Views.Basic.class)
     private String orderLastName;
-    @JsonView(Views.OrderWithAddress.class)
+    @JsonView(Views.Normal.class)
     private AddressDto address;
-    @JsonView(Views.OrderWithItems.class)
+    @JsonView(Views.Normal.class)
     private List<OrderItemDto> orderItems;
-    @JsonView(Views.OrderExtended.class)
+    @JsonView(Views.Basic.class)
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private OrderStatus status;
-    @JsonView(Views.OrderExtended.class)
+    @JsonView(Views.Basic.class)
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Double value;
 
 
     public OrderDto(Order order) {
         super(order);
+    }
+
+    public OrderDto() {
+
     }
 
     @Override

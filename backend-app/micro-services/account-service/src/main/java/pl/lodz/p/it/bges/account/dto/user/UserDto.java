@@ -1,5 +1,6 @@
 package pl.lodz.p.it.bges.account.dto.user;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
 import lombok.Getter;
 import lombok.Setter;
@@ -32,6 +33,7 @@ public class UserDto extends AccountDto<UserRepresentation> {
     private String email;
 
     @JsonView(value = {Views.UserSecret.class})
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
     @Override
