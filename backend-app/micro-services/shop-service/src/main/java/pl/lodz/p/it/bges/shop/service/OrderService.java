@@ -7,10 +7,7 @@ import org.springframework.stereotype.Service;
 import pl.lodz.p.it.bges.core.definitions.OrderStatus;
 import pl.lodz.p.it.bges.shop.criteria.OrderCriteria;
 import pl.lodz.p.it.bges.shop.dto.OrderDto;
-import pl.lodz.p.it.bges.shop.entity.Element;
-import pl.lodz.p.it.bges.shop.entity.Order;
-import pl.lodz.p.it.bges.shop.entity.OrderItem;
-import pl.lodz.p.it.bges.shop.entity.Stock;
+import pl.lodz.p.it.bges.shop.entity.*;
 import pl.lodz.p.it.bges.shop.exception.ShopException;
 import pl.lodz.p.it.bges.shop.exception.order.*;
 import pl.lodz.p.it.bges.shop.exception.stock.StockInsufficientException;
@@ -59,6 +56,16 @@ public class OrderService {
                 .and(OrderSpecification.getCriteriaSpecification(orderCriteria)), pageable);
     }
 
+    public Page<Order> getClientOrders(Long clientId, Pageable pageable, OrderCriteria orderCriteria) throws ShopException {
+        Client client = clientService.getClient(clientId);
+        return orderRepository.findAll(where(OrderSpecification.getOwnerSpecification(client.getUsername()))
+                .and(OrderSpecification.getCriteriaSpecification(orderCriteria)), pageable);
+    }
+
+    public Page<Order> getOrders(Pageable pageable, OrderCriteria orderCriteria) {
+        return orderRepository.findAll(OrderSpecification.getCriteriaSpecification(orderCriteria), pageable);
+    }
+
     public Order getClientOder(String username, Long id) throws ShopException {
         Optional<Order> optOrder = orderRepository.findByIdAndClientUsername(id, username);
         if (optOrder.isPresent()) {
@@ -102,7 +109,6 @@ public class OrderService {
         } else {
             order.setStatus(OrderStatus.FINALIZED);
         }
-
     }
 
 

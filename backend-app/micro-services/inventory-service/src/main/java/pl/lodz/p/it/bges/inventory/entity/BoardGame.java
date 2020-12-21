@@ -25,4 +25,10 @@ public class BoardGame extends InventoryEntity {
             inverseJoinColumns = {@JoinColumn(name = "tag_id")}
     )
     private List<Tag> tags = new ArrayList<>();
+
+    @Column(name = "year")
+    private Integer year;
+
+
 }
+

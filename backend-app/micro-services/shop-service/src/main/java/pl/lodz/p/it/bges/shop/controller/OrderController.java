@@ -17,12 +17,16 @@ import javax.annotation.security.RolesAllowed;
 import javax.validation.Valid;
 import java.security.Principal;
 
-@RequestMapping("/order")
+@RequestMapping("/orders")
 @RestController
 public class OrderController {
 
-    @Autowired
     private OrderService orderService;
+
+    @Autowired
+    public OrderController(OrderService orderService) {
+        this.orderService = orderService;
+    }
 
     @PostMapping("/me")
     @RolesAllowed(Roles.USER)
@@ -35,7 +39,7 @@ public class OrderController {
     @GetMapping("/me")
     @RolesAllowed(Roles.USER)
     @JsonView(Views.List.class)
-    public Page<OrderDto> getMyOrders(Pageable pageable, Principal principal, OrderCriteria orderCriteria) {
+    public Page<OrderDto> getMyOrders(Pageable pageable, Principal principal, @Valid OrderCriteria orderCriteria) {
         return orderService.getClientOrders(principal.getName(), pageable, orderCriteria).map(OrderDto::new);
     }
 
@@ -53,29 +57,34 @@ public class OrderController {
         orderService.cancelClientOrder(principal.getName(), id);
     }
 
-//    @PutMapping("/{id}")
-//    @RolesAllowed(Roles.EMPLOYEE)
-//    @ResponseStatus(HttpStatus.OK)
-//    public void finalizeOrder(@PathVariable("id") Long id) throws ShopException {
-//
-//    }
-//
-//    @GetMapping
-//    @RolesAllowed(Roles.EMPLOYEE)
-//    public Page<OrderDto> getOrders(Pageable pageable) {
-//
-//    }
-//
-//    @GetMapping("/{id}")
-//    @RolesAllowed(Roles.EMPLOYEE)
-//    public OrderDto getOrder(@PathVariable("id") Long id) throws ShopException {
-//
-//    }
-//
-//    @GetMapping("/client/{clientId}")
-//    @RolesAllowed(Roles.EMPLOYEE)
-//    public Page<OrderDto> getClientOrders(@PathVariable("clientId") Long clientId, Pageable pageable) {
-//
-//    }
+    @PutMapping("/{id}")
+    @RolesAllowed(Roles.EMPLOYEE)
+    @ResponseStatus(HttpStatus.OK)
+    public void finalizeOrder(@PathVariable("id") Long id) throws ShopException {
+        orderService.finalizeOrder(id);
+
+    }
+
+    @GetMapping
+    @RolesAllowed(Roles.EMPLOYEE)
+    @JsonView(Views.List.class)
+    public Page<OrderDto> getOrders(Pageable pageable, @Valid OrderCriteria orderCriteria) {
+        return orderService.getOrders(pageable, orderCriteria).map(OrderDto::new);
+    }
+
+    @GetMapping("/{id}")
+    @RolesAllowed(Roles.EMPLOYEE)
+    @JsonView(Views.Details.class)
+    public OrderDto getOrder(@PathVariable("id") Long id) throws ShopException {
+        return new OrderDto(orderService.getOrder(id));
+    }
+
+    @GetMapping("/client/{clientId}")
+    @RolesAllowed(Roles.EMPLOYEE)
+    @JsonView(Views.List.class)
+    public Page<OrderDto> getClientOrders(@PathVariable("clientId") Long clientId,
+                                          @Valid OrderCriteria orderCriteria, Pageable pageable) throws ShopException {
+        return orderService.getClientOrders(clientId, pageable, orderCriteria).map(OrderDto::new);
+    }
 
 }

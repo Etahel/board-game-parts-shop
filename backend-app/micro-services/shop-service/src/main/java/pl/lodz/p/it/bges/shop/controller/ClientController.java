@@ -2,18 +2,22 @@ package pl.lodz.p.it.bges.shop.controller;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import pl.lodz.p.it.bges.core.roles.Roles;
+import pl.lodz.p.it.bges.shop.criteria.ClientCriteria;
 import pl.lodz.p.it.bges.shop.dto.ClientDto;
 import pl.lodz.p.it.bges.shop.dto.Views;
+import pl.lodz.p.it.bges.shop.exception.ShopException;
 import pl.lodz.p.it.bges.shop.service.ClientService;
 
 import javax.annotation.security.RolesAllowed;
 import javax.validation.Valid;
 import java.security.Principal;
 
-@RequestMapping("/client")
+@RequestMapping("/clients")
 @RestController
 public class ClientController {
 
@@ -46,9 +50,19 @@ public class ClientController {
         clientService.updateClient(clientDto, principal.getName());
     }
 
+    @GetMapping
+    @RolesAllowed(Roles.EMPLOYEE)
+    @JsonView(Views.List.class)
+    public Page<ClientDto> getClients(Pageable pageable, ClientCriteria clientCriteria) {
+        return clientService.getClients(pageable, clientCriteria).map(ClientDto::new);
+    }
 
-
-
+    @GetMapping("/{id}")
+    @RolesAllowed(Roles.EMPLOYEE)
+    @JsonView(Views.List.class)
+    public ClientDto getClient(@PathVariable Long id) throws ShopException {
+        return new ClientDto(clientService.getClient(id));
+    }
 
 
 }

@@ -1,11 +1,16 @@
 package pl.lodz.p.it.bges.shop.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import pl.lodz.p.it.bges.shop.criteria.ClientCriteria;
 import pl.lodz.p.it.bges.shop.dto.ClientDto;
 import pl.lodz.p.it.bges.shop.entity.Client;
 import pl.lodz.p.it.bges.shop.exception.ShopException;
+import pl.lodz.p.it.bges.shop.exception.client.ClientNotFoundException;
 import pl.lodz.p.it.bges.shop.repository.ClientRepository;
+import pl.lodz.p.it.bges.shop.repository.specification.ClientSpecification;
 
 import javax.transaction.Transactional;
 import java.util.Optional;
@@ -31,10 +36,22 @@ public class ClientService {
         }
     }
 
+    public Client getClient(Long clientId) throws ShopException {
+        Optional<Client> clientOpt = clientRepository.findById(clientId);
+        if (clientOpt.isPresent()) {
+            return clientOpt.get();
+        } else {
+            throw new ClientNotFoundException();
+        }
+    }
+
     public void updateClient(ClientDto clientDto, String username) {
-        System.out.println("hello");
         Client client = getClient(username);
         clientDto.patchProperties(client);
+    }
+
+    public Page<Client> getClients(Pageable pageable, ClientCriteria clientCriteria) {
+        return clientRepository.findAll(ClientSpecification.getCriteriaSpecification(clientCriteria), pageable);
     }
 
 
