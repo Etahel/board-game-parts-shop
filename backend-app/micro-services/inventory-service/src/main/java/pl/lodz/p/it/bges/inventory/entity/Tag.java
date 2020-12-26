@@ -16,6 +16,4 @@ public class Tag extends InventoryEntity {
     @Column(name = "name", nullable = false, length = 10)
     private String name;
 
-    @Column(name = "description", length = 255)
-    private String description;
 }

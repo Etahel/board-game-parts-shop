@@ -4,9 +4,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
 import lombok.Getter;
 import lombok.Setter;
-import pl.lodz.p.it.bges.core.definitions.OrderStatus;
+import pl.lodz.p.it.bges.core.definitions.Views;
 import pl.lodz.p.it.bges.shop.entity.Order;
 import pl.lodz.p.it.bges.shop.entity.OrderItem;
+import pl.lodz.p.it.bges.shop.entity.OrderStatus;
 
 import java.time.LocalDate;
 import java.util.ArrayList;

@@ -26,6 +26,9 @@ public class BoardGame extends InventoryEntity {
     )
     private List<Tag> tags = new ArrayList<>();
 
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "boardGame")
+    private List<Element> elements = new ArrayList<>();
+
     @Column(name = "year")
     private Integer year;
 

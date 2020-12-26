@@ -1,8 +1,12 @@
 package pl.lodz.p.it.bges.inventory.controller;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import pl.lodz.p.it.bges.core.definitions.Views;
 import pl.lodz.p.it.bges.core.roles.Roles;
+import pl.lodz.p.it.bges.inventory.dto.StockDto;
 import pl.lodz.p.it.bges.inventory.exception.InventoryException;
 import pl.lodz.p.it.bges.inventory.service.ElementService;
 
@@ -19,9 +23,13 @@ public class ElementController {
         this.elementService = elementService;
     }
 
-    @PostMapping("/{id}/stock}")
+
+    @PatchMapping("/{id}/stock")
     @RolesAllowed(Roles.EMPLOYEE)
-    public void resizeStock(@PathVariable Long id, @RequestBody Integer stockChange) throws InventoryException {
-        elementService.resizeStock(id, stockChange);
+    @ResponseStatus(HttpStatus.OK)
+    public void patchStock(@PathVariable Long id, @RequestBody @JsonView(Views.Modify.class) StockDto stockDto) throws InventoryException {
+        elementService.patchStock(id, stockDto);
     }
+
+
 }

@@ -1,26 +1,24 @@
 package pl.lodz.p.it.bges.inventory.entity;
 
-import lombok.Getter;
-import lombok.Setter;
+import com.fasterxml.jackson.annotation.JsonValue;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+public enum ElementCategory {
+    TOKENS_AND_MARKERS("T"),
+    BOARDS_BOXES_AND_CONTAINERS("B"),
+    CARDS("C"),
+    PIECES_AND_FIGURES("P"),
+    DICES("D"),
+    INSTRUCTIONS_AND_INFOGRAPHICS("I"),
+    OTHER_ELEMENTS("O");
 
-
-@Setter
-@Getter
-@Entity
-@Table(name = "element_categories")
-public class ElementCategory extends InventoryEntity {
-
-    @Column(name = "name", nullable = false, length = 30)
-    private String name;
-
-    @Column(name = "description", length = 255)
-    private String description;
-
-    @Column(name = "code", length = 3)
     private String code;
 
+    private ElementCategory(String code) {
+        this.code = code;
+    }
+
+    @JsonValue
+    public String getCode() {
+        return code;
+    }
 }

@@ -19,4 +19,8 @@ public class Stock extends InventoryEntity {
     @Column(name = "available", nullable = false)
     public Boolean available;
 
+    public Stock() {
+        setStockSize(0);
+        setAvailable(false);
+    }
 }

@@ -3,6 +3,7 @@ package pl.lodz.p.it.bges.shop.dto;
 import com.fasterxml.jackson.annotation.JsonView;
 import lombok.Getter;
 import lombok.Setter;
+import pl.lodz.p.it.bges.core.definitions.Views;
 import pl.lodz.p.it.bges.shop.entity.Address;
 
 import javax.validation.constraints.NotEmpty;

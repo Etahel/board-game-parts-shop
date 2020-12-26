@@ -7,18 +7,8 @@ create table if not exists business.board_games
     version     bigint      not null default 0,
     description varchar(255),
     title       varchar(30) not null,
+    year        integer,
     constraint board_games_pkey
-        primary key (id)
-);
-
-create table if not exists business.element_categories
-(
-    id          bigserial   not null,
-    version     bigint      not null default 0,
-    code        varchar(3)  not null,
-    description varchar(255),
-    name        varchar(30) not null,
-    constraint element_categories_pkey
         primary key (id)
 );
 
@@ -34,21 +24,22 @@ create table if not exists business.stock
 
 create table if not exists business.elements
 (
-    id          bigserial        not null,
-    version     bigint           not null default 0,
-    description varchar(255),
-    name        varchar(30)      not null,
-    price       double precision not null,
-    category_id bigint           not null,
-    stock_id    bigint           not null,
+    id            bigserial        not null,
+    version       bigint           not null default 0,
+    description   varchar(255),
+    name          varchar(30)      not null,
+    price         double precision not null,
+    category      varchar(1)       not null,
+    stock_id      bigint           not null,
+    board_game_id bigint           not null,
     constraint elements_pkey
         primary key (id),
     constraint unique_stock_id
         unique (stock_id),
-    constraint fk_elements_element_categories
-        foreign key (category_id) references business.element_categories,
     constraint fk_elements_stock
-        foreign key (stock_id) references business.stock
+        foreign key (stock_id) references business.stock,
+    constraint fk_elements_boardgames
+        foreign key (board_game_id) references business.board_games
 );
 
 create table if not exists business.tags
@@ -57,6 +48,8 @@ create table if not exists business.tags
     version     bigint      not null default 0,
     description varchar(255),
     name        varchar(10) not null,
+    constraint unique_name
+        unique (name),
     constraint tags_pkey
         primary key (id)
 );
@@ -107,7 +100,7 @@ create table if not exists business.orders
     date             date             not null,
     order_first_name varchar(30)      not null,
     order_last_name  varchar(30)      not null,
-    status           varchar(255)     not null,
+    status           varchar(1)       not null,
     value            double precision not null,
     address_id       bigint           not null,
     client_id        bigint           not null,
@@ -139,16 +132,14 @@ COMMIT;
 DO
 $$
     DECLARE
-        categoryId      bigint;
-        DECLARE stockId bigint;
+        DECLARE
+        stockId      bigint;
+        DECLARE bgId bigint;
     BEGIN
-        SET SCHEMA 'business';
-        INSERT INTO element_categories (name, description, code)
-        VALUES ('a_title', 'a_desc', 'tst')
-        RETURNING id INTO categoryId;
-        INSERT INTO stock (available, stock_size, version) VALUES (true, 1000, 0) returning id INTO stockId;
-        INSERT INTO elements (name, description, price, category_id, stock_id, version)
-        values ('name', 'desc', 200, categoryId, stockId, 0);
+        INSERT INTO business.stock (available, stock_size, version) VALUES (true, 1000, 0) returning id INTO stockId;
+        INSERT INTO business.board_games(title) VALUES ('TEST GAME') returning id INTO bgId;
+        INSERT INTO business.elements (name, description, price, category, stock_id, board_game_id, version)
+        values ('name', 'desc', 200, 'T', stockId, bgId, 0);
     END
 $$;
 

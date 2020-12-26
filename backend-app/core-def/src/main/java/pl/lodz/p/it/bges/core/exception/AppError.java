@@ -5,6 +5,7 @@ public enum AppError {
     REQUEST_NOT_VALID("validation.not_valid"),
     VERSION_MISMATCH("version.mismatch"),
     DATABASE_ERROR("database.operation_failed"),
+    DESERIALIZATION_FAILED("deserialization.failed"),
     SERVER_ERROR("server.error");
 
     private final String code;

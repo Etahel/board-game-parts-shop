@@ -1,4 +1,6 @@
-package pl.lodz.p.it.bges.core.definitions;
+package pl.lodz.p.it.bges.shop.entity;
+
+import com.fasterxml.jackson.annotation.JsonValue;
 
 public enum OrderStatus {
 
@@ -10,7 +12,13 @@ public enum OrderStatus {
         this.code = code;
     }
 
+    @JsonValue
     public String getCode() {
         return code;
+    }
+
+    @Override
+    public String toString() {
+        return getCode();
     }
 }

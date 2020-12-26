@@ -1,4 +1,4 @@
-package pl.lodz.p.it.bges.shop.dto;
+package pl.lodz.p.it.bges.inventory.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
@@ -8,13 +8,13 @@ import org.springframework.dao.OptimisticLockingFailureException;
 import pl.lodz.p.it.bges.core.definitions.Dto;
 import pl.lodz.p.it.bges.core.definitions.Views;
 import pl.lodz.p.it.bges.core.util.CryptoUtil;
-import pl.lodz.p.it.bges.shop.entity.ShopEntity;
+import pl.lodz.p.it.bges.inventory.entity.InventoryEntity;
 
 import java.math.BigInteger;
 
-@Setter
 @Getter
-public abstract class ShopDto<T extends ShopEntity> implements Dto<T> {
+@Setter
+public class InventoryDto<T extends InventoryEntity> implements Dto<T> {
 
     @JsonView(Views.Id.class)
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
@@ -24,13 +24,13 @@ public abstract class ShopDto<T extends ShopEntity> implements Dto<T> {
     private BigInteger version;
 
 
-    public ShopDto() {
+    public InventoryDto() {
         init();
     }
 
     ;
 
-    public ShopDto(T entity) {
+    public InventoryDto(T entity) {
         init();
         fillProperties(entity);
     }
@@ -81,5 +81,4 @@ public abstract class ShopDto<T extends ShopEntity> implements Dto<T> {
             return 0L;
         }
     }
-
 }

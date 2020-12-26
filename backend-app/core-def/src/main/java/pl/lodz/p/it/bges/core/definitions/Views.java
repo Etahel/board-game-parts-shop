@@ -1,4 +1,4 @@
-package pl.lodz.p.it.bges.shop.dto;
+package pl.lodz.p.it.bges.core.definitions;
 
 public class Views {
 
@@ -26,7 +26,7 @@ public class Views {
     }
 
 
-    public interface Details extends Id, Version, Normal {
+    public interface Details extends Id, Version {
 
     }
 

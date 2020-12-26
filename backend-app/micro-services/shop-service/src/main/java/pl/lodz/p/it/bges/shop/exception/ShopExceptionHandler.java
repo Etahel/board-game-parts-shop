@@ -1,11 +1,15 @@
 package pl.lodz.p.it.bges.shop.exception;
 
+import com.fasterxml.jackson.databind.JsonMappingException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.lang.NonNull;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -29,6 +33,8 @@ import java.util.List;
 
 @ControllerAdvice
 public class ShopExceptionHandler extends ResponseEntityExceptionHandler {
+
+    Logger logger = LoggerFactory.getLogger(ShopExceptionHandler.class);
 
     @ExceptionHandler(value = {ElementChangedException.class, OrderFinalizedException.class
     })
@@ -95,10 +101,25 @@ public class ShopExceptionHandler extends ResponseEntityExceptionHandler {
         return new ErrorDto(AppError.DATABASE_ERROR.toString());
     }
 
+    @ExceptionHandler(value = {JsonMappingException.class})
+    @ResponseBody
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    protected ErrorDto handleDeserializationException(Exception e) {
+        logger.error("Database exception occured: ", e);
+        return new ErrorDto(AppError.DESERIALIZATION_FAILED.toString());
+    }
+
+    @ExceptionHandler(value = {AccessDeniedException.class})
+    @ResponseBody
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    protected void handleAccessDenied() {
+    }
+
     @ExceptionHandler(value = {Exception.class})
     @ResponseBody
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    protected ErrorDto handleAnyException() {
+    protected ErrorDto handleAnyException(Exception e) {
+        logger.error("Server exception occured: ", e);
         return new ErrorDto(AppError.SERVER_ERROR.toString());
     }
 }

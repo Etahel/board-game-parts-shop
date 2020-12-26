@@ -6,10 +6,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import pl.lodz.p.it.bges.core.definitions.Views;
 import pl.lodz.p.it.bges.core.roles.Roles;
 import pl.lodz.p.it.bges.shop.criteria.OrderCriteria;
 import pl.lodz.p.it.bges.shop.dto.OrderDto;
-import pl.lodz.p.it.bges.shop.dto.Views;
 import pl.lodz.p.it.bges.shop.exception.ShopException;
 import pl.lodz.p.it.bges.shop.service.OrderService;
 

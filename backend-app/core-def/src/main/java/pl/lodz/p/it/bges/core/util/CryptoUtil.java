@@ -1,4 +1,4 @@
-package pl.lodz.p.it.bges.shop.util;
+package pl.lodz.p.it.bges.core.util;
 
 import org.jasypt.util.numeric.AES256IntegerNumberEncryptor;
 

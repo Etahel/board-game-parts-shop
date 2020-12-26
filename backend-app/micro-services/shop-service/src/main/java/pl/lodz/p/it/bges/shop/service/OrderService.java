@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import pl.lodz.p.it.bges.core.definitions.OrderStatus;
 import pl.lodz.p.it.bges.shop.criteria.OrderCriteria;
 import pl.lodz.p.it.bges.shop.dto.OrderDto;
 import pl.lodz.p.it.bges.shop.entity.*;

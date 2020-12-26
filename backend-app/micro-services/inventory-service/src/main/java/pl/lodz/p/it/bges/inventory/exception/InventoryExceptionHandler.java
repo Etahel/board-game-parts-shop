@@ -1,11 +1,15 @@
 package pl.lodz.p.it.bges.inventory.exception;
 
+import com.fasterxml.jackson.databind.JsonMappingException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.lang.NonNull;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -20,6 +24,9 @@ import pl.lodz.p.it.bges.core.dto.error.ValidationErrorDto;
 import pl.lodz.p.it.bges.core.exception.AppError;
 import pl.lodz.p.it.bges.core.exception.AppException;
 import pl.lodz.p.it.bges.core.exception.RequestInvalidException;
+import pl.lodz.p.it.bges.inventory.exception.boardgame.BoardGameNotFoundException;
+import pl.lodz.p.it.bges.inventory.exception.boardgame.TagExistsException;
+import pl.lodz.p.it.bges.inventory.exception.boardgame.TagNotFoundException;
 import pl.lodz.p.it.bges.inventory.exception.element.ElementNotFoundException;
 import pl.lodz.p.it.bges.inventory.exception.element.NegativeStockException;
 
@@ -28,7 +35,9 @@ import java.util.List;
 @ControllerAdvice
 public class InventoryExceptionHandler extends ResponseEntityExceptionHandler {
 
-    @ExceptionHandler(value = {NegativeStockException.class})
+    Logger logger = LoggerFactory.getLogger(InventoryExceptionHandler.class);
+
+    @ExceptionHandler(value = {NegativeStockException.class, TagExistsException.class})
     @ResponseBody
     @ResponseStatus(HttpStatus.CONFLICT)
     protected ErrorDto handleConflict(InventoryException ex) {
@@ -53,7 +62,7 @@ public class InventoryExceptionHandler extends ResponseEntityExceptionHandler {
 //    }
 //
     @ExceptionHandler(value
-            = {ElementNotFoundException.class})
+            = {ElementNotFoundException.class, BoardGameNotFoundException.class, TagNotFoundException.class})
     @ResponseBody
     @ResponseStatus(HttpStatus.NOT_FOUND)
     protected ErrorDto handleNotFound(InventoryException ex) {
@@ -88,15 +97,32 @@ public class InventoryExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(value = {DataAccessException.class})
     @ResponseBody
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    protected ErrorDto handleDatabaseException() {
+    protected ErrorDto handleDatabaseException(Exception e) {
+        logger.error(e.getMessage());
         return new ErrorDto(AppError.DATABASE_ERROR.toString());
+    }
+
+    @ExceptionHandler(value = {JsonMappingException.class})
+    @ResponseBody
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    protected ErrorDto handleDeserializationException(Exception e) {
+        logger.error("Database exception occured: ", e);
+        return new ErrorDto(AppError.DESERIALIZATION_FAILED.toString());
+    }
+
+    @ExceptionHandler(value = {AccessDeniedException.class})
+    @ResponseBody
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    protected void handleAccessDenied() {
     }
 
     @ExceptionHandler(value = {Exception.class})
     @ResponseBody
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    protected ErrorDto handleAnyException() {
+    protected ErrorDto handleAnyException(Exception e) {
+        logger.error("Server exception occured: ", e);
         return new ErrorDto(AppError.SERVER_ERROR.toString());
     }
+
 }
 

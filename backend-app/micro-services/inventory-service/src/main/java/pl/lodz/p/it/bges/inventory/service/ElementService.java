@@ -2,10 +2,16 @@ package pl.lodz.p.it.bges.inventory.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import pl.lodz.p.it.bges.inventory.dto.ElementDto;
+import pl.lodz.p.it.bges.inventory.dto.StockDto;
+import pl.lodz.p.it.bges.inventory.entity.BoardGame;
 import pl.lodz.p.it.bges.inventory.entity.Element;
+import pl.lodz.p.it.bges.inventory.entity.Stock;
 import pl.lodz.p.it.bges.inventory.exception.InventoryException;
+import pl.lodz.p.it.bges.inventory.exception.boardgame.BoardGameNotFoundException;
 import pl.lodz.p.it.bges.inventory.exception.element.ElementNotFoundException;
 import pl.lodz.p.it.bges.inventory.exception.element.NegativeStockException;
+import pl.lodz.p.it.bges.inventory.repository.BoardGameRepository;
 import pl.lodz.p.it.bges.inventory.repository.ElementRepository;
 
 import javax.transaction.Transactional;
@@ -16,10 +22,12 @@ import java.util.Optional;
 public class ElementService {
 
     private ElementRepository elementRepository;
+    private BoardGameRepository boardGameRepository;
 
     @Autowired
-    public ElementService(ElementRepository elementRepository) {
+    public ElementService(ElementRepository elementRepository, BoardGameRepository boardGameRepository) {
         this.elementRepository = elementRepository;
+        this.boardGameRepository = boardGameRepository;
     }
 
     public Element getElement(Long elementId) throws InventoryException {
@@ -32,12 +40,29 @@ public class ElementService {
     }
 
 
-    public void resizeStock(Long elementId, Integer stockChange) throws InventoryException {
-        Element element = getElement(elementId);
-        if (element.getStock().getStockSize() + stockChange < 0) {
+    private void resizeStock(Stock stock, Integer stockChange) throws InventoryException {
+        if (stock.getStockSize() + stockChange < 0) {
             throw new NegativeStockException();
         }
-        element.getStock().setStockSize(element.getStock().getStockSize() + stockChange);
+        stock.setStockSize(stock.getStockSize() + stockChange);
     }
+
+    public void patchStock(Long elementId, StockDto stockDto) throws InventoryException {
+        Element element = getElement(elementId);
+        stockDto.patchProperties(element.getStock());
+    }
+
+    public void createElement(Long boardGameId, ElementDto elementDto) throws InventoryException {
+        Optional<BoardGame> boardGameOpt = boardGameRepository.findById(boardGameId);
+        if (boardGameOpt.isPresent()) {
+            Element element = new Element();
+            elementDto.putProperties(element);
+            element.setBoardGame(boardGameOpt.get());
+            elementRepository.save(element);
+        } else {
+            throw new BoardGameNotFoundException();
+        }
+    }
+
 
 }

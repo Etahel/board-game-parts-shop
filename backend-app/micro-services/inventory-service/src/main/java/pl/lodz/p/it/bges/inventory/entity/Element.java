@@ -22,9 +22,13 @@ public class Element extends InventoryEntity {
 
     @JoinColumn(name = "stock_id", nullable = false, unique = true)
     @OneToOne(cascade = CascadeType.PERSIST)
-    private Stock stock;
+    private Stock stock = new Stock();
 
-    @ManyToOne
-    @JoinColumn(name = "category_id", nullable = false)
+    @Column(name = "category", nullable = false)
     private ElementCategory elementCategory;
+
+    @JoinColumn(name = "board_game_id", nullable = false, unique = true)
+    @ManyToOne
+    private BoardGame boardGame;
+
 }

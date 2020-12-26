@@ -2,7 +2,6 @@ package pl.lodz.p.it.bges.shop.entity;
 
 import lombok.Getter;
 import lombok.Setter;
-import pl.lodz.p.it.bges.core.definitions.OrderStatus;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -38,7 +37,6 @@ public class Order extends ShopEntity {
     private List<OrderItem> orderItems = new ArrayList<>();
 
     @Column(name = "status", nullable = false)
-    @Enumerated(EnumType.STRING)
     private OrderStatus status;
 
     @Column(name = "value", nullable = false)
