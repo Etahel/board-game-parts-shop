@@ -61,7 +61,9 @@ public class InventoryDto<T extends InventoryEntity> implements Dto<T> {
     public void patchProperties(T entity) {
         if (entity == null)
             return;
-        checkVersion(entity.getVersion(), getVersion());
+        if (entity.getVersion() != null) {
+            checkVersion(entity.getVersion(), getVersion());
+        }
     }
 
     protected void checkVersion(Long v1, BigInteger v2) {
