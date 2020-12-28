@@ -8,6 +8,7 @@ create table if not exists business.board_games
     description varchar(255),
     title       varchar(30) not null,
     year        integer,
+    active      boolean     not null,
     constraint board_games_pkey
         primary key (id)
 );
@@ -30,6 +31,7 @@ create table if not exists business.elements
     name          varchar(30)      not null,
     price         double precision not null,
     category      varchar(1)       not null,
+    active        boolean          not null,
     stock_id      bigint           not null,
     board_game_id bigint           not null,
     constraint elements_pkey
@@ -46,7 +48,6 @@ create table if not exists business.tags
 (
     id          bigserial   not null,
     version     bigint      not null default 0,
-    description varchar(255),
     name        varchar(10) not null,
     constraint unique_name
         unique (name),
@@ -137,9 +138,9 @@ $$
         DECLARE bgId bigint;
     BEGIN
         INSERT INTO business.stock (available, stock_size, version) VALUES (true, 1000, 0) returning id INTO stockId;
-        INSERT INTO business.board_games(title) VALUES ('TEST GAME') returning id INTO bgId;
-        INSERT INTO business.elements (name, description, price, category, stock_id, board_game_id, version)
-        values ('name', 'desc', 200, 'T', stockId, bgId, 0);
+        INSERT INTO business.board_games(title, active) VALUES ('TEST GAME', true) returning id INTO bgId;
+        INSERT INTO business.elements (name, description, price, category, stock_id, board_game_id, active, version)
+        values ('name', 'desc', 200, 'T', stockId, bgId, true, 0);
     END
 $$;
 

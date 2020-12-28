@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import pl.lodz.p.it.bges.core.definitions.Views;
 import pl.lodz.p.it.bges.core.roles.Roles;
 import pl.lodz.p.it.bges.inventory.criteria.BoardGameCriteria;
+import pl.lodz.p.it.bges.inventory.criteria.ElementCriteria;
 import pl.lodz.p.it.bges.inventory.dto.BoardGameDto;
 import pl.lodz.p.it.bges.inventory.dto.ElementDto;
 import pl.lodz.p.it.bges.inventory.dto.TagDto;
@@ -36,8 +37,16 @@ public class BoardGameController {
 
     @PostMapping("/{id}/elements")
     @RolesAllowed(Roles.EMPLOYEE)
+    @ResponseStatus(HttpStatus.OK)
     public void postElement(@RequestBody @JsonView(Views.Modify.class) ElementDto elementDto, @PathVariable Long id) throws InventoryException {
         elementService.createElement(id, elementDto);
+    }
+
+    @GetMapping("/{id}/elements")
+    @RolesAllowed(Roles.EMPLOYEE)
+    @JsonView(Views.List.class)
+    public Page<ElementDto> getElements(@PathVariable Long id, Pageable pageable, ElementCriteria elementCriteria) {
+        return elementService.getElements(id, pageable, elementCriteria).map(ElementDto::new);
     }
 
     @GetMapping
@@ -50,7 +59,7 @@ public class BoardGameController {
     @PostMapping
     @RolesAllowed(Roles.EMPLOYEE)
     @ResponseStatus(HttpStatus.OK)
-    public void postBoardGame(@JsonView(Views.Modify.class) BoardGameDto boardGameDto) throws InventoryException {
+    public void postBoardGame(@RequestBody @JsonView(Views.Modify.class) BoardGameDto boardGameDto) throws InventoryException {
         boardGameService.createBoardGame(boardGameDto);
     }
 
@@ -65,7 +74,7 @@ public class BoardGameController {
     @PatchMapping("/{id}")
     @RolesAllowed(Roles.EMPLOYEE)
     @ResponseStatus(HttpStatus.OK)
-    public void patchBoardGame(@JsonView(Views.Modify.class) BoardGameDto boardGameDto, @PathVariable Long id) throws InventoryException {
+    public void patchBoardGame(@RequestBody @JsonView(Views.Modify.class) BoardGameDto boardGameDto, @PathVariable Long id) throws InventoryException {
         boardGameService.updateBoardGame(boardGameDto, id);
     }
     
@@ -80,19 +89,19 @@ public class BoardGameController {
     @PostMapping("/tags")
     @RolesAllowed(Roles.EMPLOYEE)
     @ResponseStatus(HttpStatus.OK)
-    public void postTag(@JsonView(Views.Modify.class) TagDto tagDto) throws InventoryException {
+    public void postTag(@RequestBody @JsonView(Views.Modify.class) TagDto tagDto) throws InventoryException {
         boardGameService.createTag(tagDto);
     }
 
     @PatchMapping("/tags/{id}")
     @RolesAllowed(Roles.EMPLOYEE)
     @ResponseStatus(HttpStatus.OK)
-    public void patchTag(@JsonView(Views.Modify.class) TagDto tagDto, @PathVariable Long id) throws InventoryException {
+    public void patchTag(@RequestBody @JsonView(Views.Modify.class) TagDto tagDto, @PathVariable Long id) throws InventoryException {
         boardGameService.updateTag(tagDto, id);
     }
 
     @GetMapping("/tags/{id}")
-    @RolesAllowed(Roles.EMPLOYEE)
+    @PermitAll
     @JsonView(Views.Details.class)
     public TagDto getTag(@PathVariable Long id) throws InventoryException {
         return new TagDto(boardGameService.getTag(id));
@@ -102,5 +111,11 @@ public class BoardGameController {
     @RolesAllowed(Roles.EMPLOYEE)
     public void deleteTag(@PathVariable Long id) throws InventoryException {
         boardGameService.deleteTag(id);
+    }
+
+    @DeleteMapping("/{id}")
+    @RolesAllowed(Roles.EMPLOYEE)
+    public void deleteBoardGame(@PathVariable Long id) throws InventoryException {
+        boardGameService.deleteBoardGame(id);
     }
 }

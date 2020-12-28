@@ -1,7 +1,10 @@
 package pl.lodz.p.it.bges.inventory.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import pl.lodz.p.it.bges.inventory.criteria.ElementCriteria;
 import pl.lodz.p.it.bges.inventory.dto.ElementDto;
 import pl.lodz.p.it.bges.inventory.dto.StockDto;
 import pl.lodz.p.it.bges.inventory.entity.BoardGame;
@@ -13,9 +16,13 @@ import pl.lodz.p.it.bges.inventory.exception.element.ElementNotFoundException;
 import pl.lodz.p.it.bges.inventory.exception.element.NegativeStockException;
 import pl.lodz.p.it.bges.inventory.repository.BoardGameRepository;
 import pl.lodz.p.it.bges.inventory.repository.ElementRepository;
+import pl.lodz.p.it.bges.inventory.repository.OrderItemRepository;
+import pl.lodz.p.it.bges.inventory.repository.specification.ElementSpecification;
 
 import javax.transaction.Transactional;
 import java.util.Optional;
+
+import static org.springframework.data.jpa.domain.Specification.where;
 
 @Service
 @Transactional(rollbackOn = {RuntimeException.class, InventoryException.class})
@@ -23,11 +30,13 @@ public class ElementService {
 
     private ElementRepository elementRepository;
     private BoardGameRepository boardGameRepository;
+    private OrderItemRepository orderItemRepository;
 
     @Autowired
-    public ElementService(ElementRepository elementRepository, BoardGameRepository boardGameRepository) {
+    public ElementService(ElementRepository elementRepository, BoardGameRepository boardGameRepository, OrderItemRepository orderItemRepository) {
         this.elementRepository = elementRepository;
         this.boardGameRepository = boardGameRepository;
+        this.orderItemRepository = orderItemRepository;
     }
 
     public Element getElement(Long elementId) throws InventoryException {
@@ -37,6 +46,16 @@ public class ElementService {
         } else {
             throw new ElementNotFoundException();
         }
+    }
+
+    public Page<Element> getElements(Long boardGameId, Pageable pageable, ElementCriteria elementCriteria) {
+        return elementRepository.findAll(where(ElementSpecification.getBoardGameSpecification(boardGameId))
+                .and(ElementSpecification.getCriteriaSpecification(elementCriteria)).and(ElementSpecification.getActiveSpecification()), pageable);
+    }
+
+    public void patchElement(Long elementId, ElementDto elementDto) throws InventoryException {
+        Element element = getElement(elementId);
+        elementDto.patchProperties(element);
     }
 
 
@@ -61,6 +80,15 @@ public class ElementService {
             elementRepository.save(element);
         } else {
             throw new BoardGameNotFoundException();
+        }
+    }
+
+    public void deleteElement(Long id) throws InventoryException {
+        Element element = getElement(id);
+        if (!orderItemRepository.existsByElementId(element.getId())) {
+            elementRepository.delete(element);
+        } else {
+            element.setActive(false);
         }
     }
 

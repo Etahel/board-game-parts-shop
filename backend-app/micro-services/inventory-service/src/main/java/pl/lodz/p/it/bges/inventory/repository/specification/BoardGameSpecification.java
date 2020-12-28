@@ -26,13 +26,31 @@ public class BoardGameSpecification {
                 if (boardGameCriteria == null) {
                     return cb.conjunction();
                 } else {
-                    if (boardGameCriteria.getTagName() != null) {
-                        predicates.add(cb.equal(root.join(BoardGame_.TAGS).get(Tag_.NAME), boardGameCriteria.getTagName()));
+                    if (boardGameCriteria.getTagNames() != null) {
+                        for (String name : boardGameCriteria.getTagNames())
+                            predicates.add(cb.equal(root.join(BoardGame_.TAGS).get(Tag_.NAME), name));
                     }
                 }
 
                 return cb.and(predicates.toArray(Predicate[]::new));
             }
+
         };
     }
+
+    public static Specification<BoardGame> getActiveSpecification() {
+        return new Specification<BoardGame>() {
+
+            @Override
+            public Predicate toPredicate(Root<BoardGame> root,
+                                         CriteriaQuery<?> query,
+                                         CriteriaBuilder criteriaBuilder) {
+                return criteriaBuilder.equal(root.get(BoardGame_.active), Boolean.TRUE);
+            }
+
+        };
+    }
+
+
 }
+

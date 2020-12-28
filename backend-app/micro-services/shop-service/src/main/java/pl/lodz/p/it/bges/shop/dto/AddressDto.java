@@ -62,19 +62,19 @@ public class AddressDto extends ShopDto<Address> {
     @Override
     public void patchProperties(Address entity) {
         super.patchProperties(entity);
-        if (getCity() != null && !getCity().isBlank()) {
+        if (getCity() != null) {
             entity.setCity(getCity());
         }
-        if (getStreet() != null && !getStreet().isBlank()) {
+        if (getStreet() != null) {
             entity.setStreet(getStreet());
         }
-        if (getHouseNo() != null && !getHouseNo().isBlank()) {
+        if (getHouseNo() != null) {
             entity.setHouseNo(getHouseNo());
         }
-        if (getFlatNo() != null && !getFlatNo().isBlank()) {
+        if (getFlatNo() != null) {
             entity.setFlatNo(getFlatNo());
         }
-        if (getPostalCode() != null && !getPostalCode().isBlank()) {
+        if (getPostalCode() != null) {
             entity.setPostalCode(getPostalCode());
         }
     }

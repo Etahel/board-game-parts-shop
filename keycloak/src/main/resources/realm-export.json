@@ -498,6 +498,42 @@
   "webAuthnPolicyPasswordlessAcceptableAaguids": [],
   "users": [
     {
+      "id": "ae771bd5-6c16-4c7e-b9bf-71e5f2c71a7c",
+      "createdTimestamp": 1609117150066,
+      "username": "employee",
+      "enabled": true,
+      "totp": false,
+      "emailVerified": true,
+      "firstName": "employee",
+      "lastName": "employee",
+      "email": "employee@employee.com",
+      "credentials": [
+        {
+          "id": "f1d1543e-286c-45a0-8c30-b4fca6f603ec",
+          "type": "password",
+          "createdDate": 1609117156353,
+          "secretData": "{\"value\":\"80FMbxp/ITOJYazXZIiPjHZLPy0I9NM+1v/bQnaUpQBqP8zZelilwuOlWIpibdetRD6d+gQ7LhGX2V7XP6lurA==\",\"salt\":\"753Uzj/BV3RVrIDh0HscmA==\"}",
+          "credentialData": "{\"hashIterations\":27500,\"algorithm\":\"pbkdf2-sha256\"}"
+        }
+      ],
+      "disableableCredentialTypes": [],
+      "requiredActions": [],
+      "realmRoles": [
+        "uma_authorization",
+        "employee",
+        "offline_access",
+        "user"
+      ],
+      "clientRoles": {
+        "account": [
+          "view-profile",
+          "manage-account"
+        ]
+      },
+      "notBefore": 0,
+      "groups": []
+    },
+    {
       "id": "1d02d171-fe05-42ce-b480-b360c100411c",
       "createdTimestamp": 1604796903159,
       "username": "service-account-admin-cli",
@@ -505,6 +541,7 @@
       "totp": false,
       "emailVerified": false,
       "serviceAccountClientId": "admin-cli",
+      "credentials": [],
       "disableableCredentialTypes": [],
       "requiredActions": [],
       "realmRoles": [
@@ -514,6 +551,41 @@
         "admin-cli": [
           "uma_protection"
         ],
+        "account": [
+          "view-profile",
+          "manage-account"
+        ]
+      },
+      "notBefore": 0,
+      "groups": []
+    },
+    {
+      "id": "37371c0b-217f-48ac-953a-bf391334c72e",
+      "createdTimestamp": 1609117069911,
+      "username": "user",
+      "enabled": true,
+      "totp": false,
+      "emailVerified": true,
+      "firstName": "user",
+      "lastName": "user",
+      "email": "kf.etahel@gmail.com",
+      "credentials": [
+        {
+          "id": "1e3d47fd-21e2-4d41-9f76-2e10cca88ea3",
+          "type": "password",
+          "createdDate": 1609117079642,
+          "secretData": "{\"value\":\"ISBZoaoEXMl7HwxljDEO7jU3toM5UJDym0KRBdl5cU2+DMjDpfP4UmdiMp4nAK5wj+yqvffhWtjK0bnEaBbYqA==\",\"salt\":\"WNcNnBVmhg4Qv7f+RfqMvg==\"}",
+          "credentialData": "{\"hashIterations\":27500,\"algorithm\":\"pbkdf2-sha256\"}"
+        }
+      ],
+      "disableableCredentialTypes": [],
+      "requiredActions": [],
+      "realmRoles": [
+        "uma_authorization",
+        "offline_access",
+        "user"
+      ],
+      "clientRoles": {
         "account": [
           "view-profile",
           "manage-account"
@@ -576,7 +648,7 @@
       "enabled": true,
       "alwaysDisplayInConsole": false,
       "clientAuthenticatorType": "client-secret",
-      "secret": "**********",
+      "secret": "47069ff5-8c94-4b63-8e34-ca9ca51b85a0",
       "defaultRoles": [
         "view-profile",
         "manage-account"
@@ -675,7 +747,7 @@
       "enabled": true,
       "alwaysDisplayInConsole": false,
       "clientAuthenticatorType": "client-secret",
-      "secret": "**********",
+      "secret": "0952735b-0c02-4840-ab56-d3332dea8e2c",
       "redirectUris": [
         "http://localhost:9001/*"
       ],
@@ -874,7 +946,7 @@
       "enabled": true,
       "alwaysDisplayInConsole": false,
       "clientAuthenticatorType": "client-secret",
-      "secret": "**********",
+      "secret": "4c2bcf67-28c5-45e5-9a52-abb6efc62c58",
       "redirectUris": [],
       "webOrigins": [],
       "notBefore": 0,
@@ -957,7 +1029,7 @@
       "enabled": true,
       "alwaysDisplayInConsole": false,
       "clientAuthenticatorType": "client-secret",
-      "secret": "**********",
+      "secret": "410940f3-5bd9-474d-9993-6dd725a3f5df",
       "redirectUris": [],
       "webOrigins": [],
       "notBefore": 0,

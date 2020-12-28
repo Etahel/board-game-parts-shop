@@ -19,4 +19,7 @@ public class Element extends ShopEntity {
     @OneToOne(cascade = CascadeType.PERSIST)
     private Stock stock;
 
+    @Column(name = "active")
+    private Boolean active;
+
 }

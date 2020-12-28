@@ -31,4 +31,7 @@ public class Element extends InventoryEntity {
     @ManyToOne
     private BoardGame boardGame;
 
+    @Column(name = "active")
+    private Boolean active = Boolean.TRUE;
+
 }

@@ -3,6 +3,7 @@ package pl.lodz.p.it.bges.inventory.dto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import pl.lodz.p.it.bges.core.definitions.Views;
 import pl.lodz.p.it.bges.inventory.entity.Element;
@@ -10,6 +11,7 @@ import pl.lodz.p.it.bges.inventory.entity.ElementCategory;
 
 @Getter
 @Setter
+@NoArgsConstructor
 public class ElementDto extends InventoryDto<Element> {
 
     @JsonView(Views.Basic.class)
@@ -28,12 +30,22 @@ public class ElementDto extends InventoryDto<Element> {
     @JsonView(Views.Basic.class)
     private ElementCategory elementCategory;
 
+    @JsonView(Views.Normal.class)
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    private Boolean active;
+
+    public ElementDto(Element element) {
+        super(element);
+    }
+
     @Override
     public void fillProperties(Element entity) {
         super.fillProperties(entity);
         setName(entity.getName());
         setDescription(entity.getDescription());
         setPrice(entity.getPrice());
+        setElementCategory(entity.getElementCategory());
+        setActive(entity.getActive());
         setStock(new StockDto(entity.getStock()));
     }
 
@@ -49,5 +61,17 @@ public class ElementDto extends InventoryDto<Element> {
     @Override
     public void patchProperties(Element entity) {
         super.patchProperties(entity);
+        if (getName() != null && !getName().isBlank()) {
+            entity.setName(getName());
+        }
+        if (getDescription() != null && !getDescription().isBlank()) {
+            entity.setDescription(getDescription());
+        }
+        if (getPrice() != null) {
+            entity.setPrice(getPrice());
+        }
+        if (getElementCategory() != null) {
+            entity.setElementCategory(getElementCategory());
+        }
     }
 }

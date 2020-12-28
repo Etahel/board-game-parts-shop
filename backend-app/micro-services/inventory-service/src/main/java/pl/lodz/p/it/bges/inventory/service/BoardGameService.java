@@ -9,12 +9,14 @@ import pl.lodz.p.it.bges.inventory.criteria.BoardGameCriteria;
 import pl.lodz.p.it.bges.inventory.dto.BoardGameDto;
 import pl.lodz.p.it.bges.inventory.dto.TagDto;
 import pl.lodz.p.it.bges.inventory.entity.BoardGame;
+import pl.lodz.p.it.bges.inventory.entity.Element;
 import pl.lodz.p.it.bges.inventory.entity.Tag;
 import pl.lodz.p.it.bges.inventory.exception.InventoryException;
 import pl.lodz.p.it.bges.inventory.exception.boardgame.BoardGameNotFoundException;
 import pl.lodz.p.it.bges.inventory.exception.boardgame.TagExistsException;
 import pl.lodz.p.it.bges.inventory.exception.boardgame.TagNotFoundException;
 import pl.lodz.p.it.bges.inventory.repository.BoardGameRepository;
+import pl.lodz.p.it.bges.inventory.repository.OrderItemRepository;
 import pl.lodz.p.it.bges.inventory.repository.TagsRepository;
 import pl.lodz.p.it.bges.inventory.repository.specification.BoardGameSpecification;
 
@@ -22,17 +24,23 @@ import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
+import static org.springframework.data.jpa.domain.Specification.where;
+
 @Service
 @Transactional(rollbackOn = {RuntimeException.class, InventoryException.class})
 public class BoardGameService {
 
     private TagsRepository tagsRepository;
     private BoardGameRepository boardGameRepository;
+    private ElementService elementService;
+    private OrderItemRepository orderItemRepository;
 
     @Autowired
-    BoardGameService(TagsRepository tagsRepository, BoardGameRepository boardGameRepository) {
+    BoardGameService(TagsRepository tagsRepository, BoardGameRepository boardGameRepository, ElementService elementService, OrderItemRepository orderItemRepository) {
         this.tagsRepository = tagsRepository;
         this.boardGameRepository = boardGameRepository;
+        this.orderItemRepository = orderItemRepository;
+        this.elementService = elementService;
     }
 
     public void createTag(TagDto tagDto) throws InventoryException {
@@ -82,7 +90,7 @@ public class BoardGameService {
     }
 
     public Page<BoardGame> getBoardGames(Pageable pageable, BoardGameCriteria boardGameCriteria) {
-        return boardGameRepository.findAll(BoardGameSpecification.getBoardGameSpecification(boardGameCriteria), pageable);
+        return boardGameRepository.findAll(where(BoardGameSpecification.getBoardGameSpecification(boardGameCriteria)).and(BoardGameSpecification.getActiveSpecification()), pageable);
     }
 
     public BoardGame getBoardGame(Long id) throws InventoryException {
@@ -115,6 +123,24 @@ public class BoardGameService {
                 Tag tag = getTag(tagName);
                 boardGame.getTags().add(tag);
             }
+        }
+    }
+
+    public void deleteBoardGame(Long id) throws InventoryException {
+        BoardGame boardGame = getBoardGame(id);
+        if (boardGame.getElements().isEmpty()) {
+            boardGameRepository.delete(boardGame);
+        } else {
+            boardGame.getElements().removeIf((element -> orderItemRepository.existsByElementId(element.getId())));
+            for (Element element : boardGame.getElements()) {
+                element.setActive(false);
+            }
+            if (boardGame.getElements().isEmpty()) {
+                boardGameRepository.delete(boardGame);
+            } else {
+                boardGame.setActive(false);
+            }
+
         }
     }
 

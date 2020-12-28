@@ -26,7 +26,7 @@ public class Views {
     }
 
 
-    public interface Details extends Id, Version {
+    public interface Details extends Id, Version, Normal {
 
     }
 

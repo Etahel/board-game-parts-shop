@@ -117,6 +117,7 @@ public class OrderService {
             Optional<Element> elementOpt = elementRepository.findById(orderItem.getElementId());
             if (elementOpt.isPresent()) {
                 Element element = elementOpt.get();
+                checkElementActive(element);
                 checkElementVersion(orderItem, element);
                 checkStock(orderItem, element.getStock());
                 element.getStock().setStockSize(element.getStock().getStockSize() - orderItem.getElementsCount());
@@ -132,6 +133,12 @@ public class OrderService {
     private void checkElementVersion(OrderItem orderItem, Element element) throws ShopException {
         if (!element.getVersion().equals(orderItem.getElementVersion())) {
             throw new ElementChangedException();
+        }
+    }
+
+    private void checkElementActive(Element element) throws ElementNotFoundException {
+        if (!element.getActive()) {
+            throw new ElementNotFoundException();
         }
     }
 

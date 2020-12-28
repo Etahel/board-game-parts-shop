@@ -3,12 +3,11 @@ package pl.lodz.p.it.bges.inventory.criteria;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.util.List;
+import pl.lodz.p.it.bges.inventory.entity.ElementCategory;
 
 @Getter
 @Setter
 @NoArgsConstructor
-public class BoardGameCriteria {
-    List<String> tagNames;
+public class ElementCriteria {
+    ElementCategory elementCategory;
 }

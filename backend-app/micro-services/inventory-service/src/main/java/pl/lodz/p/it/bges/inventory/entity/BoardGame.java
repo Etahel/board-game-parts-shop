@@ -32,6 +32,9 @@ public class BoardGame extends InventoryEntity {
     @Column(name = "year")
     private Integer year;
 
+    @Column(name = "active")
+    private Boolean active = Boolean.TRUE;
+
 
 }
 

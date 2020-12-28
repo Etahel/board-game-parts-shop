@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import pl.lodz.p.it.bges.core.definitions.Views;
 import pl.lodz.p.it.bges.core.roles.Roles;
+import pl.lodz.p.it.bges.inventory.dto.ElementDto;
 import pl.lodz.p.it.bges.inventory.dto.StockDto;
 import pl.lodz.p.it.bges.inventory.exception.InventoryException;
 import pl.lodz.p.it.bges.inventory.service.ElementService;
@@ -29,6 +30,27 @@ public class ElementController {
     @ResponseStatus(HttpStatus.OK)
     public void patchStock(@PathVariable Long id, @RequestBody @JsonView(Views.Modify.class) StockDto stockDto) throws InventoryException {
         elementService.patchStock(id, stockDto);
+    }
+
+    @GetMapping("/{id}")
+    @RolesAllowed({Roles.USER})
+    @JsonView(Views.Details.class)
+    public ElementDto getElement(@PathVariable Long id) throws InventoryException {
+        return new ElementDto(elementService.getElement(id));
+    }
+
+    @PatchMapping("/{id}")
+    @RolesAllowed(Roles.EMPLOYEE)
+    @ResponseStatus(HttpStatus.OK)
+    public void patchElement(@PathVariable Long id, @RequestBody @JsonView(Views.Modify.class) ElementDto elementDto) throws InventoryException {
+        elementService.patchElement(id, elementDto);
+    }
+
+    @DeleteMapping("/{id}")
+    @RolesAllowed(Roles.EMPLOYEE)
+    @ResponseStatus(HttpStatus.OK)
+    public void deleteElement(@PathVariable Long id) throws InventoryException {
+        elementService.deleteElement(id);
     }
 
 

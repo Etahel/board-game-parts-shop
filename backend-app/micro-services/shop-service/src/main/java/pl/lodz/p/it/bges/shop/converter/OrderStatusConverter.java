@@ -1,4 +1,4 @@
-package pl.lodz.p.it.bges.shop.util.converter;
+package pl.lodz.p.it.bges.shop.converter;
 
 import org.springframework.stereotype.Component;
 import pl.lodz.p.it.bges.shop.entity.OrderStatus;

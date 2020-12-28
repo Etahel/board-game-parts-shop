@@ -57,10 +57,10 @@ public class ClientDto extends ShopDto<Client> {
     @Override
     public void patchProperties(Client entity) {
         super.patchProperties(entity);
-        if (getFirstName() != null && !getFirstName().isBlank()) {
+        if (getFirstName() != null) {
             entity.setFirstName(getFirstName());
         }
-        if (getLastName() != null && !getLastName().isBlank()) {
+        if (getLastName() != null) {
             entity.setLastName(getLastName());
         }
         if (entity.getDefaultAddress() != null) {
