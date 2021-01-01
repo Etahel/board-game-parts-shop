@@ -30,6 +30,9 @@ public class BoardGameSpecification {
                         for (String name : boardGameCriteria.getTagNames())
                             predicates.add(cb.equal(root.join(BoardGame_.TAGS).get(Tag_.NAME), name));
                     }
+                    if (boardGameCriteria.getTitle() != null) {
+                        predicates.add(cb.like(root.get(BoardGame_.title), "%" + boardGameCriteria.getTitle() + "%"));
+                    }
                 }
 
                 return cb.and(predicates.toArray(Predicate[]::new));

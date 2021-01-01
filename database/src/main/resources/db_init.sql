@@ -46,9 +46,9 @@ create table if not exists business.elements
 
 create table if not exists business.tags
 (
-    id          bigserial   not null,
-    version     bigint      not null default 0,
-    name        varchar(10) not null,
+    id      bigserial   not null,
+    version bigint      not null default 0,
+    name    varchar(30) not null,
     constraint unique_name
         unique (name),
     constraint tags_pkey

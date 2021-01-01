@@ -11,4 +11,5 @@ import java.util.List;
 @NoArgsConstructor
 public class BoardGameCriteria {
     List<String> tagNames;
+    String title;
 }
