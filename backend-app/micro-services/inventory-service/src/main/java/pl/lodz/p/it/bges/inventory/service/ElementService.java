@@ -69,6 +69,7 @@ public class ElementService {
     public void patchStock(Long elementId, StockDto stockDto) throws InventoryException {
         Element element = getElement(elementId);
         stockDto.patchProperties(element.getStock());
+        resizeStock(element.getStock(), stockDto.getStockChange());
     }
 
     public void createElement(Long boardGameId, ElementDto elementDto) throws InventoryException {

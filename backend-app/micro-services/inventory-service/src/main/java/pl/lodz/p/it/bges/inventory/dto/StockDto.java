@@ -1,5 +1,6 @@
 package pl.lodz.p.it.bges.inventory.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
 import lombok.Getter;
 import lombok.Setter;
@@ -15,7 +16,13 @@ public class StockDto extends InventoryDto<Stock> {
     @JsonView({Views.Basic.class})
     private Boolean available;
     @JsonView(Views.Basic.class)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Integer stockChange;
+
+    public StockDto() {
+    }
+
+    ;
 
     public StockDto(Stock stock) {
         super(stock);

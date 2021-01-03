@@ -48,7 +48,7 @@ create table if not exists business.tags
 (
     id      bigserial   not null,
     version bigint      not null default 0,
-    name    varchar(30) not null,
+    name    varchar(20) not null,
     constraint unique_name
         unique (name),
     constraint tags_pkey

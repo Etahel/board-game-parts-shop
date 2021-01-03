@@ -2,6 +2,8 @@ package pl.lodz.p.it.bges.shop.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.dao.OptimisticLockingFailureException;
@@ -21,6 +23,7 @@ public abstract class ShopDto<T extends ShopEntity> implements Dto<T> {
     private Long id;
 
     @JsonView(Views.Version.class)
+    @JsonSerialize(using = ToStringSerializer.class)
     private BigInteger version;
 
 

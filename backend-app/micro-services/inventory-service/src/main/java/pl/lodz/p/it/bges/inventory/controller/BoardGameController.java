@@ -19,6 +19,7 @@ import pl.lodz.p.it.bges.inventory.service.ElementService;
 
 import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
+import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -43,7 +44,7 @@ public class BoardGameController {
     }
 
     @GetMapping("/{id}/elements")
-    @RolesAllowed(Roles.EMPLOYEE)
+    @PermitAll
     @JsonView(Views.List.class)
     public Page<ElementDto> getElements(@PathVariable Long id, Pageable pageable, ElementCriteria elementCriteria) {
         return elementService.getElements(id, pageable, elementCriteria).map(ElementDto::new);
@@ -64,7 +65,7 @@ public class BoardGameController {
     }
 
     @GetMapping("/{id}")
-    @RolesAllowed(Roles.EMPLOYEE)
+    @PermitAll
     @JsonView(Views.Details.class)
     public BoardGameDto getBoardGame(@PathVariable Long id) throws InventoryException {
         return new BoardGameDto(boardGameService.getBoardGame(id));
@@ -93,10 +94,10 @@ public class BoardGameController {
         boardGameService.createTag(tagDto);
     }
 
-    @PatchMapping("/tags/{id}")
+    @PatchMapping(value = "/tags/{id}", produces = "text/plain")
     @RolesAllowed(Roles.EMPLOYEE)
     @ResponseStatus(HttpStatus.OK)
-    public void patchTag(@RequestBody @JsonView(Views.Modify.class) TagDto tagDto, @PathVariable Long id) throws InventoryException {
+    public void patchTag(@RequestBody @JsonView(Views.Modify.class) @Valid TagDto tagDto, @PathVariable Long id) throws InventoryException {
         boardGameService.updateTag(tagDto, id);
     }
 
@@ -107,7 +108,7 @@ public class BoardGameController {
         return new TagDto(boardGameService.getTag(id));
     }
 
-    @DeleteMapping("/tags/{id}")
+    @DeleteMapping(value = "/tags/{id}", produces = "text/plain")
     @RolesAllowed(Roles.EMPLOYEE)
     public void deleteTag(@PathVariable Long id) throws InventoryException {
         boardGameService.deleteTag(id);

@@ -28,6 +28,7 @@ import pl.lodz.p.it.bges.shop.exception.order.ElementChangedException;
 import pl.lodz.p.it.bges.shop.exception.order.ElementNotFoundException;
 import pl.lodz.p.it.bges.shop.exception.order.OrderFinalizedException;
 import pl.lodz.p.it.bges.shop.exception.order.OrderNotFoundException;
+import pl.lodz.p.it.bges.shop.exception.stock.StockUnavailableException;
 
 import java.util.List;
 
@@ -36,7 +37,7 @@ public class ShopExceptionHandler extends ResponseEntityExceptionHandler {
 
     Logger logger = LoggerFactory.getLogger(ShopExceptionHandler.class);
 
-    @ExceptionHandler(value = {ElementChangedException.class, OrderFinalizedException.class
+    @ExceptionHandler(value = {ElementChangedException.class, OrderFinalizedException.class, StockUnavailableException.class
     })
     @ResponseBody
     @ResponseStatus(HttpStatus.CONFLICT)
