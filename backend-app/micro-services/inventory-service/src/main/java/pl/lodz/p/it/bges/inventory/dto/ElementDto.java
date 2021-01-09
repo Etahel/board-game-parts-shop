@@ -34,6 +34,10 @@ public class ElementDto extends InventoryDto<Element> {
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Boolean active;
 
+    @JsonView(Views.Normal.class)
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    private BoardGameDto boardGame;
+
     public ElementDto(Element element) {
         super(element);
     }
@@ -47,6 +51,7 @@ public class ElementDto extends InventoryDto<Element> {
         setElementCategory(entity.getElementCategory());
         setActive(entity.getActive());
         setStock(new StockDto(entity.getStock()));
+        setBoardGame(new BoardGameDto(entity.getBoardGame()));
     }
 
     @Override

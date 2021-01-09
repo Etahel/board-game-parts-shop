@@ -102,7 +102,7 @@ public class BoardGameService {
         }
     }
 
-    public void createBoardGame(BoardGameDto boardGameDto) throws InventoryException {
+    public BoardGame createBoardGame(BoardGameDto boardGameDto) throws InventoryException {
         BoardGame boardGame = new BoardGame();
         boardGameDto.putProperties(boardGame);
         if (boardGameDto.getTags() != null) {
@@ -111,12 +111,12 @@ public class BoardGameService {
                 boardGame.getTags().add(tag);
             }
         }
-        boardGameRepository.save(boardGame);
+        return boardGameRepository.save(boardGame);
     }
 
-    public void updateBoardGame(BoardGameDto boardGameDto, Long id) throws InventoryException {
+    public void putBoardGame(BoardGameDto boardGameDto, Long id) throws InventoryException {
         BoardGame boardGame = getBoardGame(id);
-        boardGameDto.patchProperties(boardGame);
+        boardGameDto.putProperties(boardGame);
         if (boardGameDto.getTags() != null) {
             boardGame.getTags().clear();
             for (String tagName : boardGameDto.getTags()) {

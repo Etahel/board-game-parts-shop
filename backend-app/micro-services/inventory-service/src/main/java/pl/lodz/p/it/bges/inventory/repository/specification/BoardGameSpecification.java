@@ -31,7 +31,7 @@ public class BoardGameSpecification {
                             predicates.add(cb.equal(root.join(BoardGame_.TAGS).get(Tag_.NAME), name));
                     }
                     if (boardGameCriteria.getTitle() != null) {
-                        predicates.add(cb.like(root.get(BoardGame_.title), "%" + boardGameCriteria.getTitle() + "%"));
+                        predicates.add(cb.like(cb.upper(root.get(BoardGame_.title)), "%" + boardGameCriteria.getTitle().toUpperCase() + "%"));
                     }
                 }
 

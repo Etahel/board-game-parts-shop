@@ -6,7 +6,7 @@ create table if not exists business.board_games
     id          bigserial   not null,
     version     bigint      not null default 0,
     description varchar(255),
-    title       varchar(30) not null,
+    title       varchar(50) not null,
     year        integer,
     active      boolean     not null,
     constraint board_games_pkey
@@ -98,7 +98,7 @@ create table if not exists business.orders
 (
     id               bigserial        not null,
     version          bigint,
-    date             date             not null,
+    date             timestamp        not null,
     order_first_name varchar(30)      not null,
     order_last_name  varchar(30)      not null,
     status           varchar(1)       not null,

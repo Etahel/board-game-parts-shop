@@ -11,7 +11,7 @@ import pl.lodz.p.it.bges.shop.entity.Client;
 @Setter
 public class ClientDto extends ShopDto<Client> {
 
-    @JsonView(Views.Internal.class)
+    @JsonView(Views.Basic.class)
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private String username;
 

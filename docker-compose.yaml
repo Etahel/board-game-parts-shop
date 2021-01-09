@@ -55,6 +55,7 @@ services:
     environment:
       - DIPLOMA_PASSWORD
       - CRYPTO_SEED=123123
+      - TZ=Europe/Warsaw
     depends_on:
       - db
   inventory-service:

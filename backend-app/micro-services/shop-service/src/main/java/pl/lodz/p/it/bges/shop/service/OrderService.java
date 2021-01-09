@@ -17,7 +17,7 @@ import pl.lodz.p.it.bges.shop.repository.StockRepository;
 import pl.lodz.p.it.bges.shop.repository.specification.OrderSpecification;
 
 import javax.transaction.Transactional;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 import static org.springframework.data.jpa.domain.Specification.where;
@@ -44,7 +44,7 @@ public class OrderService {
         Order order = new Order();
         orderDto.putProperties(order);
         order.setClient(clientService.getClient(username));
-        order.setDate(LocalDate.now());
+        order.setDate(LocalDateTime.now());
         order.setStatus(OrderStatus.OPEN);
         populateOrderElementsAndExecuteTransaction(order);
         orderRepository.save(order);

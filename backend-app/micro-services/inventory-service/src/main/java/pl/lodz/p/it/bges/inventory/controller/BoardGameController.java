@@ -39,8 +39,9 @@ public class BoardGameController {
     @PostMapping("/{id}/elements")
     @RolesAllowed(Roles.EMPLOYEE)
     @ResponseStatus(HttpStatus.OK)
-    public void postElement(@RequestBody @JsonView(Views.Modify.class) ElementDto elementDto, @PathVariable Long id) throws InventoryException {
-        elementService.createElement(id, elementDto);
+    @JsonView(Views.Details.class)
+    public ElementDto postElement(@RequestBody @JsonView(Views.Modify.class) ElementDto elementDto, @PathVariable Long id) throws InventoryException {
+        return new ElementDto(elementService.createElement(id, elementDto));
     }
 
     @GetMapping("/{id}/elements")
@@ -60,8 +61,9 @@ public class BoardGameController {
     @PostMapping
     @RolesAllowed(Roles.EMPLOYEE)
     @ResponseStatus(HttpStatus.OK)
-    public void postBoardGame(@RequestBody @JsonView(Views.Modify.class) BoardGameDto boardGameDto) throws InventoryException {
-        boardGameService.createBoardGame(boardGameDto);
+    @JsonView(Views.Details.class)
+    public BoardGameDto postBoardGame(@RequestBody @JsonView(Views.Modify.class) BoardGameDto boardGameDto) throws InventoryException {
+        return new BoardGameDto(boardGameService.createBoardGame(boardGameDto));
     }
 
     @GetMapping("/{id}")
@@ -72,11 +74,11 @@ public class BoardGameController {
     }
 
 
-    @PatchMapping("/{id}")
+    @PutMapping("/{id}")
     @RolesAllowed(Roles.EMPLOYEE)
     @ResponseStatus(HttpStatus.OK)
-    public void patchBoardGame(@RequestBody @JsonView(Views.Modify.class) BoardGameDto boardGameDto, @PathVariable Long id) throws InventoryException {
-        boardGameService.updateBoardGame(boardGameDto, id);
+    public void putBoardGame(@RequestBody @JsonView(Views.Modify.class) BoardGameDto boardGameDto, @PathVariable Long id) throws InventoryException {
+        boardGameService.putBoardGame(boardGameDto, id);
     }
     
     @GetMapping("/tags")
@@ -94,7 +96,7 @@ public class BoardGameController {
         boardGameService.createTag(tagDto);
     }
 
-    @PatchMapping(value = "/tags/{id}", produces = "text/plain")
+    @PatchMapping(value = "/tags/{id}")
     @RolesAllowed(Roles.EMPLOYEE)
     @ResponseStatus(HttpStatus.OK)
     public void patchTag(@RequestBody @JsonView(Views.Modify.class) @Valid TagDto tagDto, @PathVariable Long id) throws InventoryException {
@@ -108,7 +110,7 @@ public class BoardGameController {
         return new TagDto(boardGameService.getTag(id));
     }
 
-    @DeleteMapping(value = "/tags/{id}", produces = "text/plain")
+    @DeleteMapping(value = "/tags/{id}")
     @RolesAllowed(Roles.EMPLOYEE)
     public void deleteTag(@PathVariable Long id) throws InventoryException {
         boardGameService.deleteTag(id);

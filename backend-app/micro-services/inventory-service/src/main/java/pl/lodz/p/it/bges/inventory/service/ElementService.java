@@ -5,6 +5,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import pl.lodz.p.it.bges.inventory.criteria.ElementCriteria;
+import pl.lodz.p.it.bges.inventory.criteria.ElementOrderCriteria;
 import pl.lodz.p.it.bges.inventory.dto.ElementDto;
 import pl.lodz.p.it.bges.inventory.dto.StockDto;
 import pl.lodz.p.it.bges.inventory.entity.BoardGame;
@@ -20,6 +21,7 @@ import pl.lodz.p.it.bges.inventory.repository.OrderItemRepository;
 import pl.lodz.p.it.bges.inventory.repository.specification.ElementSpecification;
 
 import javax.transaction.Transactional;
+import java.util.List;
 import java.util.Optional;
 
 import static org.springframework.data.jpa.domain.Specification.where;
@@ -69,16 +71,18 @@ public class ElementService {
     public void patchStock(Long elementId, StockDto stockDto) throws InventoryException {
         Element element = getElement(elementId);
         stockDto.patchProperties(element.getStock());
-        resizeStock(element.getStock(), stockDto.getStockChange());
+        if (stockDto.getStockChange() != null) {
+            resizeStock(element.getStock(), stockDto.getStockChange());
+        }
     }
 
-    public void createElement(Long boardGameId, ElementDto elementDto) throws InventoryException {
+    public Element createElement(Long boardGameId, ElementDto elementDto) throws InventoryException {
         Optional<BoardGame> boardGameOpt = boardGameRepository.findById(boardGameId);
         if (boardGameOpt.isPresent()) {
             Element element = new Element();
             elementDto.putProperties(element);
             element.setBoardGame(boardGameOpt.get());
-            elementRepository.save(element);
+            return elementRepository.save(element);
         } else {
             throw new BoardGameNotFoundException();
         }
@@ -90,6 +94,14 @@ public class ElementService {
             elementRepository.delete(element);
         } else {
             element.setActive(false);
+        }
+    }
+
+    public List<Element> findElementsForOrder(ElementOrderCriteria elementOrderCriteria) {
+        if (elementOrderCriteria.getActive() != null) {
+            return elementRepository.findElementByIdInAndActive(elementOrderCriteria.getIds(), elementOrderCriteria.getActive());
+        } else {
+            return elementRepository.findElementByIdIn(elementOrderCriteria.getIds());
         }
     }
 

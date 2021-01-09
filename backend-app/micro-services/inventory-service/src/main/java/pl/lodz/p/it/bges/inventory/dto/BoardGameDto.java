@@ -58,13 +58,13 @@ public class BoardGameDto extends InventoryDto<BoardGame> {
     @Override
     public void patchProperties(BoardGame entity) {
         super.patchProperties(entity);
-        if (entity.getTitle() != null && !entity.getTitle().isBlank()) {
+        if (getTitle() != null) {
             entity.setTitle(getTitle());
         }
-        if (entity.getDescription() != null && !entity.getDescription().isBlank()) {
+        if (getDescription() != null) {
             entity.setDescription(getDescription());
         }
-        if (entity.getYear() != null) {
+        if (getYear() != null) {
             entity.setYear(getYear());
         }
     }

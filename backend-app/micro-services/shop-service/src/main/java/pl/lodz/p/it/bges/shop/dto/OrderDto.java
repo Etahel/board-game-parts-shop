@@ -1,15 +1,18 @@
 package pl.lodz.p.it.bges.shop.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.Getter;
 import lombok.Setter;
 import pl.lodz.p.it.bges.core.definitions.Views;
+import pl.lodz.p.it.bges.shop.dto.serializer.BasicSerializer;
 import pl.lodz.p.it.bges.shop.entity.Order;
 import pl.lodz.p.it.bges.shop.entity.OrderItem;
 import pl.lodz.p.it.bges.shop.entity.OrderStatus;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,14 +22,16 @@ public class OrderDto extends ShopDto<Order> {
 
     @JsonView(Views.Basic.class)
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    private LocalDate date;
-    @JsonView(Views.Internal.class)
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime date;
+    @JsonView(Views.Normal.class)
+    @JsonSerialize(using = BasicSerializer.class)
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private ClientDto client;
     @JsonView(Views.Basic.class)
-    private String orderFirstName;
+    private String firstName;
     @JsonView(Views.Basic.class)
-    private String orderLastName;
+    private String lastName;
     @JsonView(Views.Normal.class)
     private AddressDto address;
     @JsonView(Views.Normal.class)
@@ -51,8 +56,8 @@ public class OrderDto extends ShopDto<Order> {
     public void fillProperties(Order entity) {
         super.fillProperties(entity);
         setDate(entity.getDate());
-        setOrderFirstName(entity.getOrderFirstName());
-        setOrderLastName(entity.getOrderLastName());
+        setFirstName(entity.getOrderFirstName());
+        setLastName(entity.getOrderLastName());
         setStatus(entity.getStatus());
         setValue(entity.getValue());
         if (entity.getClient() != null) {
@@ -73,8 +78,8 @@ public class OrderDto extends ShopDto<Order> {
     @Override
     public void putProperties(Order entity) {
         super.putProperties(entity);
-        entity.setOrderFirstName(getOrderFirstName());
-        entity.setOrderLastName(getOrderLastName());
+        entity.setOrderFirstName(getFirstName());
+        entity.setOrderLastName(getLastName());
         if (getAddress() != null) {
             getAddress().putProperties(entity.getAddress());
         }
