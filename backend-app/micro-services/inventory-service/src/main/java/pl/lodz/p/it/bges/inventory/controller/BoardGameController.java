@@ -40,7 +40,7 @@ public class BoardGameController {
     @RolesAllowed(Roles.EMPLOYEE)
     @ResponseStatus(HttpStatus.OK)
     @JsonView(Views.Details.class)
-    public ElementDto postElement(@RequestBody @JsonView(Views.Modify.class) ElementDto elementDto, @PathVariable Long id) throws InventoryException {
+    public ElementDto postElement(@RequestBody @JsonView(Views.Modify.class) @Valid ElementDto elementDto, @PathVariable Long id) throws InventoryException {
         return new ElementDto(elementService.createElement(id, elementDto));
     }
 
@@ -62,7 +62,7 @@ public class BoardGameController {
     @RolesAllowed(Roles.EMPLOYEE)
     @ResponseStatus(HttpStatus.OK)
     @JsonView(Views.Details.class)
-    public BoardGameDto postBoardGame(@RequestBody @JsonView(Views.Modify.class) BoardGameDto boardGameDto) throws InventoryException {
+    public BoardGameDto postBoardGame(@RequestBody @JsonView(Views.Modify.class) @Valid BoardGameDto boardGameDto) throws InventoryException {
         return new BoardGameDto(boardGameService.createBoardGame(boardGameDto));
     }
 
@@ -77,13 +77,12 @@ public class BoardGameController {
     @PutMapping("/{id}")
     @RolesAllowed(Roles.EMPLOYEE)
     @ResponseStatus(HttpStatus.OK)
-    public void putBoardGame(@RequestBody @JsonView(Views.Modify.class) BoardGameDto boardGameDto, @PathVariable Long id) throws InventoryException {
+    public void putBoardGame(@RequestBody @JsonView(Views.Modify.class) @Valid BoardGameDto boardGameDto, @PathVariable Long id) throws InventoryException {
         boardGameService.putBoardGame(boardGameDto, id);
     }
     
     @GetMapping("/tags")
     @PermitAll
-    //Todo: zweryfikowac uprawnienia
     @JsonView(Views.List.class)
     public List<TagDto> getTags() {
         return boardGameService.getTags().stream().map(TagDto::new).collect(Collectors.toList());
@@ -92,7 +91,7 @@ public class BoardGameController {
     @PostMapping("/tags")
     @RolesAllowed(Roles.EMPLOYEE)
     @ResponseStatus(HttpStatus.OK)
-    public void postTag(@RequestBody @JsonView(Views.Modify.class) TagDto tagDto) throws InventoryException {
+    public void postTag(@RequestBody @JsonView(Views.Modify.class) @Valid TagDto tagDto) throws InventoryException {
         boardGameService.createTag(tagDto);
     }
 

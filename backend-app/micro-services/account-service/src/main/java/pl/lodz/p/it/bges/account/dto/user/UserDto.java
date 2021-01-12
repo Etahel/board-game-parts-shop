@@ -10,7 +10,9 @@ import pl.lodz.p.it.bges.account.dto.AccountDto;
 import pl.lodz.p.it.bges.account.dto.Views;
 
 import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 import java.util.ArrayList;
 
 @Getter
@@ -24,7 +26,8 @@ public class UserDto extends AccountDto<UserRepresentation> {
     public UserDto() {
     }
 
-    @NotEmpty
+    @NotBlank
+    @Size(min = 3, max = 15)
     @JsonView(value = {Views.User.class})
     private String username;
     @NotEmpty

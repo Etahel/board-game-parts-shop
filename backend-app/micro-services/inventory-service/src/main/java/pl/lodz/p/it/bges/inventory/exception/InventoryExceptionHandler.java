@@ -44,23 +44,6 @@ public class InventoryExceptionHandler extends ResponseEntityExceptionHandler {
         return new ErrorDto(ex);
     }
 
-    //
-//    @ExceptionHandler(value
-//            = {})
-//    @ResponseBody
-//    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-//    protected ErrorDto handleInternalError(InventoryException ex) {
-//        return new ErrorDto(ex);
-//    }
-//
-//    @ExceptionHandler(value
-//            = {})
-//    @ResponseBody
-//    @ResponseStatus(HttpStatus.BAD_REQUEST)
-//    protected ErrorDto handleBadRequest(InventoryException ex) {
-//        return new ErrorDto(ex);
-//    }
-//
     @ExceptionHandler(value
             = {ElementNotFoundException.class, BoardGameNotFoundException.class, TagNotFoundException.class})
     @ResponseBody

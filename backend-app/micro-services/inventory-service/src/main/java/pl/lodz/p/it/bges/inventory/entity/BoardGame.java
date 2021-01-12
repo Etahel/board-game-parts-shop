@@ -35,6 +35,20 @@ public class BoardGame extends InventoryEntity {
     @Column(name = "active")
     private Boolean active = Boolean.TRUE;
 
+    @Column(name = "min_players")
+    private Integer minPlayers;
 
+    @Column(name = "max_players")
+    private Integer maxPlayers;
+
+    @Column(name = "author")
+    private String author;
+
+    @Column(name = "photo_url")
+    private String photoUrl;
+
+    @JoinColumn(name = "publisher_id")
+    @ManyToOne
+    private Publisher publisher;
 }
 

@@ -31,15 +31,15 @@ public class OrderController {
     @PostMapping("/me")
     @RolesAllowed(Roles.USER)
     @ResponseStatus(HttpStatus.OK)
-    public void createOrder(@JsonView(Views.Modify.class) @Valid @RequestBody OrderDto orderDto,
-                            Principal principal) throws ShopException {
-        orderService.createOrder(orderDto, principal.getName());
+    public OrderDto createOrder(@JsonView(Views.Modify.class) @Valid @RequestBody OrderDto orderDto,
+                                Principal principal) throws ShopException {
+        return new OrderDto(orderService.createOrder(orderDto, principal.getName()));
     }
 
     @GetMapping("/me")
     @RolesAllowed(Roles.USER)
     @JsonView(Views.List.class)
-    public Page<OrderDto> getMyOrders(Pageable pageable, Principal principal, @Valid OrderCriteria orderCriteria) {
+    public Page<OrderDto> getMyOrders(Pageable pageable, Principal principal, OrderCriteria orderCriteria) {
         return orderService.getClientOrders(principal.getName(), pageable, orderCriteria).map(OrderDto::new);
     }
 
@@ -51,7 +51,7 @@ public class OrderController {
     }
 
     @PutMapping("/me/{id}/cancellation")
-    @RolesAllowed(Roles.USER)
+    @RolesAllowed({Roles.USER, Roles.EMPLOYEE})
     @ResponseStatus(HttpStatus.OK)
     public void cancelOrder(Principal principal, @PathVariable("id") Long id) throws ShopException {
         orderService.cancelClientOrder(principal.getName(), id);
@@ -68,7 +68,7 @@ public class OrderController {
     @GetMapping
     @RolesAllowed(Roles.EMPLOYEE)
     @JsonView(Views.List.class)
-    public Page<OrderDto> getOrders(Pageable pageable, @Valid OrderCriteria orderCriteria) {
+    public Page<OrderDto> getOrders(Pageable pageable, OrderCriteria orderCriteria) {
         return orderService.getOrders(pageable, orderCriteria).map(OrderDto::new);
     }
 
@@ -83,7 +83,7 @@ public class OrderController {
     @RolesAllowed(Roles.EMPLOYEE)
     @JsonView(Views.List.class)
     public Page<OrderDto> getClientOrders(@PathVariable("clientId") Long clientId,
-                                          @Valid OrderCriteria orderCriteria, Pageable pageable) throws ShopException {
+                                          OrderCriteria orderCriteria, Pageable pageable) throws ShopException {
         return orderService.getClientOrders(clientId, pageable, orderCriteria).map(OrderDto::new);
     }
 

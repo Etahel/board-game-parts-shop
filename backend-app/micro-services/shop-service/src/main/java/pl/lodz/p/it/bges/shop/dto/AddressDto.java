@@ -14,15 +14,17 @@ import javax.validation.constraints.Size;
 @Setter
 public class AddressDto extends ShopDto<Address> {
 
-    @NotEmpty
     @Size(max = 50)
     @JsonView(Views.Basic.class)
     private String city;
     @JsonView(Views.Basic.class)
+    @Size(max = 50)
     private String street;
     @JsonView(Views.Basic.class)
+    @Size(max = 10)
     private String houseNo;
     @JsonView(Views.Basic.class)
+    @Size(max = 10)
     private String flatNo;
 
     @NotEmpty

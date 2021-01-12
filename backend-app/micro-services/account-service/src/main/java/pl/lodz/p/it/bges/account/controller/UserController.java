@@ -29,12 +29,6 @@ public class UserController {
 
     private final UserService userService;
 
-    @GetMapping(path = "/test")
-    @RolesAllowed(Roles.USER)
-    public String test(Principal principal) {
-        return principal.getName();
-    }
-
     @PostMapping(path = "/register")
     @PermitAll
     @ResponseStatus(value = HttpStatus.CREATED)
@@ -43,7 +37,7 @@ public class UserController {
     }
 
     @GetMapping(path = "/me")
-    @RolesAllowed(Roles.USER)
+    @RolesAllowed({Roles.USER, Roles.EMPLOYEE})
     @JsonView(value = Views.User.class)
     public UserDto getMe(Principal principal) throws AccountException {
         return new UserDto(userService.getUser(principal.getName()));
@@ -64,7 +58,7 @@ public class UserController {
     }
 
     @PostMapping(path = "/change-email")
-    @RolesAllowed(Roles.USER)
+    @RolesAllowed({Roles.USER, Roles.EMPLOYEE})
     @ResponseStatus(value = HttpStatus.OK)
     public void changeEmail(Principal principal, @QueryParam("email") @Email @NotEmpty String email) throws AccountException {
         userService.changeEmail(principal.getName(), email);

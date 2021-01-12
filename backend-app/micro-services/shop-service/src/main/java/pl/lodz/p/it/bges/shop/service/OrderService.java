@@ -40,14 +40,14 @@ public class OrderService {
         this.stockRepository = stockRepository;
     }
 
-    public void createOrder(OrderDto orderDto, String username) throws ShopException {
+    public Order createOrder(OrderDto orderDto, String username) throws ShopException {
         Order order = new Order();
         orderDto.putProperties(order);
         order.setClient(clientService.getClient(username));
         order.setDate(LocalDateTime.now());
         order.setStatus(OrderStatus.OPEN);
         populateOrderElementsAndExecuteTransaction(order);
-        orderRepository.save(order);
+        return orderRepository.save(order);
     }
 
     public Page<Order> getClientOrders(String username, Pageable pageable, OrderCriteria orderCriteria) {

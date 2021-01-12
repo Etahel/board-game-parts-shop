@@ -7,6 +7,8 @@ import lombok.Setter;
 import pl.lodz.p.it.bges.core.definitions.Views;
 import pl.lodz.p.it.bges.shop.entity.Client;
 
+import javax.validation.constraints.Size;
+
 @Getter
 @Setter
 public class ClientDto extends ShopDto<Client> {
@@ -16,8 +18,10 @@ public class ClientDto extends ShopDto<Client> {
     private String username;
 
     @JsonView(Views.Basic.class)
+    @Size(max = 30)
     private String firstName;
     @JsonView(Views.Basic.class)
+    @Size(max = 30)
     private String lastName;
     @JsonView(Views.Normal.class)
     private AddressDto address;

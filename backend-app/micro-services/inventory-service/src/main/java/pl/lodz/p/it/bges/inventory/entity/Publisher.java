@@ -10,10 +10,9 @@ import javax.persistence.Table;
 @Setter
 @Getter
 @Entity
-@Table(name = "tags")
-public class Tag extends InventoryEntity {
+@Table(name = "publishers")
+public class Publisher extends InventoryEntity {
 
     @Column(name = "name", nullable = false)
     private String name;
-
 }

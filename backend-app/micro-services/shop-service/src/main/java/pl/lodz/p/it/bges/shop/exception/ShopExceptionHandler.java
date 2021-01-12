@@ -45,23 +45,6 @@ public class ShopExceptionHandler extends ResponseEntityExceptionHandler {
         return new ErrorDto(ex);
     }
 
-    //
-//    @ExceptionHandler(value
-//            = {})
-//    @ResponseBody
-//    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-//    protected ErrorDto handleInternalError(ShopException ex) {
-//        return new ErrorDto(ex);
-//    }
-//
-//    @ExceptionHandler(value
-//            = {})
-//    @ResponseBody
-//    @ResponseStatus(HttpStatus.BAD_REQUEST)
-//    protected ErrorDto handleBadRequest(ShopException ex) {
-//        return new ErrorDto(ex);
-//    }
-//
     @ExceptionHandler(value
             = {ElementNotFoundException.class, OrderNotFoundException.class})
     @ResponseBody
@@ -70,8 +53,6 @@ public class ShopExceptionHandler extends ResponseEntityExceptionHandler {
         return new ErrorDto(ex);
     }
 
-
-    // Default spring validation exception
     @Override
     @NonNull
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, @NonNull HttpHeaders headers, @NonNull HttpStatus status, @NonNull WebRequest request) {

@@ -7,16 +7,17 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import pl.lodz.p.it.bges.inventory.criteria.BoardGameCriteria;
 import pl.lodz.p.it.bges.inventory.dto.BoardGameDto;
+import pl.lodz.p.it.bges.inventory.dto.PublisherDto;
 import pl.lodz.p.it.bges.inventory.dto.TagDto;
 import pl.lodz.p.it.bges.inventory.entity.BoardGame;
 import pl.lodz.p.it.bges.inventory.entity.Element;
+import pl.lodz.p.it.bges.inventory.entity.Publisher;
 import pl.lodz.p.it.bges.inventory.entity.Tag;
 import pl.lodz.p.it.bges.inventory.exception.InventoryException;
-import pl.lodz.p.it.bges.inventory.exception.boardgame.BoardGameNotFoundException;
-import pl.lodz.p.it.bges.inventory.exception.boardgame.TagExistsException;
-import pl.lodz.p.it.bges.inventory.exception.boardgame.TagNotFoundException;
+import pl.lodz.p.it.bges.inventory.exception.boardgame.*;
 import pl.lodz.p.it.bges.inventory.repository.BoardGameRepository;
 import pl.lodz.p.it.bges.inventory.repository.OrderItemRepository;
+import pl.lodz.p.it.bges.inventory.repository.PublisherRepository;
 import pl.lodz.p.it.bges.inventory.repository.TagsRepository;
 import pl.lodz.p.it.bges.inventory.repository.specification.BoardGameSpecification;
 
@@ -34,13 +35,63 @@ public class BoardGameService {
     private BoardGameRepository boardGameRepository;
     private ElementService elementService;
     private OrderItemRepository orderItemRepository;
+    private PublisherRepository publisherRepository;
 
     @Autowired
-    BoardGameService(TagsRepository tagsRepository, BoardGameRepository boardGameRepository, ElementService elementService, OrderItemRepository orderItemRepository) {
+    BoardGameService(TagsRepository tagsRepository, BoardGameRepository boardGameRepository, ElementService elementService,
+                     OrderItemRepository orderItemRepository, PublisherRepository publisherRepository) {
         this.tagsRepository = tagsRepository;
         this.boardGameRepository = boardGameRepository;
         this.orderItemRepository = orderItemRepository;
         this.elementService = elementService;
+        this.publisherRepository = publisherRepository;
+
+    }
+
+    public void createPublisher(PublisherDto publisherDto) throws InventoryException {
+        if (publisherRepository.existsByName(publisherDto.getName())) {
+            throw new PublisherExistsException();
+        } else {
+            Publisher publisher = new Publisher();
+            publisherDto.putProperties(publisher);
+            publisherRepository.save(publisher);
+        }
+    }
+
+    public List<Publisher> getPublishers() {
+        return publisherRepository.findAll(Sort.by(Sort.Direction.ASC, "name"));
+    }
+
+    public Publisher getPublisher(Long id) throws InventoryException {
+        Optional<Publisher> publisherOpt = publisherRepository.findById(id);
+        if (publisherOpt.isPresent()) {
+            return publisherOpt.get();
+        } else {
+            throw new PublisherNotFoundException();
+        }
+    }
+
+    public Publisher getPublisher(String name) throws InventoryException {
+        Optional<Publisher> publisherOpt = publisherRepository.findByName(name);
+        if (publisherOpt.isPresent()) {
+            return publisherOpt.get();
+        } else {
+            throw new PublisherNotFoundException();
+        }
+    }
+
+    public void updatePublisher(PublisherDto publisherDto, Long id) throws InventoryException {
+        publisherDto.patchProperties(getPublisher(id));
+    }
+
+    public void deletePublisher(Long id) throws InventoryException {
+        Publisher publisher = getPublisher(id);
+        List<BoardGame> boardGames = boardGameRepository.findAllByPublisher(publisher);
+        for (BoardGame boardGame : boardGames) {
+            boardGame.setPublisher(null);
+        }
+        publisherRepository.delete(publisher);
+
     }
 
     public void createTag(TagDto tagDto) throws InventoryException {
@@ -131,7 +182,7 @@ public class BoardGameService {
         if (boardGame.getElements().isEmpty()) {
             boardGameRepository.delete(boardGame);
         } else {
-            boardGame.getElements().removeIf((element -> orderItemRepository.existsByElementId(element.getId())));
+            boardGame.getElements().removeIf((element -> !orderItemRepository.existsByElementId(element.getId())));
             for (Element element : boardGame.getElements()) {
                 element.setActive(false);
             }

@@ -1,16 +1,35 @@
 CREATE SCHEMA IF NOT EXISTS auth;
 CREATE SCHEMA IF NOT EXISTS business;
 
+create table if not exists business.publishers
+(
+    id      bigserial   not null,
+    version bigint      not null default 0,
+    name    varchar(30) not null,
+    constraint publishers_unique_name
+        unique (name),
+    constraint publishers_pkey
+        primary key (id)
+);
+
 create table if not exists business.board_games
 (
-    id          bigserial   not null,
-    version     bigint      not null default 0,
-    description varchar(255),
-    title       varchar(50) not null,
-    year        integer,
-    active      boolean     not null,
+    id           bigserial   not null,
+    version      bigint      not null default 0,
+    description  varchar(500),
+    photo_url    varchar(2048),
+    title        varchar(30) not null,
+    author       varchar(60),
+    year         integer,
+    min_players  integer,
+    max_players  integer,
+    active       boolean     not null,
+    publisher_id bigint,
     constraint board_games_pkey
-        primary key (id)
+        primary key (id),
+    constraint fk_boardgames_publishers
+        foreign key (publisher_id) references business.publishers
+
 );
 
 create table if not exists business.stock
@@ -27,7 +46,8 @@ create table if not exists business.elements
 (
     id            bigserial        not null,
     version       bigint           not null default 0,
-    description   varchar(255),
+    description   varchar(500),
+    photo_url     varchar(2048),
     name          varchar(30)      not null,
     price         double precision not null,
     category      varchar(1)       not null,
@@ -48,12 +68,13 @@ create table if not exists business.tags
 (
     id      bigserial   not null,
     version bigint      not null default 0,
-    name    varchar(20) not null,
-    constraint unique_name
+    name    varchar(15) not null,
+    constraint tags_unique_name
         unique (name),
     constraint tags_pkey
         primary key (id)
 );
+
 
 create table if not exists business.boardgames_tags
 (
@@ -64,6 +85,7 @@ create table if not exists business.boardgames_tags
     constraint fk_bgtags_boardgames
         foreign key (board_game_id) references business.board_games
 );
+
 
 create table if not exists business.addresses
 (
@@ -80,12 +102,12 @@ create table if not exists business.addresses
 
 create table if not exists business.clients
 (
-    id         bigserial    not null,
+    id         bigserial   not null,
     version    bigint,
     first_name varchar(30),
     last_name  varchar(30),
-    username   varchar(255) not null,
-    address_id bigint       not null,
+    username   varchar(15) not null,
+    address_id bigint      not null,
     constraint clients_pkey
         primary key (id),
     constraint unique_username

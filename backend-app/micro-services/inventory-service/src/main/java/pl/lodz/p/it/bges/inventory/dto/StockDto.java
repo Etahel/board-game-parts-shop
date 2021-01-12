@@ -7,11 +7,14 @@ import lombok.Setter;
 import pl.lodz.p.it.bges.core.definitions.Views;
 import pl.lodz.p.it.bges.inventory.entity.Stock;
 
+import javax.validation.constraints.Min;
+
 @Getter
 @Setter
 public class StockDto extends InventoryDto<Stock> {
 
     @JsonView(Views.Basic.class)
+    @Min(0)
     private Integer stockSize;
     @JsonView({Views.Basic.class})
     private Boolean available;

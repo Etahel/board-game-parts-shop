@@ -20,6 +20,9 @@ public class Element extends InventoryEntity {
     @Column(name = "price", nullable = false)
     private Double price;
 
+    @Column(name = "photo_url")
+    private String photoUrl;
+
     @JoinColumn(name = "stock_id", nullable = false, unique = true)
     @OneToOne(cascade = CascadeType.PERSIST)
     private Stock stock = new Stock();

@@ -32,7 +32,7 @@ public class ElementController {
     @PatchMapping("/{id}/stock")
     @RolesAllowed(Roles.EMPLOYEE)
     @ResponseStatus(HttpStatus.OK)
-    public void patchStock(@PathVariable Long id, @RequestBody @JsonView(Views.Modify.class) StockDto stockDto) throws InventoryException {
+    public void patchStock(@PathVariable Long id, @RequestBody @JsonView(Views.Modify.class) @Valid StockDto stockDto) throws InventoryException {
         elementService.patchStock(id, stockDto);
     }
 
@@ -46,7 +46,7 @@ public class ElementController {
     @PatchMapping("/{id}")
     @RolesAllowed(Roles.EMPLOYEE)
     @ResponseStatus(HttpStatus.OK)
-    public void patchElement(@PathVariable Long id, @RequestBody @JsonView(Views.Modify.class) ElementDto elementDto) throws InventoryException {
+    public void patchElement(@PathVariable Long id, @RequestBody @JsonView(Views.Modify.class) @Valid ElementDto elementDto) throws InventoryException {
         elementService.patchElement(id, elementDto);
     }
 
@@ -59,6 +59,7 @@ public class ElementController {
 
     @GetMapping
     @RolesAllowed(Roles.USER)
+    @JsonView(Views.Details.class)
     public List<ElementDto> getElements(@Valid ElementOrderCriteria elementOrderCriteria) {
         return elementService.findElementsForOrder(elementOrderCriteria).stream().map(ElementDto::new).collect(Collectors.toList());
     }

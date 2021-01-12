@@ -5,42 +5,40 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import pl.lodz.p.it.bges.core.definitions.Views;
-import pl.lodz.p.it.bges.inventory.entity.Tag;
+import pl.lodz.p.it.bges.inventory.entity.Publisher;
 
 import javax.validation.constraints.Size;
-
 
 @Getter
 @Setter
 @NoArgsConstructor
-public class TagDto extends InventoryDto<Tag> {
+public class PublisherDto extends InventoryDto<Publisher> {
 
     @JsonView(Views.Basic.class)
-    @Size(min = 1, max = 15)
+    @Size(min = 1, max = 30)
     private String name;
 
-    public TagDto(Tag tag) {
-        super(tag);
+    public PublisherDto(Publisher publisher) {
+        super(publisher);
     }
 
     @Override
-    public void fillProperties(Tag entity) {
+    public void fillProperties(Publisher entity) {
         super.fillProperties(entity);
         setName(entity.getName());
     }
 
     @Override
-    public void putProperties(Tag entity) {
+    public void putProperties(Publisher entity) {
         super.putProperties(entity);
         entity.setName(getName());
     }
 
     @Override
-    public void patchProperties(Tag entity) {
+    public void patchProperties(Publisher entity) {
         super.patchProperties(entity);
         if (getName() != null) {
             entity.setName(getName());
         }
     }
 }
-

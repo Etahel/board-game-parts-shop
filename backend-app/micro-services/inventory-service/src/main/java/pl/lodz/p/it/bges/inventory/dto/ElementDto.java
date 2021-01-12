@@ -9,18 +9,24 @@ import pl.lodz.p.it.bges.core.definitions.Views;
 import pl.lodz.p.it.bges.inventory.entity.Element;
 import pl.lodz.p.it.bges.inventory.entity.ElementCategory;
 
+import javax.validation.constraints.Min;
+import javax.validation.constraints.Size;
+
 @Getter
 @Setter
 @NoArgsConstructor
 public class ElementDto extends InventoryDto<Element> {
 
     @JsonView(Views.Basic.class)
+    @Size(min = 1, max = 30)
     private String name;
 
     @JsonView(Views.Normal.class)
+    @Size(max = 500)
     private String description;
 
     @JsonView(Views.Basic.class)
+    @Min(0)
     private Double price;
 
     @JsonView(Views.Normal.class)
@@ -28,6 +34,7 @@ public class ElementDto extends InventoryDto<Element> {
     private StockDto stock;
 
     @JsonView(Views.Basic.class)
+    @Size(min = 1, max = 1)
     private ElementCategory elementCategory;
 
     @JsonView(Views.Normal.class)
@@ -37,6 +44,9 @@ public class ElementDto extends InventoryDto<Element> {
     @JsonView(Views.Normal.class)
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private BoardGameDto boardGame;
+
+    @Size(max = 2048)
+    private String photoUrl;
 
     public ElementDto(Element element) {
         super(element);
@@ -52,6 +62,7 @@ public class ElementDto extends InventoryDto<Element> {
         setActive(entity.getActive());
         setStock(new StockDto(entity.getStock()));
         setBoardGame(new BoardGameDto(entity.getBoardGame()));
+        setPhotoUrl(entity.getPhotoUrl());
     }
 
     @Override
@@ -61,15 +72,16 @@ public class ElementDto extends InventoryDto<Element> {
         entity.setDescription(getDescription());
         entity.setPrice(getPrice());
         entity.setElementCategory(getElementCategory());
+        entity.setPhotoUrl(getPhotoUrl());
     }
 
     @Override
     public void patchProperties(Element entity) {
         super.patchProperties(entity);
-        if (getName() != null && !getName().isBlank()) {
+        if (getName() != null) {
             entity.setName(getName());
         }
-        if (getDescription() != null && !getDescription().isBlank()) {
+        if (getDescription() != null) {
             entity.setDescription(getDescription());
         }
         if (getPrice() != null) {
@@ -77,6 +89,9 @@ public class ElementDto extends InventoryDto<Element> {
         }
         if (getElementCategory() != null) {
             entity.setElementCategory(getElementCategory());
+        }
+        if (getPhotoUrl() != null) {
+            entity.setPhotoUrl(getPhotoUrl());
         }
     }
 }

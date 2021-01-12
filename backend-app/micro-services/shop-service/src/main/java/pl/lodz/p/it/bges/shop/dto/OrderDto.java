@@ -12,6 +12,7 @@ import pl.lodz.p.it.bges.shop.entity.Order;
 import pl.lodz.p.it.bges.shop.entity.OrderItem;
 import pl.lodz.p.it.bges.shop.entity.OrderStatus;
 
+import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,8 +30,10 @@ public class OrderDto extends ShopDto<Order> {
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private ClientDto client;
     @JsonView(Views.Basic.class)
+    @Size(max = 30)
     private String firstName;
     @JsonView(Views.Basic.class)
+    @Size(max = 30)
     private String lastName;
     @JsonView(Views.Normal.class)
     private AddressDto address;
