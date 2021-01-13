@@ -12,6 +12,7 @@ import pl.lodz.p.it.bges.inventory.criteria.BoardGameCriteria;
 import pl.lodz.p.it.bges.inventory.criteria.ElementCriteria;
 import pl.lodz.p.it.bges.inventory.dto.BoardGameDto;
 import pl.lodz.p.it.bges.inventory.dto.ElementDto;
+import pl.lodz.p.it.bges.inventory.dto.PublisherDto;
 import pl.lodz.p.it.bges.inventory.dto.TagDto;
 import pl.lodz.p.it.bges.inventory.exception.InventoryException;
 import pl.lodz.p.it.bges.inventory.service.BoardGameService;
@@ -120,4 +121,39 @@ public class BoardGameController {
     public void deleteBoardGame(@PathVariable Long id) throws InventoryException {
         boardGameService.deleteBoardGame(id);
     }
+
+    @GetMapping("/publishers")
+    @PermitAll
+    @JsonView(Views.List.class)
+    public List<PublisherDto> getPublishers() {
+        return boardGameService.getPublishers().stream().map(PublisherDto::new).collect(Collectors.toList());
+    }
+
+    @PostMapping("/publishers")
+    @RolesAllowed(Roles.EMPLOYEE)
+    @ResponseStatus(HttpStatus.OK)
+    public void postPublisher(@RequestBody @JsonView(Views.Modify.class) @Valid PublisherDto publisherDto) throws InventoryException {
+        boardGameService.createPublisher(publisherDto);
+    }
+
+    @PatchMapping(value = "/publishers/{id}")
+    @RolesAllowed(Roles.EMPLOYEE)
+    @ResponseStatus(HttpStatus.OK)
+    public void patchPublisher(@RequestBody @JsonView(Views.Modify.class) @Valid PublisherDto publisherDto, @PathVariable Long id) throws InventoryException {
+        boardGameService.updatePublisher(publisherDto, id);
+    }
+
+    @GetMapping("/publishers/{id}")
+    @PermitAll
+    @JsonView(Views.Details.class)
+    public PublisherDto getPublisher(@PathVariable Long id) throws InventoryException {
+        return new PublisherDto(boardGameService.getPublisher(id));
+    }
+
+    @DeleteMapping(value = "/publishers/{id}")
+    @RolesAllowed(Roles.EMPLOYEE)
+    public void deletePublisher(@PathVariable Long id) throws InventoryException {
+        boardGameService.deletePublisher(id);
+    }
+
 }

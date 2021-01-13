@@ -162,6 +162,11 @@ public class BoardGameService {
                 boardGame.getTags().add(tag);
             }
         }
+
+        if (boardGameDto.getPublisher() != null) {
+            Publisher publisher = getPublisher(boardGameDto.getPublisher());
+            boardGame.setPublisher(publisher);
+        }
         return boardGameRepository.save(boardGame);
     }
 
@@ -175,6 +180,12 @@ public class BoardGameService {
                 boardGame.getTags().add(tag);
             }
         }
+
+        if (boardGameDto.getPublisher() != null) {
+            Publisher publisher = getPublisher(boardGameDto.getPublisher());
+            boardGame.setPublisher(publisher);
+        }
+
     }
 
     public void deleteBoardGame(Long id) throws InventoryException {
