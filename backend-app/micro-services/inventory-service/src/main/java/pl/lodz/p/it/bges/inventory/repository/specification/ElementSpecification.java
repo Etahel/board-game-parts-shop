@@ -23,6 +23,15 @@ public class ElementSpecification {
                 if (elementCriteria == null) {
                     return cb.conjunction();
                 } else {
+
+                    if (elementCriteria.getName() != null) {
+                        predicates.add(cb.like(cb.upper(root.get(Element_.name)), "%" + elementCriteria.getName().toUpperCase() + "%"));
+                    }
+
+                    if (elementCriteria.getDescription() != null) {
+                        predicates.add(cb.like(cb.upper(root.get(Element_.description)), "%" + elementCriteria.getDescription().toUpperCase() + "%"));
+                    }
+
                     if (elementCriteria.getElementCategory() != null) {
                         predicates.add(cb.equal(root.get(Element_.ELEMENT_CATEGORY), elementCriteria.getElementCategory()));
                     }

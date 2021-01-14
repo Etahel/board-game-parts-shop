@@ -25,7 +25,7 @@ public class OrderDto extends ShopDto<Order> {
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime date;
-    @JsonView(Views.Normal.class)
+    @JsonView(Views.Basic.class)
     @JsonSerialize(using = BasicSerializer.class)
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private ClientDto client;

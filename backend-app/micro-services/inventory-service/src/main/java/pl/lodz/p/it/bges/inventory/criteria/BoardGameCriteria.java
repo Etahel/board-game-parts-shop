@@ -12,4 +12,9 @@ import java.util.List;
 public class BoardGameCriteria {
     List<String> tagNames;
     String title;
+    String year;
+    String minPlayers;
+    String maxPlayers;
+    String author;
+    String publisher;
 }

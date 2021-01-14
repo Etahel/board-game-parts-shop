@@ -30,6 +30,25 @@ public class OrderSpecification {
                     if (orderCriteria.getStatus() != null) {
                         predicates.add(criteriaBuilder.equal(root.get(Order_.status), orderCriteria.getStatus()));
                     }
+                    if (orderCriteria.getDateStart() != null) {
+                        predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get(Order_.DATE), orderCriteria.getDateStart().atStartOfDay()));
+                    }
+                    if (orderCriteria.getDateEnd() != null) {
+                        predicates.add(criteriaBuilder.lessThanOrEqualTo(root.get(Order_.DATE), orderCriteria.getDateEnd().atTime(23, 59, 59)));
+                    }
+                    if (orderCriteria.getMinValue() != null) {
+                        predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get(Order_.value), orderCriteria.getMinValue()));
+                    }
+                    if (orderCriteria.getMaxValue() != null) {
+                        predicates.add(criteriaBuilder.lessThanOrEqualTo(root.get(Order_.value), orderCriteria.getMaxValue()));
+                    }
+                    if (orderCriteria.getUsername() != null) {
+                        predicates.add(criteriaBuilder.like(criteriaBuilder.upper(root.join(Order_.CLIENT).get(Client_.USERNAME)), "%" + orderCriteria.getUsername().toUpperCase() + "%"));
+                    }
+                    if (orderCriteria.getLastName() != null) {
+                        predicates.add(criteriaBuilder.like(criteriaBuilder.upper(root.join(Order_.CLIENT).get(Client_.LAST_NAME)), "%" + orderCriteria.getLastName().toUpperCase() + "%"));
+                    }
+
                 }
 
                 return criteriaBuilder.and(predicates.toArray(Predicate[]::new));

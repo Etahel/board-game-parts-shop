@@ -10,4 +10,6 @@ import pl.lodz.p.it.bges.inventory.entity.ElementCategory;
 @NoArgsConstructor
 public class ElementCriteria {
     ElementCategory elementCategory;
+    String name;
+    String description;
 }
