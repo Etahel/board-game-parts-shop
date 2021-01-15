@@ -163,7 +163,7 @@ public class BoardGameService {
             }
         }
 
-        if (boardGameDto.getPublisher() != null) {
+        if (boardGameDto.getPublisher() != null && !boardGameDto.getPublisher().isBlank()) {
             Publisher publisher = getPublisher(boardGameDto.getPublisher());
             boardGame.setPublisher(publisher);
         }

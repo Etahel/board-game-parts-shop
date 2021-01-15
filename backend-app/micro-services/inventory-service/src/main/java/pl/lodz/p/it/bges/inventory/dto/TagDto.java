@@ -16,7 +16,7 @@ import javax.validation.constraints.Size;
 public class TagDto extends InventoryDto<Tag> {
 
     @JsonView(Views.Basic.class)
-    @Size(min = 1, max = 15)
+    @Size(min = 1, max = 30)
     private String name;
 
     public TagDto(Tag tag) {

@@ -11,7 +11,9 @@ public enum ShopError {
     ORDER_CANCELLED("order.cancelled"),
     ORDER_FINALIZED("order.finalized"),
     ORDER_STOCK_UNAVAILABLE("order.stock_unavailable"),
-    ORDER_STOCK_INSUFFICIENT("order.stock_insufficient");
+    ORDER_STOCK_INSUFFICIENT("order.stock_insufficient"),
+    ORDER_ADDRESS_INCOMPLETE("order.address_incomplete"),
+    ORDER_EMPTY("order.empty");
 
 
     private final String code;

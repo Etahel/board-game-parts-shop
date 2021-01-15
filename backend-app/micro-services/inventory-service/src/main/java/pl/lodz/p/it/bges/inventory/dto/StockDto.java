@@ -7,6 +7,7 @@ import lombok.Setter;
 import pl.lodz.p.it.bges.core.definitions.Views;
 import pl.lodz.p.it.bges.inventory.entity.Stock;
 
+import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 
 @Getter
@@ -15,11 +16,14 @@ public class StockDto extends InventoryDto<Stock> {
 
     @JsonView(Views.Basic.class)
     @Min(0)
+    @Max(1000000)
     private Integer stockSize;
     @JsonView({Views.Basic.class})
     private Boolean available;
     @JsonView(Views.Basic.class)
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @Min(-1000000)
+    @Max(1000000)
     private Integer stockChange;
 
     public StockDto() {

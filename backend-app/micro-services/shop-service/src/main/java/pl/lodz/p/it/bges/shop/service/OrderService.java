@@ -5,6 +5,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import pl.lodz.p.it.bges.shop.criteria.OrderCriteria;
+import pl.lodz.p.it.bges.shop.dto.AddressDto;
 import pl.lodz.p.it.bges.shop.dto.OrderDto;
 import pl.lodz.p.it.bges.shop.entity.*;
 import pl.lodz.p.it.bges.shop.exception.ShopException;
@@ -41,6 +42,7 @@ public class OrderService {
     }
 
     public Order createOrder(OrderDto orderDto, String username) throws ShopException {
+        checkAddress(orderDto.getAddress());
         Order order = new Order();
         orderDto.putProperties(order);
         order.setClient(clientService.getClient(username));
@@ -147,6 +149,19 @@ public class OrderService {
             throw new StockUnavailableException();
         } else if (stock.getStockSize() < orderItem.getElementsCount()) {
             throw new StockInsufficientException();
+        }
+    }
+
+    private void checkAddress(AddressDto addressDto) throws OrderAddressIncompleteException {
+        if (addressDto == null || addressDto.getPostalCode() == null || addressDto.getCity() == null ||
+                addressDto.getStreet() == null || addressDto.getHouseNo() == null) {
+            throw new OrderAddressIncompleteException();
+        }
+    }
+
+    private void checkOrderNotEmpty(OrderDto orderDto) throws OrderAddressIncompleteException {
+        if (orderDto.getOrderItems() == null || orderDto.getOrderItems().isEmpty()) {
+
         }
     }
 

@@ -24,10 +24,7 @@ import pl.lodz.p.it.bges.core.dto.error.ValidationErrorDto;
 import pl.lodz.p.it.bges.core.exception.AppError;
 import pl.lodz.p.it.bges.core.exception.AppException;
 import pl.lodz.p.it.bges.core.exception.RequestInvalidException;
-import pl.lodz.p.it.bges.shop.exception.order.ElementChangedException;
-import pl.lodz.p.it.bges.shop.exception.order.ElementNotFoundException;
-import pl.lodz.p.it.bges.shop.exception.order.OrderFinalizedException;
-import pl.lodz.p.it.bges.shop.exception.order.OrderNotFoundException;
+import pl.lodz.p.it.bges.shop.exception.order.*;
 import pl.lodz.p.it.bges.shop.exception.stock.StockUnavailableException;
 
 import java.util.List;
@@ -50,6 +47,13 @@ public class ShopExceptionHandler extends ResponseEntityExceptionHandler {
     @ResponseBody
     @ResponseStatus(HttpStatus.NOT_FOUND)
     protected ErrorDto handleNotFound(ShopException ex) {
+        return new ErrorDto(ex);
+    }
+
+    @ExceptionHandler(value = OrderAddressIncompleteException.class)
+    @ResponseBody
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    protected ErrorDto handleBadRequest(ShopException ex) {
         return new ErrorDto(ex);
     }
 

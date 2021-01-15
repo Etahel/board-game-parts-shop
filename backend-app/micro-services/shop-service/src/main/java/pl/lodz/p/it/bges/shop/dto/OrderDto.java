@@ -12,6 +12,8 @@ import pl.lodz.p.it.bges.shop.entity.Order;
 import pl.lodz.p.it.bges.shop.entity.OrderItem;
 import pl.lodz.p.it.bges.shop.entity.OrderStatus;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -31,11 +33,14 @@ public class OrderDto extends ShopDto<Order> {
     private ClientDto client;
     @JsonView(Views.Basic.class)
     @Size(max = 30)
+    @NotBlank
     private String firstName;
     @JsonView(Views.Basic.class)
     @Size(max = 30)
+    @NotBlank
     private String lastName;
     @JsonView(Views.Normal.class)
+    @NotNull
     private AddressDto address;
     @JsonView(Views.Normal.class)
     private List<OrderItemDto> orderItems;

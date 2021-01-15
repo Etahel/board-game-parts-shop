@@ -16,7 +16,7 @@ create table if not exists business.board_games
 (
     id           bigserial   not null,
     version      bigint      not null default 0,
-    description  varchar(500),
+    description  varchar(2000),
     photo_url    varchar(2048),
     title        varchar(30) not null,
     author       varchar(60),
@@ -68,7 +68,7 @@ create table if not exists business.tags
 (
     id      bigserial   not null,
     version bigint      not null default 0,
-    name    varchar(15) not null,
+    name    varchar(30) not null,
     constraint tags_unique_name
         unique (name),
     constraint tags_pkey
@@ -104,8 +104,8 @@ create table if not exists business.clients
 (
     id         bigserial   not null,
     version    bigint,
-    first_name varchar(30),
-    last_name  varchar(30),
+    first_name varchar(50),
+    last_name  varchar(50),
     username   varchar(15) not null,
     address_id bigint      not null,
     constraint clients_pkey
@@ -121,8 +121,8 @@ create table if not exists business.orders
     id               bigserial        not null,
     version          bigint,
     date             timestamp        not null,
-    order_first_name varchar(30)      not null,
-    order_last_name  varchar(30)      not null,
+    order_first_name varchar(50)      not null,
+    order_last_name  varchar(50)      not null,
     status           varchar(1)       not null,
     value            double precision not null,
     address_id       bigint           not null,

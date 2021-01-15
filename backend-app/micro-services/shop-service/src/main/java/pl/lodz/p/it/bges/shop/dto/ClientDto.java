@@ -18,10 +18,10 @@ public class ClientDto extends ShopDto<Client> {
     private String username;
 
     @JsonView(Views.Basic.class)
-    @Size(max = 30)
+    @Size(max = 50)
     private String firstName;
     @JsonView(Views.Basic.class)
-    @Size(max = 30)
+    @Size(max = 50)
     private String lastName;
     @JsonView(Views.Normal.class)
     private AddressDto address;

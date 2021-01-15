@@ -24,7 +24,7 @@ public class BoardGameDto extends InventoryDto<BoardGame> {
     @Size(min = 1, max = 30)
     private String title;
     @JsonView(Views.Normal.class)
-    @Size(max = 500)
+    @Size(max = 2000)
     private String description;
     @JsonView(Views.Basic.class)
     private List<String> tags;
