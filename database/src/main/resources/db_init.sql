@@ -5,7 +5,7 @@ create table if not exists business.publishers
 (
     id      bigserial   not null,
     version bigint      not null default 0,
-    name    varchar(30) not null,
+    name    varchar(50) not null,
     constraint publishers_unique_name
         unique (name),
     constraint publishers_pkey
@@ -18,7 +18,7 @@ create table if not exists business.board_games
     version      bigint      not null default 0,
     description  varchar(2000),
     photo_url    varchar(2048),
-    title        varchar(30) not null,
+    title        varchar(50) not null,
     author       varchar(60),
     year         integer,
     min_players  integer,
@@ -48,7 +48,7 @@ create table if not exists business.elements
     version       bigint           not null default 0,
     description   varchar(500),
     photo_url     varchar(2048),
-    name          varchar(30)      not null,
+    name          varchar(50)      not null,
     price         double precision not null,
     category      varchar(1)       not null,
     active        boolean          not null,

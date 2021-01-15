@@ -21,7 +21,7 @@ import java.util.List;
 public class BoardGameDto extends InventoryDto<BoardGame> {
 
     @JsonView(Views.Basic.class)
-    @Size(min = 1, max = 30)
+    @Size(min = 1, max = 50)
     private String title;
     @JsonView(Views.Normal.class)
     @Size(max = 2000)

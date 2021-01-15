@@ -15,7 +15,7 @@ import javax.validation.constraints.Size;
 public class PublisherDto extends InventoryDto<Publisher> {
 
     @JsonView(Views.Basic.class)
-    @Size(min = 1, max = 30)
+    @Size(min = 1, max = 50)
     private String name;
 
     public PublisherDto(Publisher publisher) {

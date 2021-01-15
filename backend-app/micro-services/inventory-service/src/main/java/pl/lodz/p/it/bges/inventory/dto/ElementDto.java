@@ -9,6 +9,7 @@ import pl.lodz.p.it.bges.core.definitions.Views;
 import pl.lodz.p.it.bges.inventory.entity.Element;
 import pl.lodz.p.it.bges.inventory.entity.ElementCategory;
 
+import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.Size;
 
@@ -18,7 +19,7 @@ import javax.validation.constraints.Size;
 public class ElementDto extends InventoryDto<Element> {
 
     @JsonView(Views.Basic.class)
-    @Size(min = 1, max = 30)
+    @Size(min = 1, max = 50)
     private String name;
 
     @JsonView(Views.Basic.class)
@@ -27,6 +28,7 @@ public class ElementDto extends InventoryDto<Element> {
 
     @JsonView(Views.Basic.class)
     @Min(0)
+    @Max(1000000)
     private Double price;
 
     @JsonView(Views.Normal.class)
@@ -69,7 +71,7 @@ public class ElementDto extends InventoryDto<Element> {
         super.putProperties(entity);
         entity.setName(getName());
         entity.setDescription(getDescription());
-        entity.setPrice(getPrice());
+        entity.setPrice(roundPrice(getPrice()));
         entity.setElementCategory(getElementCategory());
         entity.setPhotoUrl(getPhotoUrl());
     }
@@ -84,7 +86,7 @@ public class ElementDto extends InventoryDto<Element> {
             entity.setDescription(getDescription());
         }
         if (getPrice() != null) {
-            entity.setPrice(getPrice());
+            entity.setPrice(roundPrice(getPrice()));
         }
         if (getElementCategory() != null) {
             entity.setElementCategory(getElementCategory());
@@ -92,5 +94,9 @@ public class ElementDto extends InventoryDto<Element> {
         if (getPhotoUrl() != null) {
             entity.setPhotoUrl(getPhotoUrl());
         }
+    }
+
+    private double roundPrice(Double price) {
+        return (double) Math.round(price * 100) / 100;
     }
 }
