@@ -12,6 +12,7 @@ import pl.lodz.p.it.bges.inventory.dto.StockDto;
 import pl.lodz.p.it.bges.inventory.exception.InventoryException;
 import pl.lodz.p.it.bges.inventory.service.ElementService;
 
+import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 import javax.validation.Valid;
 import java.util.List;
@@ -37,7 +38,7 @@ public class ElementController {
     }
 
     @GetMapping("/{id}")
-    @RolesAllowed({Roles.USER})
+    @PermitAll
     @JsonView(Views.Details.class)
     public ElementDto getElement(@PathVariable Long id) throws InventoryException {
         return new ElementDto(elementService.getElement(id));

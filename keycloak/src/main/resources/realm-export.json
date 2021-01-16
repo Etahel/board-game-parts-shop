@@ -29,7 +29,7 @@
   "rememberMe": false,
   "verifyEmail": false,
   "loginWithEmailAllowed": false,
-  "duplicateEmailsAllowed": false,
+  "duplicateEmailsAllowed": true,
   "resetPasswordAllowed": true,
   "editUsernameAllowed": false,
   "bruteForceProtected": false,
