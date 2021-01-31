@@ -53,8 +53,15 @@ public class OrderController {
     @PutMapping("/me/{id}/cancellation")
     @RolesAllowed({Roles.USER, Roles.EMPLOYEE})
     @ResponseStatus(HttpStatus.OK)
-    public void cancelOrder(Principal principal, @PathVariable("id") Long id) throws ShopException {
+    public void cancelMyOrder(Principal principal, @PathVariable("id") Long id) throws ShopException {
         orderService.cancelClientOrder(principal.getName(), id);
+    }
+
+    @PutMapping("/{id}/cancellation")
+    @RolesAllowed(Roles.EMPLOYEE)
+    @ResponseStatus(HttpStatus.OK)
+    public void cancelOrder(@PathVariable("id") Long id) throws ShopException {
+        orderService.cancelOrder(id);
     }
 
     @PutMapping("/{id}")

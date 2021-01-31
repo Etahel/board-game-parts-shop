@@ -17,7 +17,6 @@ import java.util.List;
 public class BoardGameSpecification {
     public static Specification<BoardGame> getBoardGameSpecification(BoardGameCriteria boardGameCriteria) {
         return new Specification<BoardGame>() {
-
             @Override
             public Predicate toPredicate(Root<BoardGame> root,
                                          CriteriaQuery<?> query,

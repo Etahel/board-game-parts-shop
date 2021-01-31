@@ -43,6 +43,7 @@ public class OrderService {
 
     public Order createOrder(OrderDto orderDto, String username) throws ShopException {
         checkAddress(orderDto.getAddress());
+        checkOrderNotEmpty(orderDto);
         Order order = new Order();
         orderDto.putProperties(order);
         order.setClient(clientService.getClient(username));
@@ -87,6 +88,24 @@ public class OrderService {
 
     public void cancelClientOrder(String username, Long id) throws ShopException {
         Order order = getClientOder(username, id);
+        if (order.getStatus().equals(OrderStatus.FINALIZED)) {
+            throw new OrderFinalizedException();
+        } else {
+            order.setStatus(OrderStatus.CANCELLED);
+        }
+        for (OrderItem orderItem : order.getOrderItems()) {
+            Optional<Element> elementOpt = elementRepository.findById(orderItem.getElementId());
+            if (elementOpt.isPresent()) {
+                Element element = elementOpt.get();
+                element.getStock().setStockSize(element.getStock().getStockSize() + orderItem.getElementsCount());
+            } else {
+                throw new IllegalStateException("Unable to retrieve element associated with order");
+            }
+        }
+    }
+
+    public void cancelOrder(Long id) throws ShopException {
+        Order order = getOrder(id);
         if (order.getStatus().equals(OrderStatus.FINALIZED)) {
             throw new OrderFinalizedException();
         } else {
@@ -159,9 +178,9 @@ public class OrderService {
         }
     }
 
-    private void checkOrderNotEmpty(OrderDto orderDto) throws OrderAddressIncompleteException {
+    private void checkOrderNotEmpty(OrderDto orderDto) throws OrderEmptyException {
         if (orderDto.getOrderItems() == null || orderDto.getOrderItems().isEmpty()) {
-
+            throw new OrderEmptyException();
         }
     }
 
