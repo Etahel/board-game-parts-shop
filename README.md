@@ -10,7 +10,7 @@ podanie hasła do niego poprzez zmienną środowiskową BGES_KEYSTORE_PASSWORD.
 Dla celów demonstracyjnych, w projekcie znajduje sie samo-podpisany certyfikat demonstracyjny z hasłem "demo123". 
 Dla poprawnego działa aplikacji klienta, certyfikat musi zostać dodany do wyjątków w przeglądarce poprzez np. otworzenie strony https://localhost:8443/. 
 
-Konsola serwera autoryzacyjnego dostępna pod adresem http://localhost:8080/auth/admin/. Dane konta admin dostępne wewnątrz pliku docker-compose.yaml (zmienne KEYCLOAK_USER oraz KEYCLOAK_PASSWORD).
+Konsola serwera autoryzacyjnego dostępna pod adresem https://localhost:8443/auth/admin/. Dane konta admin dostępne wewnątrz pliku docker-compose.yaml (zmienne KEYCLOAK_USER oraz KEYCLOAK_PASSWORD).
 Aby działał proces wysyłania wiadomości do użytkowników (niezbędny przy np. resestracji) wymagane skonfigurowanie za jej pomocą ustawień serwera SNTP. 
 
 Generowanie plików wykonalnych:
