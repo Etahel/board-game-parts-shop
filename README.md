@@ -1,5 +1,6 @@
 Aplikacja serwera aplikacyjnego przygotowana w ramach pracy inżynierskiej:
-#Serwis internetowy pozwalający na hierarchiczne wyszukiwanie i zakup elementów zastępczych do gier planszowych.
+
+"Serwis internetowy pozwalający na hierarchiczne wyszukiwanie i zakup elementów zastępczych do gier planszowych"
 
 Projekt oparty jest o Maven oraz środowisko Docker. 
 
