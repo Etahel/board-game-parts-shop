@@ -7,10 +7,6 @@ eureka:
   instance:
     hostname: account-service
 
-logging:
-  level:
-    root: DEBUG
-
 spring:
   application:
     name: account-service
