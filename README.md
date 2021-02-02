@@ -2,7 +2,7 @@ Aplikacja serwera aplikacyjnego przygotowana przez Jakuba Fornalskiego w ramach 
 
 "Serwis internetowy pozwalający na hierarchiczne wyszukiwanie i zakup elementów zastępczych do gier planszowych"
 
-Projekt oparty jest o Maven oraz środowisko Docker. 
+Projekt oparty jest o Maven 3.6.3 oraz środowisko Docker 20.10.2. 
 
 Do działania aplikacja wymaga zastąpienia pliku keystore.jks magazynem kluczy dla ważnego certyfikatu i 
 podanie hasła do niego poprzez zmienną środowiskową BGES_KEYSTORE_PASSWORD. 
