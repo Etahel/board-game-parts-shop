@@ -1,4 +1,4 @@
-Aplikacja serwera aplikacyjnego przygotowana w ramach pracy inżynierskiej:
+Aplikacja serwera aplikacyjnego przygotowana przez Jakuba Fornalskiego w ramach pracy inżynierskiej:
 
 "Serwis internetowy pozwalający na hierarchiczne wyszukiwanie i zakup elementów zastępczych do gier planszowych"
 
