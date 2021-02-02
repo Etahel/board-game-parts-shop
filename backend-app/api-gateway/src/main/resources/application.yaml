@@ -18,8 +18,8 @@ eureka:
 server:
   port: 8443
   ssl:
-    key-password: ${DIPLOMA_PASSWORD}
-    key-store-password: ${DIPLOMA_PASSWORD}
+    key-password: ${BGES_KEYSTORE_PASSWORD}
+    key-store-password: ${BGES_KEYSTORE_PASSWORD}
     key-store: ./keystore.jks
     enabled-protocols: TLSv1.2
 

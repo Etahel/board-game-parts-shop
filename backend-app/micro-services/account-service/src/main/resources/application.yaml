@@ -45,6 +45,6 @@ roles:
   user: user
   employee: employee
   admin: admin
-#server.ssl.key-password=${DIPLOMA_PASSWORD}
-#server.ssl.key-store-password=${DIPLOMA_PASSWORD}
+#server.ssl.key-password=${BGES_KEYSTORE_PASSWORD}
+#server.ssl.key-store-password=${BGES_KEYSTORE_PASSWORD}
 #server.ssl.key-store=./keystore.jks

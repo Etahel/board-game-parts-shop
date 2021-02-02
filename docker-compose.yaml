@@ -9,7 +9,7 @@ services:
     ports:
       - 8443:8443
     environment:
-      - DIPLOMA_PASSWORD
+      - BGES_KEYSTORE_PASSWORD
     networks:
       - bg-network
   discovery-server:
@@ -23,7 +23,7 @@ services:
     networks:
       - bg-network
     environment:
-      - DIPLOMA_PASSWORD
+      - BGES_KEYSTORE_PASSWORD
   account-service:
     build:
       context: ./
@@ -37,7 +37,7 @@ services:
     networks:
       - bg-network
     environment:
-      - DIPLOMA_PASSWORD
+      - BGES_KEYSTORE_PASSWORD
     depends_on:
       - db
   shop-service:
@@ -53,7 +53,7 @@ services:
     networks:
       - bg-network
     environment:
-      - DIPLOMA_PASSWORD
+      - BGES_KEYSTORE_PASSWORD
       - CRYPTO_SEED=123123
       - TZ=Europe/Warsaw
     depends_on:
@@ -71,7 +71,7 @@ services:
     networks:
       - bg-network
     environment:
-      - DIPLOMA_PASSWORD
+      - BGES_KEYSTORE_PASSWORD
       - CRYPTO_SEED=123123
     depends_on:
       - db
