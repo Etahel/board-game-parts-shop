@@ -27,7 +27,7 @@ spring:
     platform: postgres
     url: jdbc:postgresql://db:5432/BOARDGAMES_SHOP
     username: admin
-    password: postgres266415
+    password: Afk34DrR
     driverClassName: org.postgresql.Driver
 
 server:

@@ -86,7 +86,7 @@ services:
       - bg-network
     container_name: db
     environment:
-      - POSTGRES_PASSWORD
+      - POSTGRES_PASSWORD=Afk34DrR
       - POSTGRES_USER=admin
       - POSTGRES_DB=BOARDGAMES_SHOP
     volumes:
@@ -100,7 +100,7 @@ services:
       DB_DATABASE: BOARDGAMES_SHOP
       DB_USER: admin
       DB_SCHEMA: auth
-      DB_PASSWORD: ${POSTGRES_PASSWORD}
+      DB_PASSWORD: Afk34DrR
       KEYCLOAK_USER: admin
       KEYCLOAK_PASSWORD: Pa55w0rd
       KEYCLOAK_FRONTEND_URL: https://localhost:8443/auth
